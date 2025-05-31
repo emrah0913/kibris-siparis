@@ -3,174 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kıbrıs Online</title>
+  <title>Türkiye'den Kıbrıs'a Teslimat</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #111827; line-height: 1.6; }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      background-color: #fff;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    }
-    .logo { font-size: 1.5rem; font-weight: 700; color: #3b82f6; }
-    nav a {
-      margin: 0 10px;
-      color: #1f2937;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.95rem;
-    }
+    body, html { height: 100%; font-family: 'Inter', sans-serif; }
+
     .hero {
-      position: relative;
-      width: 100%;
-      height: 500px;
-      background-image: url('https://images.unsplash.com/photo-1614248453782-d6f6b1ab49ee?auto=format&fit=crop&w=1950&q=80');
-      background-size: cover;
-      background-position: center;
+      background: 
+        linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+        url('https://globelink-unimar.com/wp-content/uploads/2022/05/gemi-tasimaciligi-neden-tercih-edilmelidir.jpg') no-repeat center center/cover;
+      height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+      color: white;
       text-align: center;
-    }
-    .hero-text {
-      background: rgba(0,0,0,0.4);
-      padding: 20px 40px;
-      border-radius: 12px;
-    }
-    .hero h1 {
-      color: white;
-      font-size: 2.8rem;
-      font-weight: 700;
-      text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
-    }
-    .hero p {
-      color: white;
-      font-size: 1.2rem;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
-    }
-    section {
-      max-width: 1200px;
-      margin: auto;
-      padding: 40px 20px;
-    }
-    .card-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      margin-bottom: 40px;
-    }
-    .card {
-      background: white;
       padding: 20px;
-      flex: 1 1 250px;
-      border-radius: 16px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      text-align: center;
     }
-    .card h3 {
-      font-size: 1.1rem;
-      margin-bottom: 8px;
+
+    .hero h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px #000;
     }
-    .form-box {
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+
+    .hero p {
+      font-size: 1.2em;
+      text-shadow: 1px 1px 3px #000;
     }
-    .form-box label {
-      display: block;
-      margin-top: 15px;
-      font-weight: 600;
-    }
-    .form-box input, .form-box select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-    }
-    .form-box button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      background-color: #3b82f6;
-      color: white;
-      font-size: 1rem;
-      font-weight: 600;
+
+    .btn {
+      margin-top: 30px;
+      padding: 12px 28px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
+      background-color: #2d4fd3;
+      color: white;
+      font-weight: 600;
+      font-size: 1em;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
     }
-    footer {
-      background: #f9fafb;
-      text-align: center;
-      padding: 40px 20px;
-      font-size: 0.9rem;
-      color: #6b7280;
+
+    .btn:hover {
+      background-color: #1c36a0;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">Kıbrıs Online</div>
-  <nav>
-    <a href="#">Ana Sayfa</a>
-    <a href="#">Siparişlerim</a>
-    <a href="#">Takip</a>
-    <a href="#">Giriş Yap</a>
-  </nav>
-</header>
-
-<section class="hero">
-  <div class="hero-text">
+  <div class="hero">
     <h1>Türkiye'den Kıbrıs'a Teslimat</h1>
     <p>Hızlı ve Güvenilir Kargo Hizmeti</p>
+    <a href="order.html" class="btn">Sipariş Ver</a>
   </div>
-</section>
-
-<section>
-  <div class="card-group">
-    <div class="card">
-      <h3>Türkiye'den Alışveriş Yapın</h3>
-      <p>Türkiye'deki online mağazalardan alışveriş yapın, kargo adresimizi kullanın.</p>
-    </div>
-    <div class="card">
-      <h3>Biz Kargoyu Alalım</h3>
-      <p>Depomuzda teslim alınan paketleriniz Kıbrıs’a hazırlanır.</p>
-    </div>
-    <div class="card">
-      <h3>Kapınıza Teslim</h3>
-      <p>Paketlerinizi güvenle ve hızlıca adresinize ulaştıralım.</p>
-    </div>
-  </div>
-
-  <div class="form-box">
-    <h2>Sipariş Hesaplama</h2>
-    <label>Sipariş URL</label>
-    <input type="url" placeholder="https://">
-    <label>Ürün Fiyatı (TL)</label>
-    <input type="number" placeholder="0.00">
-    <label>Kategori</label>
-    <select><option>Seçiniz</option></select>
-    <label>Teslimat Tipi</label>
-    <select><option>Seçiniz</option></select>
-    <label>Toplam Tutar</label>
-    <p><strong>0.00 TL</strong></p>
-    <button>Sipariş Ver</button>
-  </div>
-</section>
-
-<footer>
-  <strong>Kıbrıs Online</strong><br>
-  Türkiye'den Kıbrıs'a güvenilir teslimat<br><br>
-  © 2025 Türkiye-Kıbrıs Kargo Hizmeti. Tüm hakları saklıdır.
-</footer>
 
 </body>
 </html>
