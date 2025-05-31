@@ -3,106 +3,174 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kıbrıs Türkiye Online Alışveriş</title>
+  <title>Kıbrıs Online</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background-color: #f5f7fb; color: #333; }
-
+    body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #111827; line-height: 1.6; }
     header {
-      background-color: #fff;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      padding: 20px 40px;
+      background-color: #fff;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
-
-    .logo { font-size: 1.4em; font-weight: 600; color: #2d4fd3; }
-
-    #kullanici-paneli {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    #kullanici-paneli a,
-    #kullanici-paneli button {
+    .logo { font-size: 1.5rem; font-weight: 700; color: #3b82f6; }
+    nav a {
+      margin: 0 10px;
+      color: #1f2937;
       text-decoration: none;
-      background: #2d4fd3;
-      color: white;
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-size: 0.9em;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.95rem;
     }
-
-    #kullanici-paneli button:hover,
-    #kullanici-paneli a:hover {
-      background: #1c3dc2;
-    }
-
     .hero {
-      padding: 20px;
-      background-color: #d4e4ff;
-      border-radius: 16px;
-      margin: 20px;
+      position: relative;
+      width: 100%;
+      height: 500px;
+      background-image: url('https://images.unsplash.com/photo-1614248453782-d6f6b1ab49ee?auto=format&fit=crop&w=1950&q=80');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       text-align: center;
     }
-
-    .hero img { width: 100%; max-width: 300px; margin-bottom: 10px; }
-    .hero h1 { font-size: 1.2em; font-weight: 700; color: #fff; }
-    .hero p { color: #fff; font-size: 0.95em; margin-top: 5px; }
+    .hero-text {
+      background: rgba(0,0,0,0.4);
+      padding: 20px 40px;
+      border-radius: 12px;
+    }
+    .hero h1 {
+      color: white;
+      font-size: 2.8rem;
+      font-weight: 700;
+      text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
+    }
+    .hero p {
+      color: white;
+      font-size: 1.2rem;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+    section {
+      max-width: 1200px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+    .card-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      flex: 1 1 250px;
+      border-radius: 16px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+    .card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+    .form-box {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+    }
+    .form-box label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+    .form-box input, .form-box select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+    }
+    .form-box button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: #3b82f6;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    footer {
+      background: #f9fafb;
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="logo">Kıbrıs Türkiye</div>
-    <div id="kullanici-paneli">
-      <a href="login.html" id="giris-btn">👤 Giriş Yap</a>
-      <span id="kullanici-bilgi" style="display: none;"></span>
-      <button id="cikis-btn" style="display: none;">🚪 Çıkış Yap</button>
-    </div>
-  </header>
+<header>
+  <div class="logo">Kıbrıs Online</div>
+  <nav>
+    <a href="#">Ana Sayfa</a>
+    <a href="#">Siparişlerim</a>
+    <a href="#">Takip</a>
+    <a href="#">Giriş Yap</a>
+  </nav>
+</header>
 
-  <div class="hero">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/1/13/Turkey_to_Cyprus.png" alt="Türkiye'den Kıbrıs'a">
+<section class="hero">
+  <div class="hero-text">
     <h1>Türkiye'den Kıbrıs'a Teslimat</h1>
-    <p>Hızlı ve güvenilir kargo hizmeti</p>
+    <p>Hızlı ve Güvenilir Kargo Hizmeti</p>
+  </div>
+</section>
+
+<section>
+  <div class="card-group">
+    <div class="card">
+      <h3>Türkiye'den Alışveriş Yapın</h3>
+      <p>Türkiye'deki online mağazalardan alışveriş yapın, kargo adresimizi kullanın.</p>
+    </div>
+    <div class="card">
+      <h3>Biz Kargoyu Alalım</h3>
+      <p>Depomuzda teslim alınan paketleriniz Kıbrıs’a hazırlanır.</p>
+    </div>
+    <div class="card">
+      <h3>Kapınıza Teslim</h3>
+      <p>Paketlerinizi güvenle ve hızlıca adresinize ulaştıralım.</p>
+    </div>
   </div>
 
-  <!-- Devam eden içerikler buraya gelecek -->
+  <div class="form-box">
+    <h2>Sipariş Hesaplama</h2>
+    <label>Sipariş URL</label>
+    <input type="url" placeholder="https://">
+    <label>Ürün Fiyatı (TL)</label>
+    <input type="number" placeholder="0.00">
+    <label>Kategori</label>
+    <select><option>Seçiniz</option></select>
+    <label>Teslimat Tipi</label>
+    <select><option>Seçiniz</option></select>
+    <label>Toplam Tutar</label>
+    <p><strong>0.00 TL</strong></p>
+    <button>Sipariş Ver</button>
+  </div>
+</section>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const kullaniciStr = localStorage.getItem("kullanici");
-      const bilgiSpan = document.getElementById("kullanici-bilgi");
-      const girisBtn = document.getElementById("giris-btn");
-      const cikisBtn = document.getElementById("cikis-btn");
-
-      if (kullaniciStr) {
-        try {
-          const kullanici = JSON.parse(kullaniciStr);
-          if (kullanici && kullanici.ad && kullanici.soyad) {
-            bilgiSpan.innerText = `👤 ${kullanici.ad} ${kullanici.soyad}`;
-            bilgiSpan.style.display = "inline";
-            girisBtn.style.display = "none";
-            cikisBtn.style.display = "inline-block";
-          }
-        } catch (e) {
-          console.warn("Kullanıcı verisi okunamadı:", e);
-        }
-      }
-
-      cikisBtn.addEventListener("click", () => {
-        localStorage.removeItem("kullanici");
-        window.location.reload();
-      });
-    });
-  </script>
+<footer>
+  <strong>Kıbrıs Online</strong><br>
+  Türkiye'den Kıbrıs'a güvenilir teslimat<br><br>
+  © 2025 Türkiye-Kıbrıs Kargo Hizmeti. Tüm hakları saklıdır.
+</footer>
 
 </body>
 </html>
