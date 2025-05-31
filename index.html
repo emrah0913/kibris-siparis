@@ -16,38 +16,32 @@
       align-items: center;
       padding: 15px 20px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      position: relative;
     }
 
     .logo { font-size: 1.4em; font-weight: 600; color: #2d4fd3; }
-    .menu-icon { font-size: 1.4em; cursor: pointer; }
 
-    #dropdown-menu {
-      display: none;
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      background-color: white;
-      border: 1px solid #ddd;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      z-index: 1000;
-      width: 160px;
-      text-align: left;
-      overflow: hidden;
+    #kullanici-paneli {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    #dropdown-menu a {
-      display: block;
-      padding: 10px 15px;
+    #kullanici-paneli a,
+    #kullanici-paneli button {
       text-decoration: none;
-      color: #2d4fd3;
-      border-bottom: 1px solid #eee;
-      font-weight: 500;
+      background: #2d4fd3;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.9em;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
     }
 
-    #dropdown-menu a:hover {
-      background-color: #f0f4ff;
+    #kullanici-paneli button:hover,
+    #kullanici-paneli a:hover {
+      background: #1c3dc2;
     }
 
     .hero {
@@ -55,25 +49,22 @@
       background-color: #d4e4ff;
       border-radius: 16px;
       margin: 20px;
-      position: relative;
       text-align: center;
     }
 
     .hero img { width: 100%; max-width: 300px; margin-bottom: 10px; }
     .hero h1 { font-size: 1.2em; font-weight: 700; color: #fff; }
     .hero p { color: #fff; font-size: 0.95em; margin-top: 5px; }
-
-    /* Diğer CSS bileşenleri burada devam eder (senin mevcut stillerin) */
   </style>
 </head>
 <body>
 
   <header>
-    <div class="logo">logo</div>
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
-    <div id="dropdown-menu">
-      <a href="login.html">👤 Giriş Yap</a>
-      <a href="#" onclick="cikisYap()">🚪 Çıkış Yap</a>
+    <div class="logo">Kıbrıs Türkiye</div>
+    <div id="kullanici-paneli">
+      <a href="login.html" id="giris-btn">👤 Giriş Yap</a>
+      <span id="kullanici-bilgi" style="display: none;"></span>
+      <button id="cikis-btn" style="display: none;">🚪 Çıkış Yap</button>
     </div>
   </header>
 
@@ -83,26 +74,33 @@
     <p>Hızlı ve güvenilir kargo hizmeti</p>
   </div>
 
-  <!-- Diğer içerik alanlarını buraya geri yerleştirebilirsin (info-box, services, stores, vb.) -->
+  <!-- Devam eden içerikler buraya gelecek -->
 
   <script>
-    function toggleMenu() {
-      const menu = document.getElementById("dropdown-menu");
-      menu.style.display = (menu.style.display === "block") ? "none" : "block";
-    }
+    document.addEventListener("DOMContentLoaded", () => {
+      const kullaniciStr = localStorage.getItem("kullanici");
+      const bilgiSpan = document.getElementById("kullanici-bilgi");
+      const girisBtn = document.getElementById("giris-btn");
+      const cikisBtn = document.getElementById("cikis-btn");
 
-    function cikisYap() {
-      localStorage.removeItem("kullanici");
-      window.location.reload();
-    }
-
-    // Menü dışına tıklanırsa kapansın
-    document.addEventListener("click", function (event) {
-      const menu = document.getElementById("dropdown-menu");
-      const icon = document.querySelector(".menu-icon");
-      if (!menu.contains(event.target) && !icon.contains(event.target)) {
-        menu.style.display = "none";
+      if (kullaniciStr) {
+        try {
+          const kullanici = JSON.parse(kullaniciStr);
+          if (kullanici && kullanici.ad && kullanici.soyad) {
+            bilgiSpan.innerText = `👤 ${kullanici.ad} ${kullanici.soyad}`;
+            bilgiSpan.style.display = "inline";
+            girisBtn.style.display = "none";
+            cikisBtn.style.display = "inline-block";
+          }
+        } catch (e) {
+          console.warn("Kullanıcı verisi okunamadı:", e);
+        }
       }
+
+      cikisBtn.addEventListener("click", () => {
+        localStorage.removeItem("kullanici");
+        window.location.reload();
+      });
     });
   </script>
 
