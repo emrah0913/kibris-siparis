@@ -1,9 +1,130 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-  <title>Merhaba</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Türkiye'den Kıbrıs'a Teslimat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background-color: #f5f7fb; color: #333; }
+
+    header {
+      background-color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .logo { font-size: 1.6em; font-weight: 700; color: #2d4fd3; }
+    .nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #2d4fd3;
+      font-weight: 600;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      background-color: #eaf0ff;
+    }
+    .hero img {
+      max-width: 300px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: 2.5em;
+      color: #2d4fd3;
+      margin-bottom: 10px;
+    }
+    .hero p {
+      font-size: 1.2em;
+      color: #666;
+    }
+
+    .buttons {
+      margin-top: 30px;
+    }
+    .buttons a {
+      text-decoration: none;
+      background-color: #2d4fd3;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 6px;
+      margin: 10px;
+      display: inline-block;
+    }
+
+    .logos {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin: 50px 0;
+    }
+    .logos img {
+      height: 50px;
+    }
+
+    footer {
+      background-color: #2d4fd3;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    .sss {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .sss h3 {
+      margin-bottom: 10px;
+    }
+    .sss p {
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Merhaba</h1>
+
+<header>
+  <div class="logo">Kıbrıs Türkiye</div>
+  <div class="nav">
+    <a href="#">Hesaplama Aracı</a>
+    <a href="#">Kayıt Ol</a>
+    <a href="#">Giriş</a>
+  </div>
+</header>
+
+<section class="hero">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/Cargo_ship_icon.png" alt="Gemi Görseli" />
+  <h1>Türkiye’den Kıbrıs’a Teslimat</h1>
+  <p>Hızlı ve Güvenilir Kargo Hizmeti</p>
+  <div class="buttons">
+    <a href="#">Kayıt Ol</a>
+    <a href="#">Hesaplama Aracı</a>
+  </div>
+</section>
+
+<section class="logos">
+  <a href="https://www.trendyol.com" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/Trendyol_logo.svg" alt="Trendyol" /></a>
+  <a href="https://www.hepsiburada.com" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Hepsiburada_logo.svg" alt="Hepsiburada" /></a>
+  <a href="https://www.n11.com" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/3/32/N11_logo.svg" alt="n11" /></a>
+</section>
+
+<footer>
+  <div class="sss">
+    <h3>Sıkça Sorulan Sorular</h3>
+    <p><strong>Soru:</strong> Hangi sitelerden sipariş verebilirim?<br>
+       <strong>Cevap:</strong> Trendyol, Hepsiburada, n11 ve diğer tüm Türkiye sitelerinden.</p>
+
+    <p><strong>Soru:</strong> Kargo ne kadar sürede gelir?<br>
+       <strong>Cevap:</strong> Türkiye'den Kıbrıs'a ortalama teslim süresi 3-5 iş günüdür.</p>
+  </div>
+</footer>
+
 </body>
 </html>
