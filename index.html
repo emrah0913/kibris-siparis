@@ -3,134 +3,193 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Türkiye'den Kıbrıs'a Teslimat</title>
+  <title>Kıbrıs Türkiye Online Alışveriş</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; background-color: #f5f7fb; color: #333; }
+    header { background-color: #fff; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .logo { font-size: 1.4em; font-weight: 600; color: #2d4fd3; }
+    .menu-icon { font-size: 1.4em; cursor: pointer; }
 
-    header {
-      background-color: #fff;
-      display: flex;
-      justify-content: space-between;
+    .hero { padding: 20px; background-color: #d4e4ff; border-radius: 16px; margin: 20px; position: relative; text-align: center; }
+    .hero img { width: 100%; max-width: 300px; margin-bottom: 10px; }
+    .hero h1 { font-size: 1.2em; font-weight: 700; color: #fff; }
+    .hero p { color: #fff; font-size: 0.95em; margin-top: 5px; }
+
+    #kullanici-paneli {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      display: none;
       align-items: center;
-      padding: 15px 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .logo { font-size: 1.6em; font-weight: 700; color: #2d4fd3; }
-    .nav a {
-      margin-left: 20px;
-      text-decoration: none;
-      color: #2d4fd3;
-      font-weight: 600;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 60px 20px;
-      background-color: #eaf0ff;
-    }
-    .hero img {
-      max-width: 300px;
-      margin-bottom: 20px;
-    }
-    .hero h1 {
-      font-size: 2.5em;
-      color: #2d4fd3;
-      margin-bottom: 10px;
-    }
-    .hero p {
-      font-size: 1.2em;
-      color: #666;
-    }
-
-    .buttons {
-      margin-top: 30px;
-    }
-    .buttons a {
-      text-decoration: none;
-      background-color: #2d4fd3;
+      gap: 10px;
+      background: rgba(0,0,0,0.6);
+      padding: 10px 20px;
+      border-radius: 8px;
       color: white;
-      padding: 12px 24px;
+      font-size: 1em;
+      z-index: 10;
+    }
+
+    #cikis-btn {
+      background: rgba(255, 0, 0, 0.7);
+      border: none;
+      color: white;
+      padding: 6px 12px;
       border-radius: 6px;
-      margin: 10px;
-      display: inline-block;
+      cursor: pointer;
+    }
+    #cikis-btn:hover {
+      background: rgba(200, 0, 0, 0.9);
     }
 
-    .logos {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 30px;
-      margin: 50px 0;
-    }
-    .logos img {
-      height: 50px;
-    }
+    .info-box { background: #fff; padding: 20px; margin: 0 20px 20px; border-radius: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; }
+    .info-box h2 { color: #2d4fd3; font-size: 1.1em; margin-bottom: 8px; }
+    .info-box p { font-size: 0.95em; color: #333; margin-bottom: 15px; }
+    .info-box .btn { display: block; padding: 10px; border-radius: 12px; text-align: center; margin: 8px auto; width: 90%; font-weight: 600; text-decoration: none; }
+    .btn-primary { background-color: #2d4fd3; color: #fff; }
+    .btn-outline { border: 1.5px solid #2d4fd3; color: #2d4fd3; background-color: #fff; }
 
-    footer {
-      background-color: #2d4fd3;
-      color: white;
-      text-align: center;
-      padding: 30px 20px;
-    }
+    .services { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 10px 20px; }
+    .service-box { background: #edf2fd; padding: 15px; border-radius: 16px; text-align: center; }
+    .service-box img { width: 40px; margin-bottom: 10px; }
+    .service-box h3 { font-size: 0.95em; color: #2d4fd3; margin-bottom: 5px; }
+    .service-box p { font-size: 0.85em; color: #333; }
 
-    .sss {
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: left;
-    }
-    .sss h3 {
-      margin-bottom: 10px;
-    }
-    .sss p {
-      margin-bottom: 20px;
-    }
+    .stores { padding: 20px; }
+    .stores h2 { font-size: 1.1em; font-weight: 600; color: #2d4fd3; margin-bottom: 10px; }
+    .store-scroll { display: flex; gap: 10px; overflow-x: auto; }
+    .store-box { background: #fff; padding: 10px; border-radius: 12px; min-width: 80px; text-align: center; font-size: 0.85em; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+
+    .reviews { padding: 0 20px; }
+    .reviews h2 { font-size: 1.1em; font-weight: 600; color: #2d4fd3; margin: 20px 0 10px; }
+    .review-box { background: #fff; padding: 15px; border-radius: 16px; margin-bottom: 15px; box-shadow: 0 1px 6px rgba(0,0,0,0.04); }
+    .review-box strong { display: block; color: #2d4fd3; margin-bottom: 5px; }
+    .review-box p { font-size: 0.9em; }
+
+    .faq { padding: 0 20px 80px; }
+    .faq h2 { font-size: 1.1em; font-weight: 600; color: #2d4fd3; margin: 20px 0 10px; }
+    .faq-item { background: #fff; border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; font-size: 0.95em; box-shadow: 0 1px 4px rgba(0,0,0,0.03); cursor: pointer; }
+
+    footer { position: fixed; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-around; background-color: #fff; border-top: 1px solid #ddd; padding: 8px 0; }
+    footer a { font-size: 0.8em; color: #2d4fd3; text-decoration: none; display: flex; flex-direction: column; align-items: center; }
   </style>
 </head>
 <body>
+  <header>
+    <div class="logo">logo</div>
+    <div class="menu-icon">☰</div>
+  </header>
 
-<header>
-  <div class="logo">Kıbrıs Türkiye</div>
-  <div class="nav">
-    <a href="#">Hesaplama Aracı</a>
-    <a href="#">Kayıt Ol</a>
-    <a href="#">Giriş</a>
+  <div class="hero">
+    <div id="kullanici-paneli">
+      <span id="kullanici-bilgi"></span>
+      <button id="cikis-btn">🚪 Çıkış Yap</button>
+    </div>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/13/Turkey_to_Cyprus.png" alt="Türkiye'den Kıbrıs'a">
+    <h1>Türkiye'den Kıbrıs'a Teslimat</h1>
+    <p>Hızlı ve güvenilir kargo hizmeti</p>
   </div>
-</header>
 
-<section class="hero">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/Cargo_ship_icon.png" alt="Gemi Görseli" />
-  <h1>Türkiye’den Kıbrıs’a Teslimat</h1>
-  <p>Hızlı ve Güvenilir Kargo Hizmeti</p>
-  <div class="buttons">
-    <a href="#">Kayıt Ol</a>
-    <a href="#">Hesaplama Aracı</a>
+  <div class="info-box">
+    <h2>Nasıl Çalışır?</h2>
+    <p>Türkiye'den Trendyol, Hepsiburada gibi sitelerden ürün sipariş et, biz Kıbrıs'a ulaştıralım.</p>
+    <a href="order.html" class="btn btn-primary">📦 Sipariş Hesapla</a>
+    <a href="signup.html" class="btn btn-outline" id="kayitOlBtn">👤 Üye Ol / Giriş Yap</a>
   </div>
-</section>
 
-<section class="logos">
-  <a href="https://www.trendyol.com" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/Trendyol_logo.svg" alt="Trendyol">
-  </a>
-  <a href="https://www.hepsiburada.com" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Hepsiburada_logo.svg" alt="Hepsiburada">
-  </a>
-  <a href="https://www.n11.com" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/3/32/N11_logo.svg" alt="n11">
-  </a>
-</section>
-
-<footer>
-  <div class="sss">
-    <h3>Sıkça Sorulan Sorular</h3>
-    <p><strong>Soru:</strong> Hangi sitelerden sipariş verebilirim?<br>
-       <strong>Cevap:</strong> Trendyol, Hepsiburada, n11 ve diğer tüm Türkiye sitelerinden.</p>
-
-    <p><strong>Soru:</strong> Kargo ne kadar sürede gelir?<br>
-       <strong>Cevap:</strong> Türkiye'den Kıbrıs'a ortalama teslim süresi 3-5 iş günüdür.</p>
+  <div class="services">
+    <div class="service-box">
+      <img src="https://cdn-icons-png.flaticon.com/512/1995/1995500.png">
+      <h3>Hızlı Teslimat</h3>
+      <p>3-7 iş günü içinde teslimat</p>
+    </div>
+    <div class="service-box">
+      <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png">
+      <h3>Güvenli Taşıma</h3>
+      <p>Sigortalı kargo hizmeti</p>
+    </div>
+    <div class="service-box">
+      <img src="https://cdn-icons-png.flaticon.com/512/560/560277.png">
+      <h3>Kargo Takibi</h3>
+      <p>Anlık sipariş durumu</p>
+    </div>
+    <div class="service-box">
+      <img src="https://cdn-icons-png.flaticon.com/512/597/597177.png">
+      <h3>7/24 Destek</h3>
+      <p>Her zaman yanınızdayız</p>
+    </div>
   </div>
-</footer>
 
+  <div class="stores">
+    <h2>Popüler Mağazalar</h2>
+    <div class="store-scroll">
+      <div class="store-box">Trendyol</div>
+      <div class="store-box">Hepsiburada</div>
+      <div class="store-box">N11</div>
+      <div class="store-box">Amazon</div>
+      <div class="store-box">GittiGidiyor</div>
+      <div class="store-box">Morhipo</div>
+    </div>
+  </div>
+
+  <div class="reviews">
+    <h2>Müşteri Yorumları</h2>
+    <div class="review-box">
+      <strong>Ayşe Yılmaz ⭐⭐⭐⭐⭐</strong>
+      <p>Trendyol’dan sipariş ettiğim ürünler tam zamanında geldi. Paketleme çok güzeldi, hiçbir hasar yoktu. Kesinlikle tekrar kullanacağım.</p>
+    </div>
+    <div class="review-box">
+      <strong>Mehmet Kaya ⭐⭐⭐⭐⭐</strong>
+      <p>Hepsiburada’dan aldığım elektronik ürünler için endişeliydim ama çok iyi paketlenmiş ve sorunsuz teslim edildi. Müşteri hizmetleri de çok yardımcı oldu.</p>
+    </div>
+  </div>
+
+  <div class="faq">
+    <h2>Sıkça Sorulan Sorular</h2>
+    <div class="faq-item">Teslimat süresi ne kadar?</div>
+    <div class="faq-item">Kargo ücreti nasıl hesaplanır?</div>
+    <div class="faq-item">Hangi ürünleri taşıyorsunuz?</div>
+    <div class="faq-item">Siparişimi nasıl takip edebilirim?</div>
+  </div>
+
+  <footer>
+    <a href="#">🏠<span>Ana Sayfa</span></a>
+    <a href="sepetim.html">🛍<span>Siparişlerim</span></a>
+    <a href="takip.html">🚚<span>Takip</span></a>
+    <a href="login.html">👤<span>Hesabım</span></a>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const kullaniciStr = localStorage.getItem("kullanici");
+      const panel = document.getElementById("kullanici-paneli");
+      const bilgi = document.getElementById("kullanici-bilgi");
+      const cikisBtn = document.getElementById("cikis-btn");
+
+      if (kullaniciStr) {
+        try {
+          const kullanici = JSON.parse(kullaniciStr);
+          if (kullanici && kullanici.ad && kullanici.soyad) {
+            bilgi.innerText = `👤 ${kullanici.ad} ${kullanici.soyad}`;
+            panel.style.display = "flex";
+
+            const kayitBtn = document.getElementById("kayitOlBtn");
+            if (kayitBtn) kayitBtn.style.display = "none";
+          }
+        } catch (e) {
+          console.warn("Kullanıcı verisi okunamadı:", e);
+        }
+      }
+
+      if (cikisBtn) {
+        cikisBtn.addEventListener("click", () => {
+          localStorage.removeItem("kullanici");
+          window.location.reload();
+        });
+      }
+    });
+  </script>
 </body>
 </html>
