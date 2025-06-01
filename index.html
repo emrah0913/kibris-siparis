@@ -1,75 +1,365 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kıbrıs Online - Google ile Giriş</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Türkiye’den Kıbrıs’a Teslimat - Kıbrıs Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f4f6f9;
       margin: 0;
-      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f7faff;
+      color: #222;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
     }
     header {
-      background: #fff;
       width: 100%;
-      padding: 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(60,72,90,0.05);
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      padding: 16px 7vw 11px 7vw;
+      z-index: 10;
+      position: relative;
     }
-    .logo {
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: #2d4fd3;
+    .logo-title {
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: #1d378d;
+      letter-spacing: .5px;
     }
     .menu {
       display: flex;
-      gap: 12px;
+      align-items: center;
+      gap: 18px;
     }
-    .menu button, .menu a {
-      padding: 8px 16px;
+    .menu-btn {
+      background: #1d378d;
+      color: #fff;
+      border: none;
+      outline: none;
+      border-radius: 7px;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: background .14s;
+      margin-left: 4px;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .menu-btn:hover {
+      background: #2d4fd3;
+    }
+    .welcome-text {
+      color: #222;
+      background: #f4f6f9;
+      border-radius: 7px;
+      padding: 6px 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-left: 5px;
+    }
+    .hero-section {
+      margin: 0 auto;
+      margin-top: 18px;
+      text-align: center;
+      max-width: 520px;
+    }
+    .hero-img {
+      width: 100%;
+      max-width: 350px;
+      margin: 0 auto 18px auto;
+      display: block;
+      border-radius: 14px;
+      box-shadow: 0 3px 18px rgba(60,72,90,0.08);
+    }
+    .hero-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #1d378d;
+      margin-bottom: 7px;
+    }
+    .hero-subtitle {
+      font-size: 1.19rem;
+      font-weight: 600;
+      color: #2d4fd3;
+      margin-bottom: 10px;
+    }
+    .hero-info {
+      font-size: 1.08rem;
+      color: #293355;
+      margin-bottom: 22px;
+    }
+    .calc-container {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 3px 20px rgba(60,72,90,0.10);
+      padding: 28px 22px 24px 22px;
+      margin: 32px auto 22px auto;
+      max-width: 430px;
+      width: 98vw;
+      text-align: left;
+      position: relative;
+    }
+    .calc-title {
+      font-size: 1.13rem;
+      font-weight: 700;
+      color: #2d4fd3;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .calc-group {
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+    .calc-group label {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+    .calc-group input, .calc-group select {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 7px;
+      border: 1px solid #ccc;
+      outline: none;
+      background: #f7f9fc;
+      margin-bottom: 2px;
+    }
+    .calc-group select:disabled {
+      background: #f1f2f6;
+    }
+    .city-fee {
+      font-size: .98rem;
+      font-weight: 600;
+      color: #1d378d;
+      margin-top: 5px;
+      margin-bottom: 0;
+    }
+    .calc-btn {
+      width: 100%;
       background: #2d4fd3;
       color: #fff;
       border: none;
-      border-radius: 5px;
-      font-weight: 600;
+      border-radius: 8px;
+      padding: 13px 0;
+      font-size: 1.09rem;
+      font-weight: 700;
       cursor: pointer;
-      text-decoration: none;
+      margin-top: 7px;
+      box-shadow: 0 2px 14px rgba(60,72,90,0.06);
+      transition: background .16s;
     }
-    .menu button:hover, .menu a:hover {
+    .calc-btn:hover {
       background: #1d378d;
     }
-    .welcome-text {
+    .price-summary {
+      font-size: 1.08rem;
       font-weight: 600;
-      color: #2d4fd3;
-      margin-right: 10px;
-    }
-    main {
-      padding: 40px;
+      color: #188d37;
+      margin: 13px 0 3px 0;
       text-align: center;
+    }
+    .address-box {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(60,72,90,0.07);
+      padding: 18px 17px 15px 17px;
+      margin: 0 auto 20px auto;
+      max-width: 430px;
+      width: 98vw;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      justify-content: space-between;
+    }
+    .address-label {
+      font-weight: 600;
+      color: #222;
+      font-size: 1.06rem;
+      margin-bottom: 5px;
+    }
+    .address-content {
+      color: #2d4fd3;
+      font-size: 1.03rem;
+      word-break: break-all;
+    }
+    .copy-btn {
+      background: #2d4fd3;
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 8px 14px;
+      font-size: .98rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: 9px;
+      transition: background .16s;
+    }
+    .copy-btn:hover {
+      background: #1d378d;
+    }
+    .shop-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 23px;
+      margin: 12px 0 24px 0;
+      flex-wrap: wrap;
+    }
+    .shop-logo {
+      height: 44px;
+      width: auto;
+      transition: transform .15s;
+      cursor: pointer;
+      border-radius: 9px;
+      box-shadow: 0 2px 10px rgba(60,72,90,0.07);
+      background: #fff;
+      padding: 5px 9px;
+    }
+    .shop-logo:hover {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 4px 18px rgba(44,72,140,0.13);
+    }
+    footer {
+      background: #f4f6f9;
+      text-align: center;
+      padding: 18px 0 14px 0;
+      font-size: 1.03rem;
+      color: #444;
+      border-top: 1px solid #e4e7ee;
+      letter-spacing: .1px;
+      margin-top: auto;
+    }
+    @media (max-width: 600px) {
+      header {
+        padding: 14px 3vw 7px 3vw;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .logo-title {
+        margin-bottom: 11px;
+        text-align: left;
+      }
+      .menu {
+        justify-content: flex-end;
+        gap: 13px;
+      }
+      .hero-section {
+        padding: 0 3vw;
+        max-width: 99vw;
+      }
+      .hero-img {
+        max-width: 92vw;
+      }
+      .calc-container, .address-box {
+        padding: 15px 2vw 12px 2vw;
+        max-width: 99vw;
+      }
+      .shop-logo {
+        height: 36px;
+        padding: 3px 4px;
+      }
+      .address-box {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 9px;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">Kıbrıs Online</div>
-    <div class="menu" id="menuBar"></div>
+    <div class="logo-title">Kıbrıs Online</div>
+    <div class="menu" id="menuBar">
+      <!-- Dynamic: user info here -->
+    </div>
   </header>
   <main>
-    <h1>Türkiye'den Kıbrıs'a Teslimat</h1>
-    <p>Google ile giriş yaparak siparişlerinizi kolayca yönetin.</p>
+    <div class="hero-section">
+      <img class="hero-img" src="https://cdn.pixabay.com/photo/2016/11/23/15/47/ship-1853677_1280.jpg" alt="Gemi Görseli" />
+      <div class="hero-title">Türkiye’den Kıbrıs’a Teslimat</div>
+      <div class="hero-subtitle">Hızlı ve Güvenilir Kargo Hizmeti</div>
+      <div class="hero-info">
+        Türkiye'deki tüm online alışveriş sitelerinden ürün sipariş edin, biz sizin için Kıbrıs’a getirelim.
+      </div>
+    </div>
+    <div class="shop-logos">
+      <a href="https://www.trendyol.com/" target="_blank"><img class="shop-logo" src="https://upload.wikimedia.org/wikipedia/commons/1/1d/Trendyol_logo.svg" alt="Trendyol"></a>
+      <a href="https://www.hepsiburada.com/" target="_blank"><img class="shop-logo" src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Hepsiburada_logo.svg" alt="Hepsiburada"></a>
+      <a href="https://www.n11.com/" target="_blank"><img class="shop-logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/N11_logo.svg" alt="N11"></a>
+      <a href="https://www.amazon.com.tr/" target="_blank"><img class="shop-logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon"></a>
+      <a href="https://www.ciceksepeti.com/" target="_blank"><img class="shop-logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Çiçeksepeti_logo.svg" alt="ÇiçekSepeti"></a>
+    </div>
+    <div class="calc-container">
+      <div class="calc-title">Sipariş Hesaplama</div>
+      <form id="calcForm" autocomplete="off">
+        <div class="calc-group">
+          <label for="urunLink">Ürün Linki</label>
+          <input type="url" id="urunLink" placeholder="Ör: https://www.trendyol.com/..." required />
+        </div>
+        <div class="calc-group">
+          <label for="satisFiyati">Türkiye Satış Fiyatı (₺)</label>
+          <input type="number" id="satisFiyati" min="1" step="any" placeholder="Örn: 500" required />
+        </div>
+        <div class="calc-group">
+          <label for="kategori">Kategori</label>
+          <select id="kategori" required>
+            <option value="">Seçiniz</option>
+            <option value="mobilya">Mobilya (%70)</option>
+            <option value="elektronik">Elektronik (%70)</option>
+            <option value="giyim">Giyim (%50)</option>
+            <option value="kozmetik">Kozmetik (%70)</option>
+          </select>
+        </div>
+        <div class="calc-group">
+          <label for="teslimTipi">Teslimat Tipi</label>
+          <select id="teslimTipi" required>
+            <option value="">Seçiniz</option>
+            <option value="depo">Depodan Teslim</option>
+            <option value="ev">Eve Teslim</option>
+          </select>
+        </div>
+        <div class="calc-group" id="sehirGroup" style="display:none;">
+          <label for="sehir">Şehir Seçiniz</label>
+          <select id="sehir">
+            <option value="">Seçiniz</option>
+            <option value="lefkoşa">Lefkoşa (+200₺)</option>
+            <option value="girne">Girne (+350₺)</option>
+            <option value="güzelyurt">Güzelyurt (+300₺)</option>
+            <option value="lefke">Lefke (+450₺)</option>
+            <option value="mağusa">Mağusa (+500₺)</option>
+            <option value="iskele">İskele (+550₺)</option>
+            <option value="karpaz">Karpaz (+650₺)</option>
+          </select>
+        </div>
+        <div id="cityFee" class="city-fee"></div>
+        <div class="price-summary" id="priceSummary"></div>
+        <button type="submit" class="calc-btn" id="hesaplaBtn">Hesapla</button>
+      </form>
+    </div>
+    <div class="address-box">
+      <div>
+        <div class="address-label">Sipariş verirken bu adresi kullanın:</div>
+        <div class="address-content" id="adresMetni">Mersin, Türkiye</div>
+      </div>
+      <button class="copy-btn" onclick="copyAdres()">Kopyala</button>
+    </div>
   </main>
-
+  <footer>
+    © 2025 Kıbrıs Online – Tüm hakları saklıdır.
+  </footer>
+  <!-- Firebase JS SDK (module) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBw9GP1srYUgPf9sqlpLu_ZnqM8w0Iau4Y",
@@ -83,16 +373,18 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const menuBar = document.getElementById("menuBar");
+    getFirestore(app);
+
+    let userName = localStorage.getItem("userName") || "";
 
     function renderMenu(user) {
+      const menuBar = document.getElementById("menuBar");
       menuBar.innerHTML = "";
       if (user) {
-        const name = user.displayName || "Kullanıcı";
+        let name = user.displayName || userName || "";
         menuBar.innerHTML = `
-          <span class="welcome-text">Hoşgeldiniz, ${name}</span>
-          <a class="menu-btn" href="siparislerim.html">Siparişlerim</a>
-          <a class="menu-btn" href="kargo.html">Kargo Takip</a>
+          <span class="welcome-text">Hoş geldiniz, ${name}</span>
+          <a class="menu-btn" href="hesaplama.html">Hesaplama Aracı</a>
           <button class="menu-btn" id="logoutBtn">Çıkış Yap</button>
         `;
         document.getElementById("logoutBtn").onclick = async () => {
@@ -102,31 +394,118 @@
         };
       } else {
         menuBar.innerHTML = `
-          <button class="menu-btn" id="googleSignInBtn">Google ile Giriş Yap</button>
+          <a class="menu-btn" href="hesaplama.html">Hesaplama Aracı</a>
         `;
-        document.getElementById("googleSignInBtn").onclick = async () => {
-          const provider = new GoogleAuthProvider();
-          try {
-            const result = await signInWithPopup(auth, provider);
-            const user = result.user;
-            if (user) {
-              localStorage.setItem("userName", user.displayName || "");
-              location.reload();
-            }
-          } catch (e) {
-            if (e.code === "auth/unauthorized-domain") {
-              alert("⚠️ Alan adınız Firebase'e eklenmemiş. Firebase Console > Authentication > Authorized Domains bölümünü kontrol edin.");
-            } else {
-              alert("Giriş başarısız: " + e.message);
-            }
-          }
-        };
       }
     }
 
     onAuthStateChanged(auth, (user) => {
-      renderMenu(user);
+      if (user) {
+        localStorage.setItem("userName", user.displayName || "");
+        renderMenu(user);
+      } else {
+        renderMenu(null);
+      }
     });
+
+    // Hesaplama modülü
+    const kategoriOran = {
+      mobilya: 0.7,
+      elektronik: 0.7,
+      giyim: 0.5,
+      kozmetik: 0.7
+    };
+
+    const sehirEkstra = {
+      "lefkoşa": 200,
+      "girne": 350,
+      "güzelyurt": 300,
+      "lefke": 450,
+      "mağusa": 500,
+      "iskele": 550,
+      "karpaz": 650
+    };
+
+    const teslimTipi = document.getElementById("teslimTipi");
+    const sehirGroup = document.getElementById("sehirGroup");
+    const sehirSelect = document.getElementById("sehir");
+    const cityFeeDiv = document.getElementById("cityFee");
+    const priceSummary = document.getElementById("priceSummary");
+    const calcForm = document.getElementById("calcForm");
+    const hesaplaBtn = document.getElementById("hesaplaBtn");
+
+    teslimTipi.addEventListener("change", function() {
+      if (this.value === "ev") {
+        sehirGroup.style.display = "";
+      } else {
+        sehirGroup.style.display = "none";
+        sehirSelect.value = "";
+        cityFeeDiv.textContent = "";
+      }
+      priceSummary.textContent = "";
+      hesaplaBtn.textContent = "Hesapla";
+    });
+
+    sehirSelect.addEventListener("change", function() {
+      let extra = sehirEkstra[this.value] || 0;
+      cityFeeDiv.textContent = extra ? `Ek Ücret: +${extra}₺` : "";
+      priceSummary.textContent = "";
+      hesaplaBtn.textContent = "Hesapla";
+    });
+
+    let hesaplandi = false;
+    let sonucObj = null;
+
+    calcForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      // Eğer buton "Sipariş Ver" ise, giriş kontrolü ve uyarı
+      if (hesaplandi) {
+        if (!auth.currentUser) {
+          alert("Lütfen giriş yapın");
+          return;
+        }
+        // Sipariş verme işlemi burada yapılabilir (şimdilik sadece mesaj)
+        alert("Siparişiniz alınmıştır! (Demo)");
+        hesaplaBtn.textContent = "Hesapla";
+        hesaplandi = false;
+        priceSummary.textContent = "";
+        return;
+      }
+
+      // Hesaplama
+      const urunLink = document.getElementById("urunLink").value.trim();
+      const satisFiyati = parseFloat(document.getElementById("satisFiyati").value);
+      const kategori = document.getElementById("kategori").value;
+      const teslim = teslimTipi.value;
+      let sehir = sehirSelect.value;
+
+      if (!urunLink || !satisFiyati || !kategori || !teslim || (teslim === "ev" && !sehir)) {
+        alert("Lütfen tüm alanları doldurun.");
+        return;
+      }
+
+      let oran = kategoriOran[kategori] || 0;
+      let anaUcret = satisFiyati * oran;
+      let ekstra = (teslim === "ev" && sehir) ? (sehirEkstra[sehir] || 0) : 0;
+      let toplam = anaUcret + ekstra;
+
+      priceSummary.textContent = `Tahmini Teslimat Ücreti: ${toplam.toFixed(2)}₺`;
+      hesaplaBtn.textContent = "Sipariş Ver";
+      hesaplandi = true;
+      sonucObj = {
+        urunLink, satisFiyati, kategori, teslim, sehir, toplam
+      };
+    });
+
+    // Adres Kopyalama
+    window.copyAdres = function() {
+      const adres = document.getElementById("adresMetni").innerText;
+      navigator.clipboard.writeText(adres);
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = "Kopyalandı!";
+      setTimeout(() => btn.textContent = "Kopyala", 1500);
+    };
   </script>
 </body>
 </html>
