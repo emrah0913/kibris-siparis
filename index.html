@@ -371,12 +371,12 @@
       let baseShipping = deliveryType === 'eve' ? 380 : 200; // Eve/Depo
       let categoryFee = 0;
       switch(category) {
-        case 'mobilya': categoryFee = 0.08; break;
-        case 'elektronik': categoryFee = 0.10; break;
-        case 'giyim': categoryFee = 0.06; break;
-        case 'kozmetik': categoryFee = 0.05; break;
-        case 'kitap': categoryFee = 0.03; break;
-        case 'aksesuar': categoryFee = 0.05; break;
+        case 'mobilya': categoryFee = 0.70; break;
+        case 'elektronik': categoryFee = 0.70; break;
+        case 'giyim': categoryFee = 0.45; break;
+        case 'kozmetik': categoryFee = 0.60; break;
+        case 'kitap': categoryFee = 0.35; break;
+        case 'aksesuar': categoryFee = 0.50; break;
         default: categoryFee = 0.07;
       }
       const total = Math.round(price * (1 + serviceFee + categoryFee) + baseShipping);
