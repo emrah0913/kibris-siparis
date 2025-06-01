@@ -6,14 +6,13 @@
   <title>Kıbrıs Online</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
-  <script type="module" src="auth-control.js"></script>
-  <!-- auth-control.js dosyası Firebase kullanıcı kontrolü için eklenmeli -->
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
       background-color: #f4f6f9;
     }
+
     header {
       background: white;
       padding: 15px;
@@ -21,6 +20,7 @@
       position: relative;
       text-align: center;
     }
+
     .logo {
       font-family: 'Caveat', cursive;
       font-size: 32px;
@@ -28,14 +28,17 @@
       transform: rotate(-3deg);
       margin-bottom: 10px;
     }
+
     .nav-buttons {
       display: flex;
       justify-content: center;
       gap: 10px;
       padding: 10px;
       margin-top: 10px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      overflow-x: auto;
     }
+
     .nav-buttons a {
       text-decoration: none;
       color: #2d4fd3;
@@ -46,36 +49,15 @@
       background: #fff;
       min-width: 120px;
       text-align: center;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
+
     .nav-buttons a:hover {
       background-color: #2d4fd3;
       color: #fff;
     }
-    .user-box {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-    }
-    .user-name {
-      cursor: pointer;
-      font-weight: 600;
-      color: #2d4fd3;
-    }
-    .logout-box {
-      display: none;
-      position: absolute;
-      background: white;
-      border: 1px solid #ccc;
-      padding: 10px;
-      border-radius: 6px;
-      top: 35px;
-      right: 0;
-    }
-    .logout-box a {
-      text-decoration: none;
-      color: red;
-      font-weight: 500;
-    }
+
     .hero {
       text-align: center;
       padding: 40px 20px;
@@ -85,13 +67,16 @@
       color: white;
       text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
     }
+
     .hero h1 {
       font-size: 36px;
       margin-bottom: 10px;
     }
+
     .hero p {
       font-size: 18px;
     }
+
     .platform-logos {
       display: flex;
       justify-content: center;
@@ -100,89 +85,152 @@
       flex-wrap: nowrap;
       overflow-x: auto;
     }
+
     .platform-logos img {
       height: 40px;
     }
+
     .faq {
       max-width: 800px;
       margin: 40px auto;
       padding: 0 20px;
     }
+
     .faq h2 {
       text-align: center;
       margin-bottom: 20px;
     }
+
     .faq p {
       margin-bottom: 15px;
     }
+
     input, select {
       width: 100%;
       padding: 8px;
       margin-top: 5px;
       margin-bottom: 15px;
     }
+
     #adresSelect { display: none; }
   </style>
 </head>
 <body>
+
   <header>
     <div class="logo">Kıbrıs Online</div>
-    <div class="user-box" id="userBox" style="display: none;">
-      <div class="user-name" onclick="toggleLogout()" id="userDisplayName">Kullanıcı</div>
-      <div class="logout-box" id="logoutBox">
-        <a href="#" onclick="logout()">Çıkış Yap</a>
-      </div>
-    </div>
     <div class="nav-buttons">
       <a href="index.html">Ana Sayfa</a>
-      <a href="siparisver.html">Sipariş Ver</a>
       <a href="siparislerim.html">Siparişlerim</a>
-      <a href="kayit.html" id="kayitBtn">Kayıt</a>
-      <a href="giris.html" id="girisBtn">Giriş</a>
+      <a href="takip.html">Kargo Takip</a>
+      <a href="kayit.html">Kayıt</a>
+      <a href="giris.html">Giriş</a>
     </div>
   </header>
+
   <section class="hero">
     <h1>Türkiye'den Kıbrıs'a Teslimat</h1>
     <p>Hızlı ve Güvenilir Kargo Hizmeti</p>
   </section>
+
   <section class="platform-logos">
-    <a href="https://www.trendyol.com" target="_blank">
-      <img src="https://logowik.com/content/uploads/images/trendyolcom2977.jpg" alt="Trendyol">
-    </a>
-    <a href="https://www.hepsiburada.com" target="_blank">
-      <img src="https://logowik.com/content/uploads/images/hepsiburada1183.jpg" alt="Hepsiburada">
-    </a>
-    <a href="https://www.n11.com" target="_blank">
-      <img src="https://logowik.com/content/uploads/images/n112287.jpg" alt="N11">
-    </a>
-    <a href="https://www.amazon.com.tr" target="_blank">
-      <img src="https://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="Amazon">
-    </a>
+    <a href="https://www.trendyol.com" target="_blank"><img src="https://logowik.com/content/uploads/images/trendyolcom2977.jpg" alt="Trendyol"></a>
+    <a href="https://www.hepsiburada.com" target="_blank"><img src="https://logowik.com/content/uploads/images/hepsiburada1183.jpg" alt="Hepsiburada"></a>
+    <a href="https://www.n11.com" target="_blank"><img src="https://logowik.com/content/uploads/images/n112287.jpg" alt="N11"></a>
+    <a href="https://www.amazon.com.tr" target="_blank"><img src="https://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="Amazon"></a>
   </section>
+
   <section class="faq">
     <h2>Hesaplama Modülü</h2>
     <div style="border: 2px solid #2d4fd3; padding: 20px; border-radius: 8px; background-color: #fff;">
-      <!-- Buraya hesaplama formu eklenecek -->
-      <form>
-        <label>Hesaplama için ürün bilgilerinizi giriniz.</label>
-        <input type="url" placeholder="Ürün Linki" required>
-        <input type="number" placeholder="Fiyat (TL)" required>
-        <select required>
-          <option value="">Kategori Seçiniz</option>
+      <form id="hesapForm">
+        <label>Ürün Linki:</label>
+        <input type="url" id="urunLink" placeholder="https://..." required>
+
+        <label>Türkiye Fiyatı (₺):</label>
+        <input type="number" id="fiyat" required>
+
+        <label>Kategori:</label>
+        <select id="kategori" required>
+          <option value="">Seçiniz</option>
           <option value="mobilya">Mobilya</option>
           <option value="elektronik">Elektronik</option>
           <option value="giyim">Giyim</option>
           <option value="kozmetik">Kozmetik</option>
         </select>
-        <select required>
-          <option value="">Teslimat Tipi</option>
+
+        <label>Teslimat Tipi:</label>
+        <select id="teslimat" onchange="toggleAdres()" required>
+          <option value="">Seçiniz</option>
           <option value="depo">Depodan Teslim</option>
           <option value="eve">Eve Teslim</option>
         </select>
-        <p><strong>Toplam: ₺0.00</strong></p>
-        <a href="siparisver.html" class="ana-sayfa-btn">Sipariş Ver</a>
+
+        <div id="adresSelect">
+          <label>Adres Seçimi:</label>
+          <select id="adres">
+            <option value="">Seçiniz</option>
+            <option value="lefkoşa">Lefkoşa</option>
+            <option value="girne">Girne</option>
+            <option value="magusa">Mağusa</option>
+            <option value="guzelyurt">Güzelyurt</option>
+            <option value="lefke">Lefke</option>
+            <option value="iskele">İskele</option>
+            <option value="karpaz">Karpaz</option>
+          </select>
+        </div>
+
+        <p><strong>Toplam Ücret: <span id="sonuc">₺0.00</span></strong></p>
+
+        <a href="siparisver.html" style="background-color: white; color: #2d4fd3; border: 2px solid #2d4fd3; padding: 10px 20px; font-weight: 600; border-radius: 6px; cursor: pointer; display: inline-block; text-align: center; text-decoration: none;">Sipariş Ver</a>
       </form>
     </div>
   </section>
+
+  <script>
+    function toggleAdres() {
+      const teslimat = document.getElementById('teslimat').value;
+      const adresSelect = document.getElementById('adresSelect');
+      if (teslimat === 'eve') {
+        adresSelect.style.display = 'block';
+      } else {
+        adresSelect.style.display = 'none';
+      }
+      hesapla();
+    }
+
+    document.getElementById('fiyat').addEventListener('input', hesapla);
+    document.getElementById('kategori').addEventListener('change', hesapla);
+    document.getElementById('teslimat').addEventListener('change', hesapla);
+    document.getElementById('adres').addEventListener('change', hesapla);
+
+    function hesapla() {
+      const fiyat = parseFloat(document.getElementById('fiyat').value) || 0;
+      const kategori = document.getElementById('kategori').value;
+      const teslimat = document.getElementById('teslimat').value;
+      const adres = document.getElementById('adres')?.value;
+
+      let oran = 0;
+      if (kategori === 'mobilya' || kategori === 'elektronik') oran = 0.70;
+      else if (kategori === 'giyim') oran = 0.40;
+      else if (kategori === 'kozmetik') oran = 0.65;
+
+      let adresUcreti = 0;
+      if (teslimat === 'eve') {
+        if (adres === 'lefkoşa') adresUcreti = 200;
+        else if (adres === 'girne') adresUcreti = 350;
+        else if (adres === 'magusa') adresUcreti = 500;
+        else if (adres === 'guzelyurt') adresUcreti = 400;
+        else if (adres === 'lefke') adresUcreti = 500;
+        else if (adres === 'iskele') adresUcreti = 550;
+        else if (adres === 'karpaz') adresUcreti = 650;
+      }
+
+      const hizmetBedeli = fiyat * (1 + oran);
+      const toplam = hizmetBedeli + adresUcreti;
+
+      document.getElementById('sonuc').textContent = `₺${toplam.toFixed(2)}`;
+    }
+  </script>
 </body>
 </html>
