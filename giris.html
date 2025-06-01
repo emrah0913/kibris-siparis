@@ -22,7 +22,7 @@
     html, body {
       font-family: 'Montserrat', Arial, sans-serif;
       margin: 0; padding: 0;
-      background: #fff;
+      background: #f8fafc;
       color: #20242a;
       min-height: 100vh;
       display: flex;
@@ -91,7 +91,7 @@
       box-shadow: var(--shadow);
       transition: background .16s;
     }
-    .login-btn:hover { background: var(--secondary); }
+    .login-btn:hover { background: var(--secondary);}
     .register-link {
       display: block;
       text-align: center;
@@ -105,7 +105,7 @@
       text-decoration: underline;
       transition: color .14s;
     }
-    .register-link a:hover { color: var(--secondary); }
+    .register-link a:hover { color: var(--secondary);}
     footer {
       margin-top: auto;
       background: #f6f7f9;
@@ -118,7 +118,7 @@
     }
     @media (max-width: 600px) {
       .login-container { padding: 20px 2vw 18px 2vw; }
-      .brand-bar { font-size: 1.07rem; margin-top: 20px; }
+      .brand-bar { font-size: 1.07rem; margin-top: 20px;}
     }
   </style>
 </head>
@@ -126,7 +126,7 @@
   <div class="brand-bar">Kıbrıs Online</div>
   <div class="login-container">
     <div class="form-title">Giriş Yap</div>
-    <form id="loginForm" autocomplete="off" onsubmit="girisYap(); return false;">
+    <form id="loginForm" autocomplete="off">
       <div class="form-group">
         <label for="email">E-Posta</label>
         <input type="email" id="email" maxlength="80" required placeholder="E-posta adresiniz">
@@ -144,9 +144,8 @@
   <footer>
     © 2025 Kıbrıs Online – Tüm hakları saklıdır.
   </footer>
-
-  <!-- Firebase Giriş Kodu -->
   <script>
+    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyBw9GP1srYUgPf9sqlpLu_ZnqM8w0Iau4Y",
       authDomain: "kibrisonline-b5cf3.firebaseapp.com",
@@ -158,8 +157,8 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    // ✅ Giriş Fonksiyonu
-    window.girisYap = async function () {
+    async function girisYap(event) {
+      event.preventDefault();
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
@@ -169,21 +168,24 @@
       }
 
       try {
+        // Firebase Authentication ile giriş
         const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
         const user = userCredential.user;
+        // Firestore'dan adSoyad bilgisini çek
         const userDoc = await firebase.firestore().collection("users").doc(user.uid).get();
-
         if (userDoc.exists) {
           const adSoyad = userDoc.data().adSoyad || "";
           localStorage.setItem("userName", adSoyad);
-          window.location.href = "index.html"; // ✅ Giriş sonrası yönlendirme
+          window.location.href = "index.html";
         } else {
           alert("Kullanıcı bilgisi bulunamadı.");
         }
       } catch (error) {
         alert("Giriş başarısız: " + error.message);
       }
-    };
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", girisYap);
   </script>
 </body>
 </html>
