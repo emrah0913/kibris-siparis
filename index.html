@@ -179,16 +179,6 @@
   </section>
 
   <section class="faq">
-    
-    <h2>Sıkça Sorulan Sorular</h2>
-    <p><strong>Ürünüm ne zaman gelir?</strong><br> Siparişiniz Türkiye'den bize ulaştıktan sonra genellikle 2-4 gün içinde size teslim edilir.</p>
-    <p><strong>Kargo ücreti ne kadar?</strong><br> Ürünün kategorisi ve teslimat tipine göre hesaplama aracını kullanarak görebilirsiniz.</p>
-    <p><strong>Hangi sitelerden alışveriş yapabilirim?</strong><br> Trendyol, Hepsiburada, N11, Amazon ve diğer Türkiye merkezli tüm e-ticaret siteleri desteklenmektedir.</p>
-  </section>
-
-  <!-- ✅ HESAPLAMA MODÜLÜ -->
-  <section class="faq">
-   <section class="faq">
     <h2>Sıkça Sorulan Sorular</h2>
     <p><strong>Ürünüm ne zaman gelir?</strong><br> Siparişiniz Türkiye'den bize ulaştıktan sonra genellikle 2-4 gün içinde size teslim edilir.</p>
     <p><strong>Kargo ücreti ne kadar?</strong><br> Ürünün kategorisi ve teslimat tipine göre hesaplama aracını kullanarak görebilirsiniz.</p>
@@ -198,40 +188,45 @@
   <!-- ✅ HESAPLAMA MODÜLÜ -->
   <section class="faq">
     <h2>Hesaplama Modülü</h2>
-    <form id="hesapForm">
-      <p>
-        <label>Ürün Linki:</label><br>
-        <input type="url" id="urunLink" required style="width: 100%; padding: 8px;" placeholder="https://...">
-      </p>
-      <p>
-        <label>Türkiye Fiyatı (₺):</label><br>
-        <input type="number" id="fiyat" required style="width: 100%; padding: 8px;">
-      </p>
-      <p>
-        <label>Kategori:</label><br>
-        <select id="kategori" style="width: 100%; padding: 8px;">
+    <div style="border: 2px solid #2d4fd3; padding: 20px; border-radius: 8px; background-color: #fff;">
+      <form id="hesapForm">
+        <label>Ürün Linki:</label>
+        <input type="url" id="urunLink" placeholder="https://..." required>
+
+        <label>Türkiye Fiyatı (₺):</label>
+        <input type="number" id="fiyat" required>
+
+        <label>Kategori:</label>
+        <select id="kategori">
           <option value="mobilya">Mobilya</option>
           <option value="elektronik">Elektronik</option>
           <option value="giyim">Giyim</option>
           <option value="kozmetik">Kozmetik</option>
         </select>
-      </p>
-      <p>
-        <label>Teslimat Tipi:</label><br>
-        <select id="teslimat" style="width: 100%; padding: 8px;">
+
+        <label>Teslimat Tipi:</label>
+        <select id="teslimat">
           <option value="depo">Depodan Teslim</option>
           <option value="eve">Eve Teslim</option>
         </select>
-      </p>
-      <p>
-        <strong>Toplam Ücret: <span id="sonuc">₺0.00</span></strong>
-      </p>
-    </form>
+
+        <p><strong>Toplam Ücret: <span id="sonuc">₺0.00</span></strong></p>
+
+        <button type="button" style="
+          background-color: white;
+          color: #2d4fd3;
+          border: 2px solid #2d4fd3;
+          padding: 10px 20px;
+          font-weight: 600;
+          border-radius: 6px;
+          cursor: pointer;
+        ">Sipariş Ver</button>
+      </form>
+    </div>
   </section>
 
-
   <script>
-    const kullaniciGirisYapti = true; // bu değeri dinamik yapabilirsin
+    const kullaniciGirisYapti = true;
 
     if (kullaniciGirisYapti) {
       document.getElementById('userBox').style.display = 'block';
@@ -247,7 +242,7 @@
       window.location.href = 'index.html';
     }
 
-    // ✅ HESAPLAMA MODÜLÜ FONKSİYONU
+    // HESAPLAMA MODÜLÜ FONKSİYONU
     document.getElementById('fiyat').addEventListener('input', hesapla);
     document.getElementById('kategori').addEventListener('change', hesapla);
     document.getElementById('teslimat').addEventListener('change', hesapla);
