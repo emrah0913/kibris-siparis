@@ -126,14 +126,14 @@
   <div class="brand-bar">Kıbrıs Online</div>
   <div class="login-container">
     <div class="form-title">Giriş Yap</div>
-    <form id="loginForm" autocomplete="off">
+    <form id="loginForm" autocomplete="off" onsubmit="girisYap(); return false;">
       <div class="form-group">
         <label for="email">E-Posta</label>
         <input type="email" id="email" maxlength="80" required placeholder="E-posta adresiniz">
       </div>
       <div class="form-group">
-        <label for="sifre">Şifre</label>
-        <input type="password" id="sifre" minlength="6" maxlength="40" required placeholder="Şifreniz">
+        <label for="password">Şifre</label>
+        <input type="password" id="password" minlength="6" maxlength="40" required placeholder="Şifreniz">
       </div>
       <button type="submit" class="login-btn">Giriş Yap</button>
     </form>
@@ -145,7 +145,7 @@
     © 2025 Kıbrıs Online – Tüm hakları saklıdır.
   </footer>
   <script>
-    // Firebase config (aynı config kullanılmalı)
+    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyBw9GP1srYUgPf9sqlpLu_ZnqM8w0Iau4Y",
       authDomain: "kibrisonline-b5cf3.firebaseapp.com",
@@ -157,41 +157,32 @@
     };
     firebase.initializeApp(firebaseConfig);
 
-    document.getElementById("loginForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
+    async function girisYap() {
       const email = document.getElementById("email").value.trim();
-      const sifre = document.getElementById("sifre").value;
+      const password = document.getElementById("password").value;
 
-      if (!email || !sifre) {
+      if (!email || !password) {
         alert("Lütfen tüm alanları doldurun.");
         return;
       }
 
       try {
-        // Giriş yap
-        const userCredential = await firebase.auth().signInWithEmailAndPassword(email, sifre);
+        // Firebase Authentication ile giriş
+        const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
         const user = userCredential.user;
-        // users koleksiyonundan adSoyad bilgisini çek
+        // Firestore'dan adSoyad bilgisini çek
         const userDoc = await firebase.firestore().collection("users").doc(user.uid).get();
         if (userDoc.exists) {
           const adSoyad = userDoc.data().adSoyad || "";
           localStorage.setItem("userName", adSoyad);
+          window.location.href = "index.html";
         } else {
-          localStorage.removeItem("userName");
+          alert("Kullanıcı bilgisi bulunamadı.");
         }
-        window.location.href = "index.html";
-      } catch(err) {
-        if (err.code === "auth/user-not-found") {
-          alert("Kayıtlı bir hesap bulunamadı.");
-        } else if (err.code === "auth/wrong-password" || err.code === "auth/invalid-email") {
-          alert("E-posta veya şifre hatalı.");
-        } else if (err.code === "auth/too-many-requests") {
-          alert("Çok fazla deneme yaptınız. Lütfen daha sonra tekrar deneyin.");
-        } else {
-          alert("E-posta veya şifre hatalı.");
-        }
+      } catch (error) {
+        alert("Giriş başarısız: " + error.message);
       }
-    });
+    }
   </script>
 </body>
 </html>
