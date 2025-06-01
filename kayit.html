@@ -9,11 +9,44 @@
     body {
       font-family: 'Inter', sans-serif;
       background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: 600;
+      color: #2c3e50;
+      text-align: center;
+      width: 100%;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .anasayfa-btn {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      background-color: transparent;
+      color: #2d4fd3;
+      font-weight: 600;
+      border: 2px solid #2d4fd3;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .form-wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
+      height: calc(100vh - 60px);
     }
     .form-container {
       background: #fff;
@@ -51,15 +84,23 @@
   </style>
 </head>
 <body>
-  <div class="form-container">
-    <h2>Kayıt Ol</h2>
-    <form id="kayitForm">
-      <input type="text" id="adsoyad" placeholder="Ad Soyad" required>
-      <input type="email" id="email" placeholder="E-posta" required>
-      <input type="tel" id="telefon" placeholder="Telefon" required>
-      <input type="password" id="sifre" placeholder="Şifre" required>
-      <button type="submit">Kayıt Ol</button>
-    </form>
+
+  <header>
+    <div class="logo">Kıbrıs Online</div>
+    <button class="anasayfa-btn" onclick="window.location.href='index.html'">Ana Sayfa</button>
+  </header>
+
+  <div class="form-wrapper">
+    <div class="form-container">
+      <h2>Kayıt Ol</h2>
+      <form id="kayitForm">
+        <input type="text" id="adsoyad" placeholder="Ad Soyad" required>
+        <input type="email" id="email" placeholder="E-posta" required>
+        <input type="tel" id="telefon" placeholder="Telefon" required>
+        <input type="password" id="sifre" placeholder="Şifre" required>
+        <button type="submit">Kayıt Ol</button>
+      </form>
+    </div>
   </div>
 
   <script>
@@ -71,7 +112,6 @@
       const telefon = document.getElementById("telefon").value;
       const sifre = document.getElementById("sifre").value;
 
-      // localStorage örneği (Firebase'e entegre edeceksen burayı değiştireceğiz)
       const musteri = {
         adsoyad,
         email,
