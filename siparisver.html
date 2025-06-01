@@ -2,202 +2,372 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Sipariş Ver</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sipariş Oluştur - Kıbrıs Online</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- Firebase App (the core Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f4f6f9;
-      margin: 0;
-      padding: 20px;
+    :root {
+      --primary: #0059b3;
+      --secondary: #00b3a4;
+      --accent: #f5f5f5;
+      --dark: #222;
+      --radius: 14px;
+      --shadow: 0 3px 16px rgba(0,0,0,0.07);
     }
-
-    header {
-      text-align: center;
-      margin-bottom: 30px;
+    * { box-sizing: border-box; }
+    html, body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #fff;
+      color: var(--dark);
     }
-
-    .logo {
-      font-size: 28px;
-      font-weight: bold;
-      color: #2c3e50;
+    a { text-decoration: none; color: inherit; }
+    /* ÜST MENÜ */
+    .topbar {
+      width: 100%;
+      background: #fff;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 19px 0 8px 0;
+      margin-bottom: 4px;
     }
-
-    nav {
-      text-align: center;
-      margin-top: 10px;
+    .topbar-logo {
+      font-size: 1.25rem;
+      color: var(--primary);
+      font-weight: 800;
+      letter-spacing: .7px;
+      margin-bottom: 3px;
     }
-
-    nav a {
-      margin: 0 10px;
-      text-decoration: none;
-      color: #2d4fd3;
+    .topbar-menu {
+      display: flex;
+      gap: 18px;
+      margin-top: 2px;
+    }
+    .topbar-link {
+      font-size: 1rem;
+      color: var(--primary);
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: var(--radius);
+      transition: background .13s;
+    }
+    .topbar-link:hover { background: var(--accent); }
+    /* FORM */
+    .siparis-container {
+      margin: 28px auto 0 auto;
+      padding: 26px 18px 20px 18px;
+      background: var(--accent);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-width: 430px;
+    }
+    .siparis-title {
+      font-size: 1.18rem;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 19px;
+      letter-spacing: .2px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+    .form-group label {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .form-group input[type="text"], .form-group input[type="url"], .form-group input[type="number"], .form-group select, .form-group textarea {
+      padding: 10px;
+      border-radius: var(--radius);
+      border: 1.2px solid #ccc;
+      outline: none;
+      font-size: 1rem;
+      background: #fff;
+      transition: border .14s;
+      margin-bottom: 2px;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--primary);
+    }
+    .form-group textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+    .readonly-input {
+      background: #e8edf5;
+      color: #555;
+      cursor: not-allowed;
+    }
+    .form-note {
+      font-size: .97rem;
+      color: #b21c1c;
+      margin-top: 2px;
+      margin-bottom: 4px;
       font-weight: 600;
     }
-
-    form {
-      max-width: 500px;
-      margin: 0 auto;
-      background: white;
-      padding: 20px;
+    .form-extra {
+      margin: 17px 0 10px 0;
+      font-size: 0.98rem;
+      color: #1b4e8a;
+      background: #e7f6ff;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 9px 11px;
+      line-height: 1.5;
+      font-weight: 500;
     }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+    .total-box {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1.5px 6px rgba(0,0,0,0.06);
+      text-align: center;
+      padding: 16px 8px;
+      margin: 18px 0 14px 0;
+      font-size: 1.15rem;
+      color: var(--primary);
+      font-weight: 700;
+      letter-spacing: .2px;
     }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #2d4fd3;
-      color: white;
-      font-weight: bold;
+    .siparis-btn {
+      background: var(--secondary);
+      color: #fff;
       border: none;
-      border-radius: 6px;
+      border-radius: var(--radius);
+      padding: 15px 0;
+      font-size: 1.09rem;
+      font-weight: 700;
+      width: 100%;
+      margin-top: 6px;
       cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: background .16s;
     }
-
-    #adresSecim { display: none; }
-    #acikAdres { display: none; }
+    .siparis-btn:hover { background: var(--primary); }
+    /* FOOTER */
+    footer {
+      margin-top: 48px;
+      background: #f6f7f9;
+      padding: 30px 18px 38px 18px;
+      color: #333;
+      font-size: 1.01rem;
+      text-align: center;
+      border-top: 1.5px solid #e3e9f0;
+    }
+    footer .footer-title {
+      font-weight: 700; color: var(--primary);
+      margin-bottom: 7px;
+    }
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .siparis-container, .total-box { max-width: 99vw; }
+      .siparis-container { padding: 16px 4vw 18px 4vw; }
+    }
   </style>
 </head>
 <body>
-
-  <header>
-    <div class="logo">Kıbrıs Online</div>
-    <nav>
-      <a href="index.html">Ana Sayfa</a>
-      <a href="siparislerim.html">Siparişlerim</a>
+  <!-- ÜST MENÜ -->
+  <div class="topbar">
+    <div class="topbar-logo">Kıbrıs Online</div>
+    <nav class="topbar-menu">
+      <a href="index.html" class="topbar-link">Ana Sayfa</a>
+      <a href="siparislerim.html" class="topbar-link">Siparişlerim</a>
     </nav>
-  </header>
-
-  <form id="siparisForm">
-    <label>Ürün Linki:</label>
-    <input type="url" id="urunLink" required>
-
-    <label>Sipariş Kodu (Trendyol Sipariş No):</label>
-    <input type="text" id="siparisKodu" required>
-
-    <label>Türkiye Fiyatı:</label>
-    <input type="number" id="fiyat" required>
-
-    <label>Kategori:</label>
-    <select id="kategori" required>
-      <option value="">Seçiniz</option>
-      <option value="mobilya">Mobilya</option>
-      <option value="elektronik">Elektronik</option>
-      <option value="giyim">Giyim</option>
-      <option value="kozmetik">Kozmetik</option>
-    </select>
-
-    <label>Teslimat Tipi:</label>
-    <select id="teslimat" onchange="toggleAdres()" required>
-      <option value="">Seçiniz</option>
-      <option value="depo">Depodan Teslim</option>
-      <option value="eve">Eve Teslim</option>
-    </select>
-
-    <div id="adresSecim">
-      <label>Şehir Seçimi:</label>
-      <select id="adres">
-        <option value="">Seçiniz</option>
-        <option value="lefkoşa">Lefkoşa</option>
-        <option value="girne">Girne</option>
-        <option value="magusa">Mağusa</option>
-        <option value="guzelyurt">Güzelyurt</option>
-        <option value="lefke">Lefke</option>
-        <option value="iskele">İskele</option>
-        <option value="karpaz">Karpaz</option>
-      </select>
-
-      <label>Açık Adres:</label>
-      <textarea id="acikAdres" placeholder="Mahalle, Cadde, No, Apartman..." required></textarea>
+  </div>
+  <!-- SİPARİŞ FORMU -->
+  <div class="siparis-container">
+    <div class="siparis-title">Sipariş Bilgileri</div>
+    <form id="siparisForm" autocomplete="off">
+      <!-- Otomatik Dolu Gelen Bilgiler -->
+      <div class="form-group">
+        <label for="urunLink">Ürün Linki</label>
+        <input type="url" id="urunLink" readonly class="readonly-input" />
+      </div>
+      <div class="form-group">
+        <label for="turkiyeFiyati">Türkiye Fiyatı (₺)</label>
+        <input type="number" id="turkiyeFiyati" readonly class="readonly-input" />
+      </div>
+      <div class="form-group">
+        <label for="kategori">Kategori</label>
+        <input type="text" id="kategori" readonly class="readonly-input" />
+      </div>
+      <div class="form-group">
+        <label for="teslimatTipi">Teslimat Tipi</label>
+        <input type="text" id="teslimatTipi" readonly class="readonly-input" />
+      </div>
+      <div class="form-group" id="sehirGroup" style="display:none;">
+        <label for="sehir">Şehir</label>
+        <input type="text" id="sehir" readonly class="readonly-input" />
+      </div>
+      <div class="form-group" id="ekUcretGroup" style="display:none;">
+        <label for="ekUcret">Eve Teslim Ek Ücret (₺)</label>
+        <input type="number" id="ekUcret" readonly class="readonly-input" />
+      </div>
+      <!-- Kullanıcının Gireceği Bilgiler -->
+      <div class="form-group">
+        <label for="siparisKodu">Sipariş Kodu <span style="color:#b21c1c">*</span></label>
+        <input type="text" id="siparisKodu" required maxlength="40" placeholder="Örn: #123456789" />
+        <div class="form-note">Lütfen sipariş kodunuzu Trendyol sipariş geçmişinizden alınız.</div>
+      </div>
+      <div class="form-group" id="adresGroup" style="display:none;">
+        <label for="acikAdres">Açık Adres <span style="color:#b21c1c">*</span></label>
+        <textarea id="acikAdres" maxlength="280" placeholder="Eve teslim için detaylı adres giriniz"></textarea>
+        <div class="form-note">Eve teslim istiyorsanız açık adresinizi detaylı giriniz.</div>
+      </div>
+      <div class="form-group">
+        <label for="ekNot">Ek Not (opsiyonel)</label>
+        <textarea id="ekNot" maxlength="230" placeholder="Varsa eklemek istedikleriniz"></textarea>
+      </div>
+      <!-- Toplam Hizmet Bedeli -->
+      <div class="total-box" id="toplamBox">
+        Toplam Hizmet Bedeli: <span id="toplamTutar"></span> ₺
+      </div>
+      <button type="submit" class="siparis-btn">Siparişi Gönder</button>
+    </form>
+    <div class="form-extra">
+      Tüm siparişler Kıbrıs’a ulaştığında size WhatsApp ile bilgilendirme yapılacaktır.
     </div>
-
-    <button type="submit">Onayla ve Gönder</button>
-  </form>
-
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+  </div>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-title">© 2025 Kıbrıs Online. Tüm hakları saklıdır.</div>
+    <div>Her siparişiniz sistemimize kaydedilir ve güvenle teslim edilir.</div>
+  </footer>
+  <script>
+    // --- Firebase Config (DEMO, gerçek projenize göre değiştirin) ---
     const firebaseConfig = {
-      apiKey: "AIzaSyBw9GP1srYUgPf9sqlpLu_ZnqM8w0Iau4Y",
-      authDomain: "kibrisonline-b5cf3.firebaseapp.com",
-      projectId: "kibrisonline-b5cf3",
-      storageBucket: "kibrisonline-b5cf3.appspot.com",
-      messagingSenderId: "673734723670",
-      appId: "1:673734723670:web:55c7a34e22b1ad26e453f7",
-      measurementId: "G-D5P5SGGPB8"
+      apiKey: "demo-key-123",
+      authDomain: "demo.firebaseapp.com",
+      projectId: "demo-id",
+      storageBucket: "",
+      messagingSenderId: "",
+      appId: ""
     };
+    firebase.initializeApp(firebaseConfig);
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    let currentUser = null;
-
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        currentUser = user;
-      } else {
-        alert("Lütfen giriş yapın.");
-        window.location.href = "giris.html";
+    // GİRİŞ KONTROLÜ
+    function checkAuth() {
+      const userName = localStorage.getItem("userName");
+      if (!userName) {
+        alert("Lütfen önce giriş yapın.");
+        window.location.href = "index.html";
+        return false;
       }
-    });
-
-    document.getElementById('siparisForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const urunLink = document.getElementById('urunLink').value;
-      const siparisKodu = document.getElementById('siparisKodu').value;
-      const fiyat = document.getElementById('fiyat').value;
-      const kategori = document.getElementById('kategori').value;
-      const teslimat = document.getElementById('teslimat').value;
-      const adres = document.getElementById('adres')?.value || "";
-      const acikAdres = document.getElementById('acikAdres')?.value || "";
-
-      try {
-        await addDoc(collection(db, "siparisler"), {
-          userId: currentUser.uid,
-          urunLink,
-          siparisKodu,
-          fiyat,
-          kategori,
-          teslimat,
-          adres,
-          acikAdres,
-          createdAt: serverTimestamp()
-        });
-        alert("Sipariş başarıyla gönderildi!");
-        window.location.href = "siparislerim.html";
-      } catch (err) {
-        console.error("Sipariş kaydı başarısız:", err);
-        alert("Hata oluştu.");
-      }
-    });
-
-    function toggleAdres() {
-      const secim = document.getElementById("teslimat").value;
-      const adresSecim = document.getElementById("adresSecim");
-      const acikAdres = document.getElementById("acikAdres");
-      if (secim === "eve") {
-        adresSecim.style.display = "block";
-        acikAdres.style.display = "block";
-      } else {
-        adresSecim.style.display = "none";
-        acikAdres.style.display = "none";
-      }
+      return true;
     }
-  </script>
+    // Firebase Auth ile de kontrol et
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (!user) {
+        localStorage.removeItem("userName");
+        alert("Lütfen önce giriş yapın.");
+        window.location.href = "index.html";
+      }
+    });
 
+    // SİPARİŞ BİLGİLERİNİ TAŞI (index.html -> localStorage)
+    function loadSiparisBilgisi() {
+      let siparis = null;
+      try {
+        siparis = JSON.parse(localStorage.getItem("siparisBilgisi") || "{}");
+      } catch(e) { siparis = {}; }
+      if (!siparis || !siparis.urunLink || !siparis.turkiyeFiyati || !siparis.kategori || !siparis.teslimatTipi) {
+        alert("Sipariş bilgisi bulunamadı. Lütfen yeniden hesaplama yapın.");
+        window.location.href = "index.html";
+        return;
+      }
+      document.getElementById("urunLink").value = siparis.urunLink;
+      document.getElementById("turkiyeFiyati").value = siparis.turkiyeFiyati;
+      document.getElementById("kategori").value = capitalize(siparis.kategori);
+      document.getElementById("teslimatTipi").value = siparis.teslimatTipi === "depodan" ? "Depodan Teslim" : "Eve Teslim";
+      if (siparis.teslimatTipi === "eve") {
+        document.getElementById("sehirGroup").style.display = "flex";
+        document.getElementById("ekUcretGroup").style.display = "flex";
+        document.getElementById("adresGroup").style.display = "flex";
+        document.getElementById("sehir").value = siparis.sehir || "";
+        document.getElementById("ekUcret").value = getEkUcret(siparis.sehir);
+        document.getElementById("acikAdres").setAttribute("required", "required");
+      }
+      document.getElementById("toplamTutar").textContent = siparis.toplam || "-";
+    }
+    function getEkUcret(sehir) {
+      const sehirEkstra = {
+        "Lefkoşa": 200,
+        "Girne": 350,
+        "Güzelyurt": 300,
+        "Lefke": 450,
+        "Mağusa": 500,
+        "İskele": 550,
+        "Karpaz": 650
+      };
+      return sehirEkstra[sehir] || 0;
+    }
+    function capitalize(str) {
+      return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
+    }
+    // SİPARİŞ FORMU GÖNDERİMİ
+    document.addEventListener("DOMContentLoaded", function() {
+      if (checkAuth()) {
+        loadSiparisBilgisi();
+      }
+      document.getElementById("siparisForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        // Validasyon
+        const urunLink = document.getElementById("urunLink").value.trim();
+        const turkiyeFiyati = parseFloat(document.getElementById("turkiyeFiyati").value);
+        const kategori = document.getElementById("kategori").value;
+        const teslimatTipi = document.getElementById("teslimatTipi").value;
+        const sehir = document.getElementById("sehir").value || "";
+        const ekUcret = document.getElementById("ekUcret").value || 0;
+        const toplamTutar = document.getElementById("toplamTutar").textContent.replace(/[^\d.]/g, '');
+        const siparisKodu = document.getElementById("siparisKodu").value.trim();
+        const acikAdres = document.getElementById("acikAdres") ? document.getElementById("acikAdres").value.trim() : "";
+        const ekNot = document.getElementById("ekNot").value.trim();
+        if (!siparisKodu) {
+          alert("Sipariş kodu zorunludur.");
+          return;
+        }
+        if (teslimatTipi.toLowerCase().includes("eve") && !acikAdres) {
+          alert("Eve teslim için açık adres girilmelidir.");
+          return;
+        }
+        // Firestore'a ekle
+        const user = firebase.auth().currentUser;
+        if (!user) {
+          alert("Oturumunuz kapandı, lütfen yeniden giriş yapın.");
+          window.location.href = "index.html";
+          return;
+        }
+        try {
+          await firebase.firestore().collection("siparisler").add({
+            uid: user.uid,
+            userName: localStorage.getItem("userName") || "",
+            urunLink,
+            turkiyeFiyati,
+            kategori,
+            teslimatTipi,
+            sehir,
+            ekUcret: Number(ekUcret),
+            toplamTutar: Number(toplamTutar),
+            siparisKodu,
+            acikAdres,
+            ekNot,
+            createdAt: new Date()
+          });
+          // Sipariş başarıyla eklendi
+          localStorage.removeItem("siparisBilgisi");
+          window.location.href = "siparislerim.html";
+        } catch(err) {
+          alert("Sipariş kaydedilemedi: " + err.message);
+        }
+      });
+    });
+  </script>
 </body>
 </html>
