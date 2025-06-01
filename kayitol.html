@@ -158,22 +158,23 @@
       <button type="submit" class="register-btn">Kayıt Ol</button>
       <div class="form-error" id="formError"></div>
     </form>
-    <div class="login-link">
-      Zaten hesabınız var mı? <a href="login.html">Giriş Yap</a>
-    </div>
+  </div>
+  <div class="login-link">
+    Zaten hesabınız var mı? <a href="login.html">Giriş Yap</a>
   </div>
   <footer>
     © 2025 Kıbrıs Online – Tüm hakları saklıdır.
   </footer>
   <script>
-    // --- Firebase Config (DEMO, gerçek projenize göre değiştirin) ---
+    // Firebase config
     const firebaseConfig = {
-      apiKey: "demo-key-123",
-      authDomain: "demo.firebaseapp.com",
-      projectId: "demo-id",
-      storageBucket: "",
-      messagingSenderId: "",
-      appId: ""
+      apiKey: "AIzaSyBw9GP1srYUgPf9sqlpLu_ZnqM8w0Iau4Y",
+      authDomain: "kibrisonline-b5cf3.firebaseapp.com",
+      projectId: "kibrisonline-b5cf3",
+      storageBucket: "kibrisonline-b5cf3.appspot.com",
+      messagingSenderId: "673734723670",
+      appId: "1:673734723670:web:55c7a34e22b1ad26e453f7",
+      measurementId: "G-D5P5SGGPB8"
     };
     firebase.initializeApp(firebaseConfig);
 
@@ -183,7 +184,6 @@
       const email = document.getElementById("email").value.trim();
       const telefon = document.getElementById("telefon").value.trim();
       const sifre = document.getElementById("sifre").value;
-
       const errorDiv = document.getElementById("formError");
       errorDiv.textContent = "";
 
@@ -208,16 +208,16 @@
           telefon,
           createdAt: new Date()
         });
-        // DisplayName güncelle (isteğe bağlı)
+        // Profil adını güncelle
         await user.updateProfile({ displayName: adSoyad });
         // localStorage
         localStorage.setItem("userName", adSoyad);
         // Başarılı kayıt
         window.location.href = "index.html";
       } catch(err) {
-        let msg = "Bir hata oluştu. ";
+        let msg = "Bir hata oluştu.";
         if (err.code === "auth/email-already-in-use") {
-          msg = "Bu e-posta adresi zaten kayıtlı.";
+          msg = "Bu e-posta ile zaten kayıt olunmuş.";
         } else if (err.code === "auth/invalid-email") {
           msg = "Geçerli bir e-posta adresi giriniz.";
         } else if (err.code === "auth/weak-password") {
