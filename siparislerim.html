@@ -1,80 +1,90 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Siparişlerim - Kıbrıs Online</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #f9f9fb; padding: 20px; }
-    header { text-align: center; margin-bottom: 20px; }
-    .logo { font-size: 32px; color: #2d4fd3; font-weight: bold; }
-
-    .nav-links {
-      text-align: center;
-      margin-top: 10px;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      padding: 20px;
     }
-    .nav-links a {
+    header {
+      text-align: center;
+      padding: 20px;
+    }
+    .logo {
+      font-family: 'Caveat', cursive;
+      font-size: 36px;
+      color: #2c3e50;
+      transform: rotate(-3deg);
+      margin-bottom: 10px;
+    }
+    .btns {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .btns a {
       text-decoration: none;
       background-color: #2d4fd3;
       color: white;
       padding: 10px 20px;
       border-radius: 6px;
+      margin: 0 10px;
       font-weight: 600;
-      margin: 5px;
-      display: inline-block;
     }
-
-    .card {
+    .siparis-karti {
       background: white;
-      margin: 15px auto;
-      padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      max-width: 700px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
-
-    .card p { margin: 8px 0; }
-    .card span { font-weight: 600; }
+    .siparis-karti p {
+      margin: 8px 0;
+    }
   </style>
 </head>
 <body>
-
   <header>
     <div class="logo">Kıbrıs Online</div>
-    <div class="nav-links">
-      <a href="index.html">Ana Sayfa</a>
-      <a href="siparisver.html">Yeni Sipariş Ver</a>
-    </div>
   </header>
 
-  <h2 style="text-align:center; color:#2d4fd3;">Siparişlerim</h2>
+  <div class="btns">
+    <a href="index.html">Ana Sayfa</a>
+    <a href="siparisver.html">Yeni Sipariş Ver</a>
+  </div>
+
   <div id="siparisListesi"></div>
 
   <script>
     const kullanici = localStorage.getItem("aktifKullanici");
     const tumSiparisler = JSON.parse(localStorage.getItem("tumSiparisler") || "[]");
     const benimSiparisler = tumSiparisler.filter(s => s.kullanici === kullanici);
+
     const liste = document.getElementById("siparisListesi");
 
     if (benimSiparisler.length === 0) {
-      liste.innerHTML = "<p style='text-align:center;'>Henüz bir sipariş vermediniz.</p>";
+      liste.innerHTML = "<p style='text-align:center;'>Henüz bir siparişiniz yok.</p>";
     } else {
-      benimSiparisler.forEach(sip => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <p><span>Sipariş Kodu:</span> ${sip.siparisKodu}</p>
-          <p><span>Ürün Linki:</span> <a href="${sip.urunLink}" target="_blank">${sip.urunLink}</a></p>
-          <p><span>Kategori:</span> ${sip.kategori}</p>
-          <p><span>Fiyat:</span> ₺${sip.fiyat}</p>
-          <p><span>Teslimat Tipi:</span> ${sip.teslimat}</p>
-          ${sip.teslimat === 'eve' ? `<p><span>Bölge:</span> ${sip.adres}</p>
-          <p><span>Açık Adres:</span> ${sip.acikAdres}</p>` : ''}
-          <p><span>Toplam Ücret:</span> ${sip.toplam}</p>
-          <p><span>Tarih:</span> ${new Date(sip.tarih).toLocaleString()}</p>
+      benimSiparisler.forEach(siparis => {
+        const div = document.createElement("div");
+        div.className = "siparis-karti";
+        div.innerHTML = `
+          <p><strong>Ürün Linki:</strong> <a href="${siparis.urunLink}" target="_blank">${siparis.urunLink}</a></p>
+          <p><strong>Sipariş Kodu:</strong> ${siparis.siparisKodu}</p>
+          <p><strong>Fiyat:</strong> ₺${siparis.fiyat}</p>
+          <p><strong>Kategori:</strong> ${siparis.kategori}</p>
+          <p><strong>Teslimat:</strong> ${siparis.teslimat}</p>
+          ${siparis.teslimat === "eve" ? `<p><strong>Bölge:</strong> ${siparis.adres}</p><p><strong>Açık Adres:</strong> ${siparis.acikAdres}</p>` : ""}
+          <p><strong>Toplam Ücret:</strong> ${siparis.toplam}</p>
+          <p><strong>Tarih:</strong> ${new Date(siparis.tarih).toLocaleString()}</p>
         `;
-        liste.appendChild(card);
+        liste.appendChild(div);
       });
     }
   </script>
