@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Kayıt Ol - Kıbrıs Online</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <style>
+    :root {
+      --primary: #0059b3;
+      --secondary: #00b3a4;
+      --accent: #f5f5f5;
+      --radius: 14px;
+      --shadow: 0 3px 16px rgba(0,0,0,0.07);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #fff;
+      color: #20242a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-bar {
+      text-align: center;
+      font-size: 1.38rem;
+      color: var(--primary);
+      font-weight: 800;
+      letter-spacing: .7px;
+      margin-top: 38px;
+      margin-bottom: 18px;
+    }
+    .register-container {
+      background: var(--accent);
+      margin: 0 auto;
+      margin-bottom: 22px;
+      max-width: 370px;
+      width: 94vw;
+      padding: 32px 22px 30px 22px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .form-title {
+      text-align: center;
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 25px;
+      letter-spacing: .2px;
+    }
+    .form-group {
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+    }
+    .form-group label {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .form-group input {
+      padding: 10px;
+      border-radius: var(--radius);
+      border: 1.2px solid #ccc;
+      outline: none;
+      font-size: 1rem;
+      background: #fff;
+      transition: border .14s;
+    }
+    .form-group input:focus {
+      border-color: var(--primary);
+    }
+    .register-btn {
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 13px 0;
+      font-size: 1.09rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 7px;
+      box-shadow: var(--shadow);
+      transition: background .16s;
+    }
+    .register-btn:hover { background: var(--secondary);}
+    .form-error {
+      color: #b21c1c;
+      background: #fff0f0;
+      font-size: .98rem;
+      margin: 7px 0 0 0;
+      padding: 8px 12px;
+      border-radius: 8px;
+      min-height: 24px;
+      text-align: center;
+      font-weight: 600;
+      letter-spacing: .2px;
+    }
+    .login-link {
+      display: block;
+      text-align: center;
+      margin-top: 18px;
+      font-size: 1.01rem;
+      color: #444;
+    }
+    .login-link a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: underline;
+      transition: color .14s;
+    }
+    .login-link a:hover { color: var(--secondary);}
+    footer {
+      margin-top: auto;
+      background: #f6f7f9;
+      padding: 20px 0 22px 0;
+      color: #333;
+      font-size: 1.01rem;
+      text-align: center;
+      border-top: 1.5px solid #e3e9f0;
+      letter-spacing: .1px;
+    }
+    @media (max-width: 600px) {
+      .register-container { padding: 20px 2vw 18px 2vw; }
+      .brand-bar { font-size: 1.07rem; margin-top: 20px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="brand-bar">Kıbrıs Online</div>
+  <div class="register-container">
+    <div class="form-title">Kayıt Ol</div>
+    <form id="registerForm" autocomplete="off">
+      <div class="form-group">
+        <label for="adSoyad">Ad Soyad</label>
+        <input type="text" id="adSoyad" maxlength="50" required placeholder="Ad Soyadınızı giriniz">
+      </div>
+      <div class="form-group">
+        <label for="email">E-Posta</label>
+        <input type="email" id="email" maxlength="80" required placeholder="E-posta adresiniz">
+      </div>
+      <div class="form-group">
+        <label for="telefon">Telefon Numarası</label>
+        <input type="tel" id="telefon" maxlength="20" required placeholder="05xx xxx xx xx">
+      </div>
+      <div class="form-group">
+        <label for="sifre">Şifre</label>
+        <input type="password" id="sifre" minlength="6" maxlength="40" required placeholder="Şifreniz (en az 6 karakter)">
+      </div>
+      <button type="submit" class="register-btn">Kayıt Ol</button>
+      <div class="form-error" id="formError"></div>
+    </form>
+    <div class="login-link">
+      Zaten hesabınız var mı? <a href="login.html">Giriş Yap</a>
+    </div>
+  </div>
+  <footer>
+    © 2025 Kıbrıs Online – Tüm hakları saklıdır.
+  </footer>
+  <script>
+    // --- Firebase Config (DEMO, gerçek projenize göre değiştirin) ---
+    const firebaseConfig = {
+      apiKey: "demo-key-123",
+      authDomain: "demo.firebaseapp.com",
+      projectId: "demo-id",
+      storageBucket: "",
+      messagingSenderId: "",
+      appId: ""
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    document.getElementById("registerForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const adSoyad = document.getElementById("adSoyad").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const telefon = document.getElementById("telefon").value.trim();
+      const sifre = document.getElementById("sifre").value;
+
+      const errorDiv = document.getElementById("formError");
+      errorDiv.textContent = "";
+
+      // Temel kontroller
+      if (!adSoyad || !email || !telefon || !sifre) {
+        errorDiv.textContent = "Lütfen tüm alanları doldurunuz.";
+        return;
+      }
+      if (sifre.length < 6) {
+        errorDiv.textContent = "Şifre en az 6 karakter olmalıdır.";
+        return;
+      }
+
+      try {
+        // Firebase Auth ile kayıt
+        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, sifre);
+        const user = userCredential.user;
+        // Firestore'a ekle
+        await firebase.firestore().collection("users").doc(user.uid).set({
+          adSoyad,
+          email,
+          telefon,
+          createdAt: new Date()
+        });
+        // DisplayName güncelle (isteğe bağlı)
+        await user.updateProfile({ displayName: adSoyad });
+        // localStorage
+        localStorage.setItem("userName", adSoyad);
+        // Başarılı kayıt
+        window.location.href = "index.html";
+      } catch(err) {
+        let msg = "Bir hata oluştu. ";
+        if (err.code === "auth/email-already-in-use") {
+          msg = "Bu e-posta adresi zaten kayıtlı.";
+        } else if (err.code === "auth/invalid-email") {
+          msg = "Geçerli bir e-posta adresi giriniz.";
+        } else if (err.code === "auth/weak-password") {
+          msg = "Şifre en az 6 karakter olmalıdır.";
+        }
+        errorDiv.textContent = msg;
+      }
+    });
+  </script>
+</body>
+</html>
