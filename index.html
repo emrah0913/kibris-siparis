@@ -1,105 +1,321 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Türkiye'den Kıbrıs'a Teslimat</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Türkiye’den Kıbrıs’a Teslimat</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f8fb;
+        }
+        .header {
+            position: relative;
+            width: 100%;
+            height: 260px;
+            background: #1e2e4a;
+            overflow: hidden;
+        }
+        .header img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            opacity: 0.75;
+        }
+        .header-content {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            text-align: center;
+            width: 100%;
+        }
+        .header-content h1 {
+            font-size: 2.3rem;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            text-shadow: 0 2px 8px #0003;
+        }
+        .header-content p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            text-shadow: 0 2px 8px #0003;
+        }
+        .top-right {
+            position: absolute;
+            top: 16px;
+            right: 26px;
+        }
+        .top-right button, .top-right span {
+            margin-left: 8px;
+            background-color: #fff;
+            color: #1e2e4a;
+            border: none;
+            padding: 8px 16px;
+            font-size: 1rem;
+            border-radius: 18px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .top-right button:hover {
+            background-color: #e9f0fa;
+        }
+        .main-buttons {
+            margin: 36px auto 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+            width: 90%;
+            max-width: 700px;
+        }
+        .main-buttons button {
+            flex: 1 1 200px;
+            min-width: 170px;
+            background: #1e2e4a;
+            color: #fff;
+            border: none;
+            padding: 18px 10px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            margin: 8px 0;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 2px 8px #0001;
+            transition: background 0.15s, transform 0.1s;
+        }
+        .main-buttons button:hover {
+            background: #254271;
+            transform: translateY(-2px) scale(1.02);
+        }
+        /* Hesaplama Modülü */
+        .calculator-box {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px #0001;
+            max-width: 420px;
+            margin: 48px auto 32px auto;
+            padding: 32px 22px 28px 22px;
+        }
+        .calculator-box h2 {
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 1.2rem;
+            color: #28426b;
+            font-weight: 700;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #28426b;
+            font-weight: 500;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 8px;
+            font-size: 1rem;
+            border: 1px solid #d3dce6;
+            border-radius: 8px;
+            background: #f8fafc;
+            margin-bottom: 2px;
+        }
+        .form-group select:disabled {
+            background: #e9e9e9;
+        }
+        .city-select {
+            display: none;
+        }
+        .calculate-btn {
+            width: 100%;
+            background: #1e2e4a;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.08rem;
+            font-weight: 600;
+            padding: 12px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background 0.12s;
+        }
+        .calculate-btn:hover {
+            background: #254271;
+        }
+        .result {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 1.18rem;
+            color: #2b6b2f;
+            font-weight: 600;
+        }
+        @media (max-width: 700px) {
+            .main-buttons { flex-direction: column; gap: 20px; }
+            .calculator-box { max-width: 98vw; padding: 18px 6vw; }
+            .header-content h1 { font-size: 1.2rem; }
+        }
+    </style>
 </head>
 <body>
-  <header class="header">
-    <img src="ship-banner.jpg" alt="Gemi" class="header-banner"/>
-    <div class="header-content">
-      <h1>Türkiye’den Kıbrıs’a Teslimat</h1>
-      <p>Hızlı ve Güvenilir Kargo Hizmeti</p>
-      <div class="header-user">
-        <span id="userDisplay"></span>
-        <button id="loginBtn" class="btn" onclick="showLogin()">Giriş Yap / Kayıt Ol</button>
-        <button id="logoutBtn" class="btn" style="display:none" onclick="logout()">Çıkış Yap</button>
-      </div>
+    <!-- HEADER -->
+    <div class="header">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80" alt="Gemi Görseli">
+        <div class="header-content">
+            <h1>Türkiye’den Kıbrıs’a Teslimat</h1>
+            <p>Hızlı ve Güvenilir Kargo Hizmeti</p>
+        </div>
+        <div class="top-right" id="authArea">
+            <!-- Auth buttons or user name will be injected by JS -->
+        </div>
     </div>
-    <nav class="main-menu">
-      <button onclick="routeMenu('siparisver.html')">Sipariş Ver</button>
-      <button onclick="routeMenu('siparislerim.html')">Siparişlerim</button>
-      <button onclick="routeMenu('kargotakip.html')">Kargo Takip</button>
-    </nav>
-  </header>
-
-  <main>
-    <section class="calculator">
-      <h2>Sipariş Hizmet Bedeli Hesapla</h2>
-      <form id="calculateForm">
-        <label>Ürün Linki: <input type="url" id="urunLink" required/></label>
-        <label>Türkiye Fiyatı (₺): <input type="number" id="urunFiyat" required min="1"/></label>
-        <label>Kategori:
-          <select id="kategori" required>
-            <option value="">Seçiniz</option>
-            <option>Mobilya</option>
-            <option>Elektronik</option>
-            <option>Giyim</option>
-            <option>Kozmetik</option>
-            <option>Diğer</option>
-          </select>
-        </label>
-        <label>Teslimat Tipi:
-          <select id="teslimatTipi" required>
-            <option value="eve">Eve Teslim (+140₺)</option>
-            <option value="depo">Depodan Teslim (+100₺)</option>
-          </select>
-        </label>
-        <button type="submit" class="btn">Hesapla</button>
-      </form>
-      <div class="result" id="calcResult"></div>
-    </section>
-
-    <section class="logos">
-      <a href="https://www.trendyol.com" target="_blank"><img src="trendyol-logo.png" alt="Trendyol"></a>
-      <a href="https://www.hepsiburada.com" target="_blank"><img src="hepsiburada-logo.png" alt="Hepsiburada"></a>
-      <a href="https://www.n11.com" target="_blank"><img src="n11-logo.png" alt="n11"></a>
-      <a href="https://www.amazon.com.tr" target="_blank"><img src="amazontr-logo.png" alt="Amazon TR"></a>
-      <a href="https://www.ciceksepeti.com" target="_blank"><img src="ciceksepeti-logo.png" alt="ÇiçekSepeti"></a>
-    </section>
-
-    <section class="faq" id="faqSection">
-      <h2>Sıkça Sorulan Sorular</h2>
-      <ul id="faqList"></ul>
-    </section>
-  </main>
-
-  <!-- Giriş/Kayıt Modal -->
-  <div id="modalBg" class="modal-bg">
-    <div class="modal">
-      <button class="close" onclick="hideLogin()">&times;</button>
-      <h2 id="modalTitle">Giriş Yap</h2>
-      <form id="loginForm">
-        <input type="email" id="loginEmail" placeholder="E-posta" required>
-        <input type="password" id="loginPassword" placeholder="Şifre" required>
-        <button type="submit" class="btn">Giriş Yap</button>
-        <p>
-          Hesabınız yok mu? <a href="#" onclick="showRegister()">Kayıt Ol</a>
-        </p>
-      </form>
-      <form id="registerForm" style="display:none">
-        <input type="text" id="registerName" placeholder="Ad Soyad" required>
-        <input type="email" id="registerEmail" placeholder="E-posta" required>
-        <input type="password" id="registerPassword" placeholder="Şifre" required>
-        <button type="submit" class="btn">Kayıt Ol</button>
-        <p>
-          Zaten hesabınız var mı? <a href="#" onclick="showLoginForm()">Giriş Yap</a>
-        </p>
-      </form>
-      <div id="loginError" class="error"></div>
+    <!-- Ana Navigasyon Butonları -->
+    <div class="main-buttons">
+        <button onclick="goPage('siparisver.html')">Sipariş Ver</button>
+        <button onclick="goPage('siparislerim.html')">Siparişlerim</button>
+        <button onclick="goPage('kargotakip.html')">Kargo Takip</button>
     </div>
-  </div>
+    <!-- Hesaplama Modülü -->
+    <div class="calculator-box">
+        <h2>Hizmet Bedeli Hesaplama</h2>
+        <div class="form-group">
+            <label for="urunLink">Ürün Linki</label>
+            <input type="url" id="urunLink" placeholder="https://www.trendyol.com/ürün-x" autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label for="trFiyat">Türkiye Fiyatı (₺)</label>
+            <input type="number" min="0" id="trFiyat" placeholder="Ör: 2000" autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label for="kategori">Kategori</label>
+            <select id="kategori">
+                <option value="">Seçiniz</option>
+                <option value="mobilya">Mobilya</option>
+                <option value="elektronik">Elektronik</option>
+                <option value="giyim">Giyim</option>
+                <option value="kozmetik">Kozmetik</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="teslimatTipi">Teslimat Tipi</label>
+            <select id="teslimatTipi">
+                <option value="">Seçiniz</option>
+                <option value="depodan">Depodan Teslim</option>
+                <option value="eve">Eve Teslim</option>
+            </select>
+        </div>
+        <div class="form-group city-select" id="cityGroup">
+            <label for="city">Bölge</label>
+            <select id="city">
+                <option value="">Şehir Seçin</option>
+                <option value="lefkosa">Lefkoşa (200₺)</option>
+                <option value="girne">Girne (350₺)</option>
+                <option value="guzelyurt">Güzelyurt (300₺)</option>
+                <option value="lefke">Lefke (450₺)</option>
+                <option value="magusa">Mağusa (500₺)</option>
+                <option value="iskele">İskele (550₺)</option>
+                <option value="karpaz">Karpaz (650₺)</option>
+            </select>
+        </div>
+        <button class="calculate-btn" onclick="calculateFee()">Ücreti Hesapla</button>
+        <div class="result" id="calcResult"></div>
+    </div>
+    <script>
+        // Auth Area - Giriş, Kayıt veya Kullanıcı adı
+        function updateAuthArea() {
+            const authArea = document.getElementById('authArea');
+            const userName = localStorage.getItem('userName');
+            authArea.innerHTML = '';
+            if (userName) {
+                authArea.innerHTML = `<span>👤 ${userName}</span>`;
+            } else {
+                authArea.innerHTML = `
+                    <button onclick="window.location.href='girisyap.html'">Giriş Yap</button>
+                    <button onclick="window.location.href='kayitol.html'">Kayıt Ol</button>
+                `;
+            }
+        }
+        updateAuthArea();
 
-  <script src="firebase.js"></script>
-  <script src="app.js"></script>
-  <script>
-    // SSS bölümü örnek veri yükleme
-    fetch('sss.json').then(res=>res.json()).then(data=>{
-      const faqList=document.getElementById('faqList');
-      faqList.innerHTML=data.map(q=>`<li><b>${q.q}</b><br>${q.a}</li>`).join('');
-    });
-  </script>
+        // Navigasyon Butonları
+        function goPage(page) {
+            const userName = localStorage.getItem('userName');
+            if (!userName) {
+                alert("Lütfen giriş yapın veya kayıt olun.");
+                return false;
+            }
+            window.location.href = page;
+        }
+
+        // Teslimat tipi değişirse şehir seçimini göster/gizle
+        document.getElementById('teslimatTipi').addEventListener('change', function() {
+            const val = this.value;
+            const cityGroup = document.getElementById('cityGroup');
+            cityGroup.style.display = (val === 'eve') ? 'block' : 'none';
+        });
+
+        // Hesaplama fonksiyonu
+        function calculateFee() {
+            const trFiyat = parseFloat(document.getElementById('trFiyat').value.replace(',', '.'));
+            const kategori = document.getElementById('kategori').value;
+            const teslimatTipi = document.getElementById('teslimatTipi').value;
+            const city = document.getElementById('city').value;
+            let total = 0;
+            if (isNaN(trFiyat) || trFiyat <= 0) {
+                showResult('Lütfen geçerli bir Türkiye fiyatı girin.', true);
+                return;
+            }
+            if (!kategori) {
+                showResult('Lütfen kategori seçin.', true);
+                return;
+            }
+            if (!teslimatTipi) {
+                showResult('Lütfen teslimat tipini seçin.', true);
+                return;
+            }
+
+            // Kategori bazlı hizmet bedeli
+            if (kategori === 'mobilya') {
+                total = trFiyat + 70;
+            } else if (kategori === 'elektronik') {
+                total = trFiyat * 1.7;
+            } else if (kategori === 'giyim') {
+                total = trFiyat * 1.5;
+            } else if (kategori === 'kozmetik') {
+                total = trFiyat * 1.7;
+            }
+
+            // Teslimat tipi ve şehir ek ücreti
+            if (teslimatTipi === 'eve') {
+                let cityFee = 0;
+                switch (city) {
+                    case "lefkosa": cityFee = 200; break;
+                    case "girne": cityFee = 350; break;
+                    case "guzelyurt": cityFee = 300; break;
+                    case "lefke": cityFee = 450; break;
+                    case "magusa": cityFee = 500; break;
+                    case "iskele": cityFee = 550; break;
+                    case "karpaz": cityFee = 650; break;
+                    default:
+                        showResult('Lütfen şehir seçin.', true);
+                        return;
+                }
+                total += cityFee;
+            }
+
+            showResult("Tahmini Toplam Ücret: ₺" + total.toLocaleString("tr-TR", {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+        }
+
+        function showResult(msg, isError) {
+            const el = document.getElementById('calcResult');
+            el.textContent = msg;
+            el.style.color = isError ? '#c0392b' : '#2b6b2f';
+        }
+    </script>
 </body>
 </html>
