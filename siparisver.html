@@ -99,6 +99,9 @@
     <label>Ürün Linki:</label>
     <input type="url" id="urunLink" required placeholder="https://...">
 
+    <label>Sipariş Kodu (örn. TY12345):</label>
+    <input type="text" id="siparisKodu" required placeholder="Trendyol sipariş kodunuz">
+
     <label>Türkiye Fiyatı (₺):</label>
     <input type="number" id="fiyat" required>
 
@@ -120,7 +123,7 @@
 
     <div id="adresSecimi">
       <label>Bölge Seçimi:</label>
-      <select id="adres" required>
+      <select id="adres">
         <option value="">Seçiniz</option>
         <option value="lefkoşa">Lefkoşa</option>
         <option value="girne">Girne</option>
@@ -134,11 +137,8 @@
 
     <div id="acikAdresKutu">
       <label>Teslimat Açık Adresi:</label>
-      <textarea id="acikAdres" rows="3" required placeholder="Mahalle, cadde, bina no, daire..."></textarea>
+      <textarea id="acikAdres" rows="3" placeholder="Mahalle, cadde, bina no, daire..."></textarea>
     </div>
-
-    <label>Sipariş Kodu (örn. TY12345):</label>
-    <input type="text" id="siparisKodu" required placeholder="Trendyol sipariş kodunuz">
 
     <p><strong>Toplam Ücret: <span id="sonuc">₺0.00</span></strong></p>
 
