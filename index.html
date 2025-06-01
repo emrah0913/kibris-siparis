@@ -150,6 +150,11 @@
       margin-bottom: 15px;
     }
     #adresSelect { display: none; }
+    /* Sipariş Ver butonu için ek boşluk */
+    .siparis-ver-btn {
+      display: inline-block;
+      margin-top: 32px;
+    }
   </style>
 </head>
 <body>
@@ -227,7 +232,7 @@
         </div>
 
         <p><strong>Toplam Ücret: <span id="sonuc">₺0.00</span></strong></p>
-        <a href="siparisver.html" style="background-color: #2d4fd3; color: white; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-decoration: none;">Sipariş Ver</a>
+        <a href="siparisver.html" class="siparis-ver-btn" style="background-color: #2d4fd3; color: white; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-decoration: none;">Sipariş Ver</a>
       </form>
     </div>
   </section>
@@ -298,7 +303,7 @@
     document.addEventListener('click', function(event) {
       const logoutBox = document.getElementById('logoutBox');
       const userName = document.getElementById('userName');
-      if (!logoutBox.contains(event.target) && event.target !== userName) {
+      if (logoutBox && userName && !logoutBox.contains(event.target) && event.target !== userName) {
         logoutBox.style.display = 'none';
       }
     });
