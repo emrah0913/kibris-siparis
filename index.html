@@ -1,32 +1,581 @@
-<!-- ... önceki kod ... -->
-  <div class="main-buttons" style="margin-bottom:10px;">
-    <!-- <button class="main-btn" id="btnSiparisVer">Sipariş Ver</button> -->
-    <button class="main-btn" id="btnSiparislerim">Siparişlerim</button>
-    <button class="main-btn" id="btnKargoTakip">Kargo Takip</button>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kıbrıs Online - Türkiye’den Kıbrıs’a Teslimat</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- Firebase App (the core Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <style>
+    :root {
+      --primary: #0059b3;
+      --secondary: #00b3a4;
+      --accent: #f5f5f5;
+      --dark: #222;
+      --radius: 14px;
+      --shadow: 0 3px 16px rgba(0,0,0,0.07);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #fff;
+      color: var(--dark);
+    }
+    a { text-decoration: none; color: inherit; }
+    /* HERO */
+    .hero {
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80') center center/cover no-repeat;
+      min-height: 340px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      color: #fff;
+    }
+    .hero-bg {
+      position: absolute; top:0; left:0; width:100%; height:100%;
+      background: linear-gradient(180deg,rgba(0,89,179,0.75) 0,rgba(0,179,164,0.45) 100%);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 50px 10px 40px 10px;
+    }
+    .hero-title { font-size: 2.1rem; font-weight: 800; margin-bottom: 15px; letter-spacing: .5px;}
+    .hero-subtitle { font-size: 1.2rem; font-weight: 400; }
+
+    /* HEADER */
+    header {
+      width: 100%;
+      padding: 18px 0 0 0;
+      position: absolute;
+      top: 0; left: 0; z-index: 10;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .header-actions {
+      margin-right: 22px;
+      display: flex;
+      gap: 10px;
+    }
+    .header-btn, .user-name-badge {
+      padding: 8px 20px;
+      border-radius: var(--radius);
+      border: none;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      background: #fff;
+      color: var(--primary);
+      box-shadow: var(--shadow);
+      transition: background .15s;
+      outline: none;
+    }
+    .header-btn:hover {
+      background: var(--accent);
+    }
+    .user-name-badge {
+      background: var(--primary);
+      color: #fff;
+      cursor: default;
+      box-shadow: none;
+    }
+    /* ANA MENÜ */
+    .main-menu {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin: 25px auto 0 auto;
+      max-width: 390px;
+    }
+    .menu-btn {
+      flex: 1;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 18px 0;
+      font-size: 1.15rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 10px;
+      box-shadow: var(--shadow);
+      transition: background .16s;
+    }
+    .menu-btn:hover { background: var(--secondary); }
+
+    /* HESAPLAMA MODÜLÜ */
+    .calculator-container {
+      background: var(--accent);
+      margin: 28px auto 0 auto;
+      padding: 28px 18px 24px 18px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-width: 430px;
+    }
+    .calc-title {
+      font-weight: 600; font-size: 1.18rem; margin-bottom: 18px;
+      color: var(--primary);
+      letter-spacing: .3px;
+    }
+    .calc-row {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+    }
+    .calc-row label {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .calc-row input, .calc-row select {
+      padding: 10px;
+      border-radius: var(--radius);
+      border: 1.2px solid #ccc;
+      outline: none;
+      font-size: 1rem;
+      margin-bottom: 2px;
+      background: #fff;
+      transition: border .14s;
+    }
+    .calc-row input:focus, .calc-row select:focus {
+      border-color: var(--primary);
+    }
+    .calc-row select { cursor: pointer; }
+    .city-extra {
+      margin-left: 10px; color: var(--primary); font-size: .95rem; font-weight: 500;
+    }
+    .calc-btn {
+      background: var(--secondary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 14px 0;
+      font-size: 1.09rem;
+      font-weight: 600;
+      width: 100%;
+      margin-top: 6px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: background .16s;
+    }
+    .calc-btn:hover { background: var(--primary); }
+    .calc-result {
+      margin-top: 17px;
+      font-size: 1.18rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-align: center;
+    }
+    /* TÜRKİYE ADRESİ */
+    .address-box {
+      background: #f8fbff;
+      border: 1.5px solid #e3e9f0;
+      border-radius: var(--radius);
+      margin: 36px auto 0 auto;
+      max-width: 430px;
+      padding: 18px 18px 16px 18px;
+      box-shadow: var(--shadow);
+      font-size: 1.03rem;
+      position: relative;
+    }
+    .address-title {
+      font-weight: 600; color: var(--primary); margin-bottom: 7px;
+    }
+    .address-content {
+      font-family: 'Fira Mono', monospace, monospace;
+      background: #fff; border-radius: 8px; padding: 13px;
+      margin-bottom: 9px; white-space: pre-line;
+      font-size: 1rem;
+      border: 1px solid #eee;
+    }
+    .copy-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      padding: 9px 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: 0;
+      transition: background .16s;
+    }
+    .copy-btn:hover { background: var(--secondary); }
+    /* PLATFORM LOGOLARI */
+    .platform-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+      margin: 38px auto 0 auto;
+      max-width: 420px;
+      flex-wrap: wrap;
+    }
+    .platform-logos a {
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 7px rgba(0,0,0,0.10);
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      transition: box-shadow .13s;
+    }
+    .platform-logos a:hover {
+      box-shadow: 0 4px 14px rgba(0,179,164,0.18);
+    }
+    .platform-logos img {
+      width: 38px; height: 38px; object-fit: contain;
+      display: block;
+    }
+    /* NASIL ÇALIŞIR */
+    .how-it-works {
+      background: var(--accent);
+      margin: 38px auto 0 auto;
+      max-width: 430px;
+      border-radius: var(--radius);
+      padding: 22px 18px 24px 18px;
+      box-shadow: var(--shadow);
+    }
+    .how-title {
+      font-size: 1.17rem;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 11px;
+    }
+    .how-list {
+      padding-left: 18px;
+      font-size: 1.02rem;
+      color: #333;
+    }
+    .how-note {
+      margin-top: 15px;
+      color: #b21c1c;
+      font-weight: 600;
+      font-size: .97rem;
+    }
+    /* FOOTER */
+    footer {
+      margin-top: 48px;
+      background: #f6f7f9;
+      padding: 30px 18px 38px 18px;
+      color: #333;
+      font-size: 1.01rem;
+      text-align: center;
+      border-top: 1.5px solid #e3e9f0;
+    }
+    footer .footer-title {
+      font-weight: 700; color: var(--primary);
+      margin-bottom: 7px;
+    }
+    footer .footer-note {
+      color: #b21c1c; margin-top: 10px; margin-bottom: 13px; font-size: .97rem;
+    }
+    footer .footer-contact {
+      margin-top: 11px;
+      font-size: .98rem;
+      color: #222;
+      line-height: 1.7;
+    }
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .hero-content { padding: 38px 2vw 26px 2vw; }
+      .main-menu, .calculator-container, .address-box, .how-it-works, .platform-logos { max-width: 99vw; }
+      .calculator-container, .address-box, .how-it-works { padding: 16px 4vw 18px 4vw; }
+      .main-menu { flex-direction: column; gap: 10px; }
+      .platform-logos img { width: 30px; height: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER / GİRİŞ DURUMU -->
+  <header>
+    <div class="header-actions" id="headerActions">
+      <!-- Butonlar veya Kullanıcı İsmi JS ile doldurulacak -->
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-title">Türkiye’den Kıbrıs’a Teslimat</div>
+      <div class="hero-subtitle">Hızlı ve Güvenilir Kargo Hizmeti</div>
+    </div>
+  </section>
+
+  <!-- ANA MENÜ -->
+  <nav class="main-menu">
+    <button class="menu-btn" onclick="menuClick('siparislerim.html')">Siparişlerim</button>
+    <button class="menu-btn" onclick="menuClick('kargotakip.html')">Kargo Takip</button>
+  </nav>
+
+  <!-- HESAPLAMA MODÜLÜ -->
+  <section class="calculator-container">
+    <div class="calc-title">Hizmet Bedeli Hesaplama</div>
+    <form id="calculatorForm" autocomplete="off">
+      <div class="calc-row">
+        <label for="urunLink">Ürün Linki</label>
+        <input type="url" id="urunLink" placeholder="https://www.site.com/urun" required>
+      </div>
+      <div class="calc-row">
+        <label for="turkiyeFiyati">Türkiye Fiyatı (₺)</label>
+        <input type="number" id="turkiyeFiyati" placeholder="0" min="0" step="0.01" required>
+      </div>
+      <div class="calc-row">
+        <label for="kategori">Kategori</label>
+        <select id="kategori" required>
+          <option value="">Seçiniz</option>
+          <option value="mobilya">Mobilya</option>
+          <option value="elektronik">Elektronik</option>
+          <option value="giyim">Giyim</option>
+          <option value="kozmetik">Kozmetik</option>
+        </select>
+      </div>
+      <div class="calc-row">
+        <label for="teslimatTipi">Teslimat Tipi</label>
+        <select id="teslimatTipi" required>
+          <option value="">Seçiniz</option>
+          <option value="depodan">Depodan Teslim</option>
+          <option value="eve">Eve Teslim</option>
+        </select>
+      </div>
+      <div class="calc-row" id="sehirRow" style="display:none;">
+        <label for="sehir">Şehir</label>
+        <select id="sehir">
+          <option value="">Seçiniz</option>
+          <option value="Lefkoşa">Lefkoşa (+200₺)</option>
+          <option value="Girne">Girne (+350₺)</option>
+          <option value="Güzelyurt">Güzelyurt (+300₺)</option>
+          <option value="Lefke">Lefke (+450₺)</option>
+          <option value="Mağusa">Mağusa (+500₺)</option>
+          <option value="İskele">İskele (+550₺)</option>
+          <option value="Karpaz">Karpaz (+650₺)</option>
+        </select>
+      </div>
+      <button type="submit" class="calc-btn" id="calcBtn">Ücreti Hesapla</button>
+      <div class="calc-result" id="calcResult"></div>
+    </form>
+  </section>
+
+  <!-- TÜRKİYE ADRESİ -->
+  <section class="address-box">
+    <div class="address-title">Gönderim İçin Türkiye Adresi:</div>
+    <div class="address-content" id="adresText">
+Kıbrıs Online - <span id="adSoyadText">Ad Soyad</span>
+Silifke Cad. No:12, Yenişehir / Mersin
+PK: 33160
+Telefon: 0532 000 00 00</div>
+    <button class="copy-btn" onclick="copyAddress()">📋 Adresi Kopyala</button>
+  </section>
+
+  <!-- PLATFORM LOGOLARI -->
+  <div class="platform-logos">
+    <a href="https://trendyol.com/" target="_blank" title="Trendyol"><img src="https://cdn.kibrisonline.com/static/trendyol.svg" alt="Trendyol"></a>
+    <a href="https://www.hepsiburada.com/" target="_blank" title="Hepsiburada"><img src="https://cdn.kibrisonline.com/static/hepsiburada.svg" alt="Hepsiburada"></a>
+    <a href="https://www.amazon.com.tr/" target="_blank" title="Amazon"><img src="https://cdn.kibrisonline.com/static/amazon.png" alt="Amazon"></a>
+    <a href="https://www.n11.com/" target="_blank" title="n11"><img src="https://cdn.kibrisonline.com/static/n11.svg" alt="n11"></a>
+    <a href="https://www.ciceksepeti.com/" target="_blank" title="ÇiçekSepeti"><img src="https://cdn.kibrisonline.com/static/ciceksepeti.svg" alt="ÇiçekSepeti"></a>
   </div>
-<!-- ... devam eden kod ... -->
-<script>
-  // Ana butonlar
-  //document.getElementById("btnSiparisVer").onclick = function(e){
-  //  if (isLoggedIn()) {
-  //    window.location.href = "siparisver.html";
-  //  } else {
-  //    alert("Lütfen giriş yapın veya kayıt olun.");
-  //  }
-  //};
-  document.getElementById("btnSiparislerim").onclick = function(e){
-    if (isLoggedIn()) {
-      window.location.href = "siparislerim.html";
-    } else {
-      alert("Lütfen giriş yapın veya kayıt olun.");
+
+  <!-- NASIL ÇALIŞIR? -->
+  <section class="how-it-works">
+    <div class="how-title">Nasıl Çalışır?</div>
+    <ul class="how-list">
+      <li>Türkiye’deki alışveriş sitesinden ürün seç, linkini kopyala</li>
+      <li>Aşağıdaki hesaplama modülüne bilgileri gir</li>
+      <li>Hizmet bedelini öğren</li>
+      <li>Giriş yaparak siparişe devam et</li>
+      <li>Siparişlerim & Kargo Takip üzerinden süreci izle</li>
+    </ul>
+    <div class="how-note">Not: Sipariş verebilmek için giriş yapmanız zorunludur.</div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-title">© 2025 Kıbrıs Online. Tüm hakları saklıdır.</div>
+    <div>Türkiye’den Kıbrıs’a hızlı, güvenilir ve kolay alışveriş teslimat hizmeti.</div>
+    <div class="footer-note">
+      Bu site Trendyol, Hepsiburada, n11, Amazon veya ÇiçekSepeti ile resmi olarak bağlantılı değildir.<br>
+      Tüm marka logoları ilgili şirketlerin tescilli markalarıdır.
+    </div>
+    <div class="footer-contact">
+      <div>📞 Telefon: +90 532 000 00 00</div>
+      <div>📧 E-posta: <a href="mailto:destek@kibrisonline.com">destek@kibrisonline.com</a></div>
+      <div>📍 Adres: Silifke Cad. No:12, Yenişehir / Mersin – Türkiye</div>
+      <div>🕒 Hizmet saatleri: Haftanın 7 günü, 09:00 – 22:00</div>
+    </div>
+  </footer>
+
+  <script>
+    // --- Firebase Config (DEMO, gerçek projenize göre değiştirin) ---
+    const firebaseConfig = {
+      apiKey: "demo-key-123",
+      authDomain: "demo.firebaseapp.com",
+      projectId: "demo-id",
+      storageBucket: "",
+      messagingSenderId: "",
+      appId: ""
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // ----- Giriş/Kayıt Butonları & Kullanıcı Bilgisi -----
+    function updateHeaderAuth() {
+      const userName = localStorage.getItem("userName");
+      const headerActions = document.getElementById("headerActions");
+      headerActions.innerHTML = '';
+      if (userName) {
+        headerActions.innerHTML = `<span class="user-name-badge">${userName}</span>`;
+        document.getElementById("adSoyadText").innerText = userName;
+      } else {
+        headerActions.innerHTML = `
+          <button class="header-btn" onclick="window.location.href='login.html'">Giriş Yap</button>
+          <button class="header-btn" onclick="window.location.href='register.html'">Kayıt Ol</button>
+        `;
+        document.getElementById("adSoyadText").innerText = "Ad Soyad";
+      }
     }
-  };
-  document.getElementById("btnKargoTakip").onclick = function(e){
-    if (isLoggedIn()) {
-      window.location.href = "kargotakip.html";
-    } else {
-      alert("Lütfen giriş yapın veya kayıt olun.");
+    updateHeaderAuth();
+
+    // Firebase Auth ile giriş-çıkış yönetimi
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // userName'i localStorage'a kaydet (varsayım: displayName mevcut)
+        let userName = user.displayName || user.email || "Kullanıcı";
+        localStorage.setItem("userName", userName);
+      } else {
+        localStorage.removeItem("userName");
+      }
+      updateHeaderAuth();
+    });
+
+    // ----- Menü Butonları -----
+    function menuClick(page) {
+      const userName = localStorage.getItem("userName");
+      if (!userName) {
+        alert("Lütfen giriş yapın veya kayıt olun.");
+        return;
+      }
+      window.location.href = page;
     }
-  };
-  // ... diğer kodlar ...
-</script>
+
+    // --- Hesaplama Modülü ---
+    const kategoriMap = {
+      mobilya: { ek: 70, oran: 0 },
+      elektronik: { ek: 0, oran: 0.7 },
+      giyim: { ek: 0, oran: 0.5 },
+      kozmetik: { ek: 0, oran: 0.7 }
+    };
+    const sehirEkstra = {
+      "Lefkoşa": 200,
+      "Girne": 350,
+      "Güzelyurt": 300,
+      "Lefke": 450,
+      "Mağusa": 500,
+      "İskele": 550,
+      "Karpaz": 650
+    };
+
+    document.getElementById("teslimatTipi").addEventListener("change", function() {
+      if (this.value === "eve") {
+        document.getElementById("sehirRow").style.display = "flex";
+        document.getElementById("sehir").setAttribute("required", "required");
+      } else {
+        document.getElementById("sehirRow").style.display = "none";
+        document.getElementById("sehir").removeAttribute("required");
+      }
+    });
+
+    let hesaplandi = false;
+    let hesapBilgileri = {};
+
+    document.getElementById("calculatorForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const userName = localStorage.getItem("userName");
+
+      if (!hesaplandi) {
+        // Hesapla
+        const urunLink = document.getElementById("urunLink").value.trim();
+        const turkiyeFiyati = parseFloat(document.getElementById("turkiyeFiyati").value);
+        const kategori = document.getElementById("kategori").value;
+        const teslimatTipi = document.getElementById("teslimatTipi").value;
+        const sehir = teslimatTipi === "eve" ? document.getElementById("sehir").value : "";
+        if (!urunLink || !turkiyeFiyati || !kategori || !teslimatTipi || (teslimatTipi === "eve" && !sehir)) {
+          alert("Lütfen tüm alanları doldurun!");
+          return;
+        }
+        let toplam = turkiyeFiyati;
+        let aciklama = "";
+        // Kategori ek/çarpan
+        if (kategori === "mobilya") {
+          toplam += 70;
+          aciklama += "+70₺ (Mobilya hizmet bedeli) ";
+        } else if (kategori === "elektronik") {
+          const ek = Math.round(turkiyeFiyati * 0.7);
+          toplam += ek;
+          aciklama += "+%70 (Elektronik hizmet bedeli) ";
+        } else if (kategori === "giyim") {
+          const ek = Math.round(turkiyeFiyati * 0.5);
+          toplam += ek;
+          aciklama += "+%50 (Giyim hizmet bedeli) ";
+        } else if (kategori === "kozmetik") {
+          const ek = Math.round(turkiyeFiyati * 0.7);
+          toplam += ek;
+          aciklama += "+%70 (Kozmetik hizmet bedeli) ";
+        }
+        // Şehir ek ücret
+        let sehirEk = 0;
+        if (teslimatTipi === "eve" && sehirEkstra[sehir]) {
+          sehirEk = sehirEkstra[sehir];
+          toplam += sehirEk;
+          aciklama += `+${sehirEk}₺ (${sehir} ek ücreti)`;
+        }
+        toplam = Math.round(toplam * 100) / 100;
+        document.getElementById("calcResult").innerHTML = `Toplam Hizmet Bedeli: <b>${toplam} ₺</b> <br><span style="font-size:0.97em;color:#666">${aciklama}</span>`;
+        document.getElementById("calcBtn").innerText = "Siparişe Devam Et";
+        hesaplandi = true;
+        hesapBilgileri = { urunLink, turkiyeFiyati, kategori, teslimatTipi, sehir, toplam };
+      } else {
+        // Siparişe devam et
+        if (!userName) {
+          alert("Lütfen giriş yapın veya kayıt olun.");
+          return;
+        }
+        // Bilgileri localStorage veya URL ile aktar
+        localStorage.setItem("siparisBilgisi", JSON.stringify(hesapBilgileri));
+        window.location.href = "siparisver.html";
+      }
+    });
+
+    // Hesaplama değiştiğinde resetle
+    [
+      "urunLink",
+      "turkiyeFiyati",
+      "kategori",
+      "teslimatTipi",
+      "sehir"
+    ].forEach(id => {
+      document.getElementById(id).addEventListener("input", function() {
+        hesaplandi = false;
+        document.getElementById("calcBtn").innerText = "Ücreti Hesapla";
+        document.getElementById("calcResult").innerHTML = "";
+      });
+    });
+
+    // --- Kopyala Butonu ---
+    function copyAddress() {
+      const metin = document.getElementById("adresText").innerText.replace(/<[^>]*>/g, '');
+      navigator.clipboard.writeText(metin).then(function() {
+        alert("Adres panoya kopyalandı!");
+      });
+    }
+  </script>
+</body>
+</html>
