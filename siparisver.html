@@ -3,86 +3,172 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sipariş Ver</title>
+  <title>Sipariş Ver - Kıbrıs Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f5f5f5;
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
       padding: 20px;
     }
+
+    header {
+      background: white;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      text-align: center;
+      position: relative;
+    }
+
     .logo {
-      font-size: 28px;
-      font-weight: bold;
+      font-family: 'Caveat', cursive;
+      font-size: 32px;
+      color: #2c3e50;
+      transform: rotate(-3deg);
       margin-bottom: 10px;
     }
-    .container {
+
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+
+    .nav-buttons a {
+      text-decoration: none;
+      color: #2d4fd3;
+      font-weight: 600;
+      border: 2px solid #2d4fd3;
+      padding: 10px 16px;
+      border-radius: 6px;
       background: #fff;
+      min-width: 120px;
+      text-align: center;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-buttons a:hover {
+      background-color: #2d4fd3;
+      color: #fff;
+    }
+
+    .user-box {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+
+    .user-name {
+      cursor: pointer;
+      font-weight: 600;
+      color: #2d4fd3;
+    }
+
+    .logout-box {
+      display: none;
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 6px;
+      top: 35px;
+      right: 0;
+    }
+
+    .logout-box a {
+      text-decoration: none;
+      color: red;
+      font-weight: 500;
+    }
+
+    .form-container {
+      max-width: 600px;
+      background: #fff;
+      margin: 40px auto;
       padding: 25px;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      max-width: 500px;
-      margin: auto;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2d4fd3;
+    }
+
     label {
       font-weight: 600;
       display: block;
-      margin: 15px 0 5px;
+      margin-top: 15px;
     }
+
     input, select, textarea {
       width: 100%;
       padding: 10px;
+      margin-top: 5px;
       border: 1px solid #ccc;
       border-radius: 6px;
-      margin-bottom: 10px;
     }
+
     button {
       width: 100%;
+      margin-top: 25px;
       padding: 12px;
-      background-color: #007bff;
+      background-color: #2d4fd3;
       color: white;
       border: none;
-      border-radius: 6px;
       font-size: 16px;
+      border-radius: 6px;
       cursor: pointer;
     }
+
     button:hover {
-      background-color: #0056b3;
-    }
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .top-bar a {
-      text-decoration: none;
-      color: #007bff;
+      background-color: #1c3bb3;
     }
   </style>
 </head>
 <body>
 
-  <div class="top-bar">
-    <div class="logo">UTD</div>
-    <a href="index.html">Ana Sayfa</a>
-  </div>
+  <header>
+    <div class="logo">Kıbrıs Online</div>
 
-  <div class="container">
+    <div class="user-box" id="userBox" style="display: none;">
+      <div class="user-name" onclick="toggleLogout()">Ad Soyad</div>
+      <div class="logout-box" id="logoutBox">
+        <a href="#" onclick="logout()">Çıkış Yap</a>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="index.html">Ana Sayfa</a>
+      <a href="siparislerim.html">Siparişlerim</a>
+      <a href="takip.html">Kargo Takip</a>
+      <a href="kayit.html">Kayıt</a>
+      <a href="giris.html">Giriş</a>
+    </div>
+  </header>
+
+  <div class="form-container">
     <h2>Sipariş Ver</h2>
 
-    <!-- Hesaplama Modülü -->
     <label>Ürün Linki:</label>
-    <input type="text" id="urunLink">
+    <input type="url" id="urunLink" placeholder="https://..." required>
 
     <label>Türkiye Fiyatı (₺):</label>
-    <input type="number" id="fiyat">
+    <input type="number" id="fiyat" required>
 
     <label>Kategori:</label>
     <select id="kategori">
       <option value="mobilya">Mobilya</option>
       <option value="elektronik">Elektronik</option>
       <option value="giyim">Giyim</option>
-      <option value="diger">Diğer</option>
+      <option value="kozmetik">Kozmetik</option>
     </select>
 
     <label>Teslimat Tipi:</label>
@@ -91,18 +177,18 @@
       <option value="eve">Eve Teslim</option>
     </select>
 
-    <!-- Ekstra Alanlar -->
-    <label>Sipariş Kodu (Trendyol vb.):</label>
-    <input type="text" id="siparisKodu" placeholder="Örn: TY2025001">
+    <label>Sipariş Kodu (örn. TY12345):</label>
+    <input type="text" id="siparisKodu" placeholder="Trendyol sipariş kodunuz">
 
     <label>Açık Adres:</label>
-    <textarea id="adres" rows="3" placeholder="Açık adresinizi girin..."></textarea>
+    <textarea id="adres" rows="3" placeholder="Lefkoşa, X Mahallesi, No: 12, Daire: 3, Zemin Kat"></textarea>
 
-    <button onclick="onaylaSiparis()">Onayla</button>
+    <p><strong>Toplam Ücret: <span id="sonuc">₺0.00</span></strong></p>
+
+    <button onclick="onaylaSiparis()">Onayla ve Sipariş Ver</button>
   </div>
 
   <script type="module">
-    // Firebase bağlantısı burada olacak
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -131,11 +217,26 @@
 
       try {
         await addDoc(collection(db, "siparisler"), siparis);
-        alert("Siparişiniz alındı!");
+        alert("Sipariş başarıyla kaydedildi!");
         window.location.href = "siparislerim.html";
       } catch (e) {
-        alert("Sipariş gönderilemedi: " + e.message);
+        alert("Hata oluştu: " + e.message);
       }
+    }
+
+    const kullaniciGirisYapti = true;
+    if (kullaniciGirisYapti) {
+      document.getElementById('userBox').style.display = 'block';
+    }
+
+    function toggleLogout() {
+      const box = document.getElementById('logoutBox');
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function logout() {
+      alert('Çıkış yapıldı.');
+      window.location.href = 'index.html';
     }
   </script>
 
