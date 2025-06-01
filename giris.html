@@ -1,151 +1,97 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Giriş Yap - Kıbrıs Online</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #0059b3;
-      --secondary: #00b3a4;
-      --accent: #f5f5f5;
-      --radius: 14px;
-      --shadow: 0 3px 16px rgba(0,0,0,0.07);
-    }
-    * { box-sizing: border-box; }
-    html, body {
-      font-family: 'Montserrat', Arial, sans-serif;
-      margin: 0; padding: 0;
-      background: #fff;
-      color: #20242a;
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
-    .brand-bar {
-      text-align: center;
-      font-size: 1.38rem;
-      color: var(--primary);
-      font-weight: 800;
-      letter-spacing: .7px;
-      margin-top: 38px;
-      margin-bottom: 18px;
-    }
-    .login-container {
-      background: var(--accent);
-      margin: 0 auto;
-      margin-bottom: 22px;
-      max-width: 370px;
-      width: 94vw;
-      padding: 32px 22px 30px 22px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .form-title {
-      text-align: center;
-      font-size: 1.18rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 25px;
-      letter-spacing: .2px;
-    }
-    .form-group {
-      margin-bottom: 14px;
-      display: flex;
-      flex-direction: column;
-    }
-    .form-group label {
-      font-size: 1rem;
-      font-weight: 500;
-      margin-bottom: 6px;
-    }
-    .form-group input {
-      padding: 10px;
-      border-radius: var(--radius);
-      border: 1.2px solid #ccc;
-      outline: none;
-      font-size: 1rem;
-      background: #fff;
-      transition: border .14s;
-    }
-    .form-group input:focus {
-      border-color: var(--primary);
-    }
-    .login-btn {
+
+    .container {
+      background-color: #fff;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       width: 100%;
-      background: var(--primary);
-      color: #fff;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #1f4bd1;
+      color: white;
       border: none;
-      border-radius: var(--radius);
-      padding: 13px 0;
-      font-size: 1.09rem;
-      font-weight: 700;
+      border-radius: 6px;
+      font-size: 16px;
       cursor: pointer;
-      margin-top: 7px;
-      box-shadow: var(--shadow);
-      transition: background .16s;
+      margin-top: 15px;
     }
-    .login-btn:hover { background: var(--secondary);}
-    .register-link {
-      display: block;
-      text-align: center;
-      margin-top: 18px;
-      font-size: 1.01rem;
-      color: #444;
+
+    .footer {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
     }
-    .register-link a {
-      color: var(--primary);
-      font-weight: 600;
-      text-decoration: underline;
-      transition: color .14s;
+
+    .footer a {
+      color: #1f4bd1;
+      text-decoration: none;
     }
-    .register-link a:hover { color: var(--secondary);}
-    footer {
-      margin-top: auto;
-      background: #f6f7f9;
-      padding: 20px 0 22px 0;
-      color: #333;
-      font-size: 1.01rem;
-      text-align: center;
-      border-top: 1.5px solid #e3e9f0;
-      letter-spacing: .1px;
-    }
-    @media (max-width: 600px) {
-      .login-container { padding: 20px 2vw 18px 2vw; }
-      .brand-bar { font-size: 1.07rem; margin-top: 20px;}
+
+    .copyright {
+      margin-top: 40px;
+      font-size: 12px;
+      color: #aaa;
     }
   </style>
 </head>
 <body>
-  <div class="brand-bar">Kıbrıs Online</div>
-  <div class="login-container">
-    <div class="form-title">Giriş Yap</div>
-    <form id="loginForm" autocomplete="off" onsubmit="girisYap(); return false;">
-      <div class="form-group">
-        <label for="email">E-Posta</label>
-        <input type="email" id="email" maxlength="80" required placeholder="E-posta adresiniz">
-      </div>
-      <div class="form-group">
-        <label for="password">Şifre</label>
-        <input type="password" id="password" minlength="6" maxlength="40" required placeholder="Şifreniz">
-      </div>
-      <button type="submit" class="login-btn">Giriş Yap</button>
-    </form>
+
+  <div class="container">
+    <h2>Giriş Yap</h2>
+    <input type="email" id="email" placeholder="E-posta" required />
+    <input type="password" id="password" placeholder="Şifre" required />
+    <button onclick="girisYap()">Giriş Yap</button>
+    <div class="footer">
+      Hesabınız yok mu? <a href="kayıtol.html">Kayıt Ol</a>
+    </div>
   </div>
-  <div class="register-link">
-    Hesabınız yok mu? <a href="kayıtol.html">Kayıt Ol</a>
-  </div>
-  <footer>
-    © 2025 Kıbrıs Online – Tüm hakları saklıdır.
-  </footer>
-  <script>
-    // Firebase config
+
+  <div class="copyright">© 2025 Kıbrıs Online – Tüm hakları saklıdır.</div>
+
+  <!-- Firebase ve JS bağlantıları -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
     const firebaseConfig = {
       apiKey: "AIzaSyBw9GP1srYUgPf9sqlpLu_ZnqM8w0Iau4Y",
       authDomain: "kibrisonline-b5cf3.firebaseapp.com",
@@ -155,9 +101,12 @@
       appId: "1:673734723670:web:55c7a34e22b1ad26e453f7",
       measurementId: "G-D5P5SGGPB8"
     };
-    firebase.initializeApp(firebaseConfig);
 
-    async function girisYap() {
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window.girisYap = function () {
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
@@ -166,23 +115,25 @@
         return;
       }
 
-      try {
-        // Firebase Authentication ile giriş
-        const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
-        const user = userCredential.user;
-        // Firestore'dan adSoyad bilgisini çek
-        const userDoc = await firebase.firestore().collection("users").doc(user.uid).get();
-        if (userDoc.exists) {
-          const adSoyad = userDoc.data().adSoyad || "";
-          localStorage.setItem("userName", adSoyad);
-          window.location.href = "index.html";
-        } else {
-          alert("Kullanıcı bilgisi bulunamadı.");
-        }
-      } catch (error) {
-        alert("Giriş başarısız: " + error.message);
-      }
-    }
+      signInWithEmailAndPassword(auth, email, password)
+        .then(async (userCredential) => {
+          const uid = userCredential.user.uid;
+          const docRef = doc(db, "users", uid);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            const userName = docSnap.data().adSoyad;
+            localStorage.setItem("userName", userName);
+            window.location.href = "index.html";
+          } else {
+            alert("Kullanıcı bilgisi bulunamadı.");
+          }
+        })
+        .catch((error) => {
+          alert("Giriş başarısız: " + error.message);
+        });
+    };
   </script>
+
 </body>
 </html>
