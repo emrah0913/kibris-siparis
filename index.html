@@ -1,222 +1,418 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kıbrıs Türkiye Online Alışveriş</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <title>Türkiye’den Kıbrıs’a Teslimat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Firebase App (the core Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background-color: #f5f7fb; color: #333; }
-
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f4f8fb;
+    }
     header {
-      background-color: #fff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      position: relative;
+      background: #003366;
+      color: #fff;
+      text-align: center;
+      padding-bottom: 0;
     }
-
-    .logo {
-      font-size: 1.5em;
-      font-weight: 700;
-      color: #2c3e50;
-    }
-
-    .user-info {
-      font-weight: 600;
-      color: #2c3e50;
-    }
-
-    .hero {
-      background: url('https://globelink-unimar.com/wp-content/uploads/2022/05/gemi-tasimaciligi-neden-tercih-edilmelidir.jpg') no-repeat center center/cover;
+    .ship-img-container {
+      width: 100%;
       height: 320px;
+      overflow: hidden;
+      position: relative;
+      background: #003366;
+    }
+    .ship-img-container img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      opacity: 0.85;
+      filter: brightness(0.8);
+    }
+    .title-overlay {
+      position: absolute;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      color: #fff;
+      z-index: 2;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-shadow: 0 6px 32px #000a, 0 1px 0 #003366;
+    }
+    .subtitle-overlay {
+      position: absolute;
+      top: 150px;
+      left: 0;
+      width: 100%;
+      color: #fff;
+      z-index: 2;
+      font-size: 1.4rem;
+      text-shadow: 0 2px 14px #000a;
+    }
+    .top-right {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      z-index: 10;
+      font-size: 1rem;
+    }
+    .top-right a, .top-right span {
+      background: #fff;
+      color: #003366;
+      padding: 8px 16px;
+      border-radius: 20px;
+      margin-left: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 2px 8px #0001;
+      transition: background 0.2s, color 0.2s;
+    }
+    .top-right a:hover {
+      background: #003366;
+      color: #fff;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      background: #fff;
+      box-shadow: 0 2px 6px #00336610;
+      padding: 18px 0 12px 0;
+      margin-bottom: 18px;
+      margin-top: -20px;
+      position: relative;
+      z-index: 2;
+    }
+    nav button {
+      background: #003366;
+      color: #fff;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 24px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    nav button:hover {
+      background: #0057b8;
+    }
+    main {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      color: white;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-      text-align: center;
-      padding: 20px;
+      min-height: 60vh;
     }
-
-    .hero h1 { font-size: 2.5em; }
-    .hero p { font-size: 1.2em; margin-top: 10px; }
-
-    .nav-buttons {
-      margin: 30px auto 10px;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .nav-buttons a {
-      background-color: #2c3e50;
-      color: white;
-      text-decoration: none;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-weight: 500;
-    }
-
     .calculator {
-      max-width: 400px;
-      margin: 30px auto;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px #0001;
+      padding: 36px 36px 20px 36px;
+      margin: 36px 0 0 0;
+      width: 100%;
+      max-width: 470px;
+      text-align: left;
+      position: relative;
+      z-index: 1;
     }
-
+    .calculator label {
+      font-weight: 500;
+      margin-top: 8px;
+      display: block;
+    }
     .calculator input, .calculator select {
+      display: block;
       width: 100%;
-      margin-top: 12px;
+      margin-top: 6px;
+      margin-bottom: 16px;
       padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    .calculator button {
-      margin-top: 15px;
-      width: 100%;
-      background-color: #2c3e50;
-      color: white;
-      padding: 12px;
-      border: none;
       border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1.02rem;
+    }
+    .calculator button {
+      width: 100%;
+      background: #003366;
+      color: #fff;
+      border: none;
+      padding: 12px 0;
+      border-radius: 24px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .calculator button:hover {
+      background: #0057b8;
+    }
+    .result {
+      text-align: center;
+      padding: 12px 0 0 0;
+      font-size: 1.2rem;
+      color: #006400;
       font-weight: 600;
     }
-
-    .platform-logos {
-      margin-top: 40px;
+    .shop-logos {
+      margin: 32px 0 0 0;
       display: flex;
       justify-content: center;
-      gap: 15px;
+      gap: 30px;
       flex-wrap: wrap;
     }
-
-    .platform-logos img {
-      width: 80px;
-      height: auto;
+    .shop-logos img {
+      width: 70px;
+      height: 42px;
+      object-fit: contain;
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: transform 0.18s;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px #0002;
     }
-
-    .platform-logos img:hover {
-      transform: scale(1.05);
+    .shop-logos img:hover {
+      transform: scale(1.13);
+      box-shadow: 0 4px 16px #0002;
     }
-
+    footer {
+      background: #003366;
+      color: #fff;
+      padding: 36px 0 12px 0;
+      margin-top: 40px;
+    }
     .faq {
-      margin: 60px auto;
-      max-width: 700px;
-      padding: 20px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: left;
     }
-
     .faq h2 {
-      font-size: 1.5em;
-      margin-bottom: 15px;
-      color: #2c3e50;
+      font-size: 1.4rem;
+      margin-bottom: 14px;
     }
-
-    .faq p {
-      margin-bottom: 10px;
-      line-height: 1.6;
+    .faq-details {
+      margin-bottom: 14px;
+      background: #fff;
+      color: #003366;
+      border-radius: 7px;
+      padding: 10px 16px;
+      box-shadow: 0 2px 8px #0001;
+      cursor: pointer;
+      font-weight: 500;
+      transition: box-shadow 0.18s;
+    }
+    .faq-details[open] {
+      box-shadow: 0 4px 16px #0002;
+    }
+    .faq-details summary {
+      font-size: 1.07rem;
+      outline: none;
+    }
+    @media (max-width: 600px) {
+      .ship-img-container, .ship-img-container img { height: 190px; }
+      .title-overlay { font-size: 1.25rem; top: 35px;}
+      .subtitle-overlay { font-size: 1rem; top: 90px;}
+      nav { gap: 10px; }
+      .calculator { padding: 18px 6vw 12px 6vw; margin: 18px 0 0 0;}
+      .shop-logos { gap: 12px; }
+      .faq { padding: 0 3vw;}
+      .top-right { right: 10px; top: 15px;}
     }
   </style>
 </head>
 <body>
-
   <header>
-    <div class="logo">Kıbrıs Online</div>
-    <div class="user-info" id="userNameArea">Giriş Yap</div>
+    <div class="ship-img-container">
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80"
+        alt="Büyük Gemi">
+      <div class="title-overlay">Türkiye’den Kıbrıs’a Teslimat</div>
+      <div class="subtitle-overlay">Hızlı ve Güvenilir Kargo Hizmeti</div>
+      <div class="top-right" id="userPanel">
+        <!-- Giriş/Kayıt veya Kullanıcı adı dinamik olarak JS ile doldurulacak -->
+      </div>
+    </div>
+    <nav>
+      <button onclick="gotoPage('siparis')">Sipariş Ver</button>
+      <button onclick="gotoPage('siparislerim')">Siparişlerim</button>
+      <button onclick="gotoPage('kargo')">Kargo Takip</button>
+    </nav>
   </header>
+  <main>
+    <div class="calculator" id="calculator">
+      <form id="calcForm" autocomplete="off" onsubmit="return false;">
+        <label for="productLink">Ürün Linki</label>
+        <input type="url" id="productLink" placeholder="Örn: https://www.trendyol.com/..." required>
 
-  <section class="hero">
-    <h1>Türkiye’den Kıbrıs’a Teslimat</h1>
-    <p>Hızlı ve Güvenilir Kargo Hizmeti</p>
-  </section>
+        <label for="productPrice">Türkiye Fiyatı (₺)</label>
+        <input type="number" min="1" id="productPrice" placeholder="Fiyat" required>
 
-  <div class="nav-buttons">
-    <a href="siparisver.html" id="siparisVerBtn">Sipariş Ver</a>
-    <a href="siparislerim.html" id="siparislerimBtn">Siparişlerim</a>
-    <a href="kargotakip.html" id="kargoTakipBtn">Kargo Takip</a>
-  </div>
+        <label for="category">Kategori</label>
+        <select id="category" required>
+          <option value="">Seçiniz</option>
+          <option value="mobilya">Mobilya</option>
+          <option value="elektronik">Elektronik</option>
+          <option value="giyim">Giyim</option>
+          <option value="kozmetik">Kozmetik</option>
+          <option value="kitap">Kitap</option>
+          <option value="aksesuar">Aksesuar</option>
+          <option value="diğer">Diğer</option>
+        </select>
 
-  <div class="calculator">
-    <h3>Fiyat Hesaplama</h3>
-    <input type="text" id="urunLinki" placeholder="Ürün Linki">
-    <input type="number" id="turkiyeFiyati" placeholder="Türkiye Fiyatı (₺)">
-    <select id="kategori">
-      <option value="">Kategori Seçin</option>
-      <option value="mobilya">Mobilya</option>
-      <option value="elektronik">Elektronik</option>
-      <option value="giyim">Giyim</option>
-    </select>
-    <select id="teslimat">
-      <option value="">Teslimat Tipi</option>
-      <option value="ev">Eve Teslim</option>
-      <option value="depo">Depodan Teslim</option>
-    </select>
-    <button onclick="hesapla()">Ücreti Hesapla</button>
-    <p id="sonuc" style="margin-top:15px; font-weight:600;"></p>
-  </div>
+        <label for="deliveryType">Teslimat Tipi</label>
+        <select id="deliveryType" required>
+          <option value="">Seçiniz</option>
+          <option value="eve">Eve Teslim</option>
+          <option value="depo">Depodan Teslim</option>
+        </select>
 
-  <div class="platform-logos">
-    <a href="https://www.trendyol.com/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/Trendyol_logo.svg" alt="Trendyol"></a>
-    <a href="https://www.hepsiburada.com/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Hepsiburada_logo.svg" alt="Hepsiburada"></a>
-    <a href="https://www.n11.com/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/N11_logo.svg" alt="n11"></a>
-    <a href="https://www.amazon.com.tr/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon"></a>
-    <a href="https://www.ciceksepeti.com/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/3/39/CicekSepeti_logo.svg" alt="ÇiçekSepeti"></a>
-  </div>
-
-  <div class="faq">
-    <h2>Sıkça Sorulan Sorular</h2>
-    <p><strong>S: Türkiye’den aldığım ürün ne zaman gelir?</strong><br> Cevap: Teslimat süresi ortalama 3-7 iş günüdür.</p>
-    <p><strong>S: Hangi sitelerden alışveriş yapabilirim?</strong><br> Cevap: Trendyol, Hepsiburada, n11, Amazon ve ÇiçekSepeti gibi tüm büyük e-ticaret siteleri desteklenmektedir.</p>
-    <p><strong>S: Teslimat adresi nereye yazılmalı?</strong><br> Cevap: Sistemimizin belirttiği Türkiye adresini sipariş sırasında kargo adresi olarak yazmalısınız.</p>
-  </div>
-
+        <button type="submit">Ücreti Hesapla</button>
+      </form>
+      <div class="result" id="calcResult"></div>
+    </div>
+    <div class="shop-logos">
+      <a href="https://www.trendyol.com/" target="_blank"><img src="https://cdn.worldvectorlogo.com/logos/trendyol-1.svg" alt="Trendyol"></a>
+      <a href="https://www.hepsiburada.com/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Hepsiburada_logo.svg" alt="Hepsiburada"></a>
+      <a href="https://www.n11.com/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/N11_logo.svg" alt="n11"></a>
+      <a href="https://www.amazon.com.tr/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon"></a>
+      <a href="https://www.ciceksepeti.com/" target="_blank"><img src="https://cdn.ciceksepeti.net/assets/images/newdesign/logo-ciceksepeti-white.svg" alt="ÇiçekSepeti" style="background:#00bfae;padding:6px;"></a>
+    </div>
+  </main>
+  <footer>
+    <div class="faq">
+      <h2>SSS - Sıkça Sorulan Sorular</h2>
+      <details class="faq-details">
+        <summary>Kargo teslimat süresi ne kadar?</summary>
+        Kargonuz Türkiye’den Kıbrıs’a ortalama 2-5 iş günü içerisinde teslim edilir.
+      </details>
+      <details class="faq-details">
+        <summary>Hangi kategorilerde ürün siparişi verebilirim?</summary>
+        Mobilya, elektronik, giyim, kozmetik, kitap, aksesuar ve diğer çoğu kategoride sipariş verebilirsiniz.
+      </details>
+      <details class="faq-details">
+        <summary>Kargo ücreti nasıl hesaplanıyor?</summary>
+        Ürün fiyatı, kategoriye göre gümrük ve hizmet bedeli ile teslimat tipine göre kargo ücreti eklenerek toplam ücret hesaplanır.
+      </details>
+      <details class="faq-details">
+        <summary>Kapıda ödeme var mı?</summary>
+        Şu anda sadece online ödeme kabul edilmektedir.
+      </details>
+      <details class="faq-details">
+        <summary>Destek için nasıl ulaşabilirim?</summary>
+        Destek için <a href="mailto:destek@kibriskargo.com" style="color:#0057b8">destek@kibriskargo.com</a> adresine yazabilirsiniz.
+      </details>
+    </div>
+    <div style="text-align:center;margin-top:24px;font-size:0.96em;color:#cfd8dc;">
+      &copy; 2025 Türkiye’den Kıbrıs’a Teslimat. Tüm Hakları Saklıdır.
+    </div>
+  </footer>
   <script>
-    function hesapla() {
-      const fiyat = parseFloat(document.getElementById("turkiyeFiyati").value);
-      const teslimat = document.getElementById("teslimat").value;
-      if (isNaN(fiyat) || !teslimat) {
-        document.getElementById("sonuc").textContent = "Lütfen tüm alanları doldurun.";
+    // Firebase config (kendi config'iniz ile değiştirin!)
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // Kullanıcı bilgisi kontrolü
+    function renderUserPanel() {
+      const userPanel = document.getElementById('userPanel');
+      const userName = localStorage.getItem('userName');
+      if (userName) {
+        userPanel.innerHTML = `<span>${userName}</span> <a href="#" onclick="logout()">Çıkış Yap</a>`;
+      } else {
+        userPanel.innerHTML = `
+          <a href="login.html">Giriş Yap</a>
+          <a href="register.html">Kayıt Ol</a>
+        `;
+      }
+    }
+    renderUserPanel();
+
+    // Çıkış işlevi
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        localStorage.removeItem('userName');
+        window.location.reload();
+      });
+    }
+
+    // Menü yönlendirme ve giriş kontrolü
+    function gotoPage(page) {
+      const userName = localStorage.getItem('userName');
+      let url = "#";
+      if (page === 'siparis') url = "siparis-ver.html";
+      if (page === 'siparislerim') url = "siparislerim.html";
+      if (page === 'kargo') url = "kargo-takip.html";
+      if (!userName) {
+        alert("Lütfen giriş yapın veya kayıt olun.");
         return;
       }
-      let hizmetBedeli = teslimat === "ev" ? 140 : 100;
-      let toplam = fiyat + hizmetBedeli;
-      document.getElementById("sonuc").textContent = "Tahmini Toplam Ücret: ₺" + toplam.toFixed(2);
+      window.location.href = url;
     }
 
-    // Giriş yapan kullanıcının adını göster
-    const userName = localStorage.getItem("userName");
-    if (userName) {
-      document.getElementById("userNameArea").textContent = userName;
+    // Hesaplama modülü
+    document.getElementById('calcForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const link = document.getElementById('productLink').value.trim();
+      const price = parseFloat(document.getElementById('productPrice').value);
+      const category = document.getElementById('category').value;
+      const deliveryType = document.getElementById('deliveryType').value;
+
+      // Basit ücret hesaplama (örnek oranlar - backend ile güncellenmeli!)
+      let serviceFee = 0.09; // Hizmet bedeli (%9)
+      let baseShipping = deliveryType === 'eve' ? 380 : 200; // Eve/Depo
+      let categoryFee = 0;
+      switch(category) {
+        case 'mobilya': categoryFee = 0.08; break;
+        case 'elektronik': categoryFee = 0.10; break;
+        case 'giyim': categoryFee = 0.06; break;
+        case 'kozmetik': categoryFee = 0.05; break;
+        case 'kitap': categoryFee = 0.03; break;
+        case 'aksesuar': categoryFee = 0.05; break;
+        default: categoryFee = 0.07;
+      }
+      const total = Math.round(price * (1 + serviceFee + categoryFee) + baseShipping);
+
+      const result = `
+        <div>
+          <span style="font-weight:500;">Toplam Tahmini Ücret:</span> <span style="color:#003366;font-size:1.3em;">${total} ₺</span>
+          <br>
+          <button style="margin-top:10px;padding:8px 24px;border-radius:20px;background:#0057b8;color:#fff;border:none;font-size:1.05em;cursor:pointer;" onclick="goToOrderAfterCalc('${link}',${price},'${category}','${deliveryType}')">Sipariş Ver</button>
+        </div>
+      `;
+      document.getElementById('calcResult').innerHTML = result;
+    });
+
+    // Hesaplama sonrası Sipariş Ver yönlendirmesi
+    function goToOrderAfterCalc(link, price, category, deliveryType) {
+      const userName = localStorage.getItem('userName');
+      if (!userName) {
+        alert("Lütfen giriş yapın veya kayıt olun.");
+        return;
+      }
+      // Bilgilerle sipariş sayfasına yönlendirme (query string ile gönderebilirsiniz)
+      window.location.href = `siparis-ver.html?link=${encodeURIComponent(link)}&price=${price}&category=${category}&deliveryType=${deliveryType}`;
     }
 
-    // Giriş yapmayanlara buton engeli
-    const korumaliButonlar = [
-      { id: "siparisVerBtn" },
-      { id: "siparislerimBtn" },
-      { id: "kargoTakipBtn" }
-    ];
-
-    korumaliButonlar.forEach(b => {
-      const btn = document.getElementById(b.id);
-      if (btn) {
-        btn.addEventListener("click", function (e) {
-          if (!userName) {
-            e.preventDefault();
-            alert("Lütfen giriş yapın veya kayıt olun.");
-          }
-        });
+    // Oturum değişikliklerinde paneli güncelle
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user && !localStorage.getItem('userName')) {
+        // Firebaseden displayName veya email ile localStorage güncellenir (örnek)
+        const adSoyad = user.displayName || (user.email ? user.email.split('@')[0] : "Kullanıcı");
+        localStorage.setItem('userName', adSoyad);
+        renderUserPanel();
+      }
+      if (!user && localStorage.getItem('userName')) {
+        localStorage.removeItem('userName');
+        renderUserPanel();
       }
     });
   </script>
