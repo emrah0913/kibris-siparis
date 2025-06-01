@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giriş Yap - Kıbrıs Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      position: relative;
+      background: white;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .logo {
+      font-family: 'Caveat', cursive;
+      font-size: 32px;
+      color: #2c3e50;
+      transform: rotate(-3deg);
+    }
+
+    .anasayfa-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 2px solid #2d4fd3;
+      background: white;
+      color: #2d4fd3;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .form-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(100vh - 80px);
+    }
+
+    .form-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2d4fd3;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      background-color: #2d4fd3;
+      color: white;
+      padding: 12px;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1c37a3;
+    }
+
+    .signup-link {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .signup-link a {
+      color: #2d4fd3;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Kıbrıs Online</div>
+  <button class="anasayfa-btn" onclick="window.location.href='index.html'">Ana Sayfa</button>
+</header>
+
+<div class="form-wrapper">
+  <div class="form-container">
+    <h2>Giriş Yap</h2>
+    <form id="girisForm">
+      <input type="email" id="email" placeholder="E-posta" required>
+      <input type="password" id="sifre" placeholder="Şifre" required>
+      <button type="submit">Giriş Yap</button>
+    </form>
+    <div class="signup-link">
+      Henüz üye değil misiniz? <a href="kayit.html">Kayıt Ol</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById("girisForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const girilenEmail = document.getElementById("email").value;
+    const girilenSifre = document.getElementById("sifre").value;
+
+    const kayitliKullanici = JSON.parse(localStorage.getItem("kullanici"));
+
+    if (kayitliKullanici && 
+        kayitliKullanici.email === girilenEmail && 
+        kayitliKullanici.sifre === girilenSifre) {
+      alert("Giriş başarılı! Ana sayfaya yönlendiriliyorsunuz...");
+      window.location.href = "index.html";
+    } else {
+      alert("E-posta veya şifre hatalı. Lütfen tekrar deneyin.");
+    }
+  });
+</script>
+
+</body>
+</html>
