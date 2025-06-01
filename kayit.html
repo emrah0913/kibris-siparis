@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="tr">
-<header style="position: relative; background: white; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
-  <div class="logo" style="font-family: 'Caveat', cursive; font-size: 32px; color: #2c3e50; transform: rotate(-3deg);">
-    Kıbrıs Online
-  </div>
-  <div style="position: absolute; top: 15px; right: 20px;">
-    <button onclick="window.location.href='index.html'" 
-      style="font-size: 12px; font-weight: 600; border: 2px solid #2d4fd3; background: white; color: #2d4fd3; padding: 6px 12px; border-radius: 6px; cursor: pointer;">
-      Ana Sayfa
-    </button>
-  </div>
-</header>
-
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kayıt Ol - Kıbrıs Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+    header {
       position: relative;
       background: white;
       padding: 15px;
@@ -24,28 +26,12 @@
       color: #2c3e50;
       transform: rotate(-3deg);
     }
-    .anasayfa-btn {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      border: 2px solid #2d4fd3;
-      background: white;
-      color: #2d4fd3;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .anasayfa-btn:hover {
-      background-color: #2d4fd3;
-      color: white;
-    }
+
     .form-wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: calc(100vh - 60px);
+      height: calc(100vh - 80px);
     }
     .form-container {
       background: #fff;
@@ -95,27 +81,9 @@
   </style>
 </head>
 <body>
-
-<header style="background: white; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: relative; text-align: center;">
-  <div class="logo" style="font-family: 'Caveat', cursive; font-size: 32px; color: #2c3e50; transform: rotate(-3deg);">
-    Kıbrıs Online
-  </div>
-  <button onclick="window.location.href='index.html'" 
-    style="
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 13px;
-      font-weight: 600;
-      border: 2px solid #2d4fd3;
-      background-color: #fff;
-      color: #2d4fd3;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-    ">
-    Ana Sayfa
-  </button>
+<header style="position: relative;">
+  <div class="logo">Kıbrıs Online</div>
+  <button class="anasayfa-btn" onclick="window.location.href='index.html'">Ana Sayfa</button>
 </header>
 
 
