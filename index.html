@@ -33,7 +33,7 @@
       display: flex;
       gap: 12px;
     }
-    .menu button {
+    .menu button, .menu a {
       padding: 8px 16px;
       background: #2d4fd3;
       color: #fff;
@@ -41,9 +41,15 @@
       border-radius: 5px;
       font-weight: 600;
       cursor: pointer;
+      text-decoration: none;
     }
-    .menu button:hover {
+    .menu button:hover, .menu a:hover {
       background: #1d378d;
+    }
+    .welcome-text {
+      font-weight: 600;
+      color: #2d4fd3;
+      margin-right: 10px;
     }
     main {
       padding: 40px;
@@ -54,9 +60,7 @@
 <body>
   <header>
     <div class="logo">Kıbrıs Online</div>
-    <div class="menu" id="menuBar">
-      <!-- Giriş butonu burada belirecek -->
-    </div>
+    <div class="menu" id="menuBar"></div>
   </header>
   <main>
     <h1>Türkiye'den Kıbrıs'a Teslimat</h1>
@@ -79,33 +83,49 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-
     const menuBar = document.getElementById("menuBar");
 
-    onAuthStateChanged(auth, (user) => {
+    function renderMenu(user) {
       menuBar.innerHTML = "";
       if (user) {
         const name = user.displayName || "Kullanıcı";
         menuBar.innerHTML = `
-          <span>Hoşgeldin, ${name}</span>
-          <button id="logoutBtn">Çıkış</button>
+          <span class="welcome-text">Hoşgeldiniz, ${name}</span>
+          <a class="menu-btn" href="siparislerim.html">Siparişlerim</a>
+          <a class="menu-btn" href="kargo.html">Kargo Takip</a>
+          <button class="menu-btn" id="logoutBtn">Çıkış Yap</button>
         `;
         document.getElementById("logoutBtn").onclick = async () => {
           await signOut(auth);
+          localStorage.removeItem("userName");
+          location.reload();
         };
       } else {
         menuBar.innerHTML = `
-          <button id="loginBtn">Google ile Giriş Yap</button>
+          <button class="menu-btn" id="googleSignInBtn">Google ile Giriş Yap</button>
         `;
-        document.getElementById("loginBtn").onclick = async () => {
+        document.getElementById("googleSignInBtn").onclick = async () => {
           const provider = new GoogleAuthProvider();
           try {
-            await signInWithPopup(auth, provider);
-          } catch (error) {
-            alert("Giriş işlemi başarısız.");
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            if (user) {
+              localStorage.setItem("userName", user.displayName || "");
+              location.reload();
+            }
+          } catch (e) {
+            if (e.code === "auth/unauthorized-domain") {
+              alert("⚠️ Alan adınız Firebase'e eklenmemiş. Firebase Console > Authentication > Authorized Domains bölümünü kontrol edin.");
+            } else {
+              alert("Giriş başarısız: " + e.message);
+            }
           }
         };
       }
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      renderMenu(user);
     });
   </script>
 </body>
