@@ -30,12 +30,15 @@
     }
 
     .nav-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      padding: 10px;
-      margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  margin-top: 10px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
     }
 
     .nav-buttons a {
@@ -108,7 +111,9 @@
       justify-content: center;
       gap: 20px;
       padding: 20px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+
     }
 
     .platform-logos img {
