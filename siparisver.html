@@ -166,9 +166,9 @@
       const fiyat = parseFloat(document.getElementById('fiyat').value);
       const kategori = document.getElementById('kategori').value;
       const teslimat = document.getElementById('teslimat').value;
+      const siparisKodu = document.getElementById('siparisKodu').value.trim();
       const adres = document.getElementById('adres')?.value || '';
       const acikAdres = document.getElementById('acikAdres')?.value.trim() || '';
-      const siparisKodu = document.getElementById('siparisKodu').value.trim();
 
       if (!urunLink || isNaN(fiyat) || !kategori || !teslimat || !siparisKodu) {
         alert("Lütfen tüm alanları eksiksiz doldurun.");
@@ -185,9 +185,9 @@
         fiyat,
         kategori,
         teslimat,
+        siparisKodu,
         adres,
         acikAdres,
-        siparisKodu,
         toplam: document.getElementById('sonuc').textContent,
         tarih: new Date().toISOString()
       };
@@ -213,6 +213,7 @@
         adresSecimi.style.display = "none";
         acikAdresKutu.style.display = "none";
       }
+
       hesapla();
     }
 
