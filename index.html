@@ -312,4 +312,112 @@
     // localStorage.setItem("kullaniciAdSoyad", "Emrah Yılmaz");
   </script>
 </body>
+<!-- ... (önceki kodlar) ... -->
+        <p><strong>Toplam Ücret: <span id="sonuc">₺0.00</span></strong></p>
+        <a href="siparisver.html" id="siparisVerBtn" class="siparis-ver-btn" style="background-color: #2d4fd3; color: white; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-decoration: none;">Sipariş Ver</a>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    // Kullanıcı giriş durumu
+    function checkUserLogin() {
+      const kullanici = localStorage.getItem("kullaniciAdSoyad");
+      const userBox = document.getElementById("userBox");
+      const girisBox = document.getElementById("girisBox");
+      const userName = document.getElementById("userName");
+      if (kullanici) {
+        userBox.style.display = "block";
+        girisBox.style.display = "none";
+        userName.textContent = kullanici;
+      } else {
+        userBox.style.display = "none";
+        girisBox.style.display = "flex";
+      }
+    }
+    checkUserLogin();
+
+    function toggleLogout() {
+      const box = document.getElementById('logoutBox');
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+    function logout() {
+      localStorage.removeItem("kullaniciAdSoyad");
+      window.location.reload();
+    }
+
+    function toggleAdres() {
+      const teslimat = document.getElementById('teslimat').value;
+      document.getElementById('adresSelect').style.display = teslimat === 'eve' ? 'block' : 'none';
+      hesapla();
+    }
+
+    document.getElementById('fiyat').addEventListener('input', hesapla);
+    document.getElementById('kategori').addEventListener('change', hesapla);
+    document.getElementById('teslimat').addEventListener('change', hesapla);
+    document.getElementById('adres').addEventListener('change', hesapla);
+
+    function hesapla() {
+      const fiyat = parseFloat(document.getElementById('fiyat').value) || 0;
+      const kategori = document.getElementById('kategori').value;
+      const teslimat = document.getElementById('teslimat').value;
+      const adres = document.getElementById('adres')?.value;
+      let oran = 0;
+      if (kategori === 'mobilya') oran = 0.70;
+      else if (kategori === 'elektronik') oran = 0.70;
+      else if (kategori === 'giyim') oran = 0.40;
+      else if (kategori === 'kozmetik') oran = 0.65;
+      let adresUcreti = 0;
+      if (teslimat === 'eve') {
+        if (adres === 'lefkoşa') adresUcreti = 200;
+        else if (adres === 'girne') adresUcreti = 350;
+        else if (adres === 'magusa') adresUcreti = 500;
+        else if (adres === 'guzelyurt') adresUcreti = 400;
+        else if (adres === 'lefke') adresUcreti = 500;
+        else if (adres === 'iskele') adresUcreti = 550;
+        else if (adres === 'karpaz') adresUcreti = 650;
+      }
+      const toplam = fiyat * (1 + oran) + adresUcreti;
+      document.getElementById('sonuc').textContent = `₺${toplam.toFixed(2)}`;
+    }
+
+    // Dışarı tıklayınca logout kutusu kapansın
+    document.addEventListener('click', function(event) {
+      const logoutBox = document.getElementById('logoutBox');
+      const userName = document.getElementById('userName');
+      if (logoutBox && userName && !logoutBox.contains(event.target) && event.target !== userName) {
+        logoutBox.style.display = 'none';
+      }
+    });
+
+    // Giriş kontrolü gereken butonlar
+    document.addEventListener("DOMContentLoaded", function () {
+      function isUserLoggedIn() {
+        return localStorage.getItem("userName") !== null;
+      }
+
+      function requireLoginAlert() {
+        alert("Lütfen giriş yapın veya kayıt olun.");
+      }
+
+      const buttonsToProtect = [
+        { selector: "#siparisVerBtn" },
+        { selector: "#siparislerimBtn" },
+        { selector: "#kargoTakipBtn" }
+      ];
+
+      buttonsToProtect.forEach(({ selector }) => {
+        const button = document.querySelector(selector);
+        if (button) {
+          button.addEventListener("click", function (e) {
+            if (!isUserLoggedIn()) {
+              e.preventDefault();
+              requireLoginAlert();
+            }
+          });
+        }
+      });
+    });
+  </script>
+</body>
 </html>
