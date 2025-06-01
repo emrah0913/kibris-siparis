@@ -2,112 +2,87 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Kayıt Ol - Kıbrıs Online</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kayıt Ol</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
       background-color: #f4f6f9;
-      padding: 40px;
-    }
-
-    header {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      margin-bottom: 40px;
+      height: 100vh;
+      margin: 0;
     }
-
-    .logo {
-      font-family: 'Caveat', cursive;
-      font-size: 32px;
-      margin-left: 20px;
-      color: #2c3e50;
-      transform: rotate(-3deg);
-    }
-
-    nav a {
-      margin-right: 20px;
-      text-decoration: none;
-      color: #333;
-      font-weight: 500;
-    }
-
     .form-container {
       background: #fff;
-      max-width: 500px;
-      margin: auto;
       padding: 30px;
-      border-radius: 12px;
+      border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
     }
-
     h2 {
       text-align: center;
       margin-bottom: 20px;
+      color: #2d4fd3;
     }
-
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: 600;
-    }
-
     input {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
+      padding: 12px;
+      margin-bottom: 15px;
       border: 1px solid #ccc;
       border-radius: 6px;
     }
-
     button {
-      margin-top: 20px;
       width: 100%;
-      padding: 12px;
       background-color: #2d4fd3;
       color: white;
+      padding: 12px;
+      font-weight: 600;
       border: none;
       border-radius: 6px;
-      font-size: 16px;
       cursor: pointer;
     }
-
     button:hover {
-      background-color: #223fa7;
+      background-color: #1c37a3;
     }
   </style>
 </head>
 <body>
-
-  <header>
-    <div class="logo">Kıbrıs Online</div>
-    <nav>
-      <a href="index.html">Ana Sayfa</a>
-      <a href="giris.html">Giriş Yap</a>
-    </nav>
-  </header>
-
   <div class="form-container">
     <h2>Kayıt Ol</h2>
-    <form onsubmit="event.preventDefault(); window.location.href='index.html';">
-      <label>Ad Soyad</label>
-      <input type="text" required>
-
-      <label>Telefon</label>
-      <input type="tel" required>
-
-      <label>E-posta</label>
-      <input type="email" required>
-
-      <label>Şifre</label>
-      <input type="password" required>
-
+    <form id="kayitForm">
+      <input type="text" id="adsoyad" placeholder="Ad Soyad" required>
+      <input type="email" id="email" placeholder="E-posta" required>
+      <input type="tel" id="telefon" placeholder="Telefon" required>
+      <input type="password" id="sifre" placeholder="Şifre" required>
       <button type="submit">Kayıt Ol</button>
     </form>
   </div>
 
+  <script>
+    document.getElementById("kayitForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const adsoyad = document.getElementById("adsoyad").value;
+      const email = document.getElementById("email").value;
+      const telefon = document.getElementById("telefon").value;
+      const sifre = document.getElementById("sifre").value;
+
+      // localStorage örneği (Firebase'e entegre edeceksen burayı değiştireceğiz)
+      const musteri = {
+        adsoyad,
+        email,
+        telefon,
+        sifre
+      };
+
+      localStorage.setItem("kullanici", JSON.stringify(musteri));
+      alert("Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...");
+      window.location.href = "giris.html";
+    });
+  </script>
 </body>
 </html>
