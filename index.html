@@ -50,11 +50,21 @@
       position: absolute;
       top: 15px;
       right: 15px;
+      z-index: 100;
     }
     .user-name {
       cursor: pointer;
       font-weight: 600;
       color: #2d4fd3;
+      background: #f4f6f9;
+      padding: 6px 15px;
+      border-radius: 6px;
+      border: 1px solid #2d4fd3;
+      transition: background 0.2s;
+      display: inline-block;
+    }
+    .user-name:hover {
+      background: #e9edfa;
     }
     .logout-box {
       display: none;
@@ -63,13 +73,41 @@
       border: 1px solid #ccc;
       padding: 10px;
       border-radius: 6px;
-      top: 35px;
+      top: 40px;
       right: 0;
+      z-index: 101;
+      min-width: 100px;
+      text-align: left;
     }
     .logout-box a {
       text-decoration: none;
       color: red;
       font-weight: 500;
+      padding: 0;
+      display: block;
+      width: 100%;
+    }
+    .giris-box {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+    }
+    .giris-box a {
+      text-decoration: none;
+      color: #2d4fd3;
+      font-weight: 600;
+      border: 2px solid #2d4fd3;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: #fff;
+      transition: .2s;
+    }
+    .giris-box a:hover {
+      background-color: #2d4fd3;
+      color: #fff;
     }
     .hero {
       text-align: center;
@@ -115,14 +153,19 @@
   </style>
 </head>
 <body>
-
   <header>
     <div class="logo">Kıbrıs Online</div>
+    <!-- Kullanıcı kutusu -->
     <div class="user-box" id="userBox" style="display:none;">
-      <div class="user-name" onclick="toggleLogout()" id="userName">Ad Soyad</div>
+      <div class="user-name" onclick="toggleLogout()" id="userName"></div>
       <div class="logout-box" id="logoutBox">
         <a href="#" onclick="logout()">Çıkış Yap</a>
       </div>
+    </div>
+    <!-- Giriş/Kayıt kutusu -->
+    <div class="giris-box" id="girisBox" style="display:none;">
+      <a href="giris.html">Giriş</a>
+      <a href="kayit.html">Kayıt</a>
     </div>
     <div class="nav-buttons">
       <a href="index.html">Ana Sayfa</a>
@@ -190,20 +233,30 @@
   </section>
 
   <script>
-    const kullanici = localStorage.getItem("kullaniciAdSoyad");
-    if (kullanici) {
-      document.getElementById("userBox").style.display = "block";
-      document.getElementById("userName").textContent = kullanici;
+    // Kullanıcı giriş durumu
+    function checkUserLogin() {
+      const kullanici = localStorage.getItem("kullaniciAdSoyad");
+      const userBox = document.getElementById("userBox");
+      const girisBox = document.getElementById("girisBox");
+      const userName = document.getElementById("userName");
+      if (kullanici) {
+        userBox.style.display = "block";
+        girisBox.style.display = "none";
+        userName.textContent = kullanici;
+      } else {
+        userBox.style.display = "none";
+        girisBox.style.display = "flex";
+      }
     }
+    checkUserLogin();
 
     function toggleLogout() {
       const box = document.getElementById('logoutBox');
       box.style.display = box.style.display === 'block' ? 'none' : 'block';
     }
-
     function logout() {
       localStorage.removeItem("kullaniciAdSoyad");
-      window.location.href = 'index.html';
+      window.location.reload();
     }
 
     function toggleAdres() {
@@ -240,7 +293,18 @@
       const toplam = fiyat * (1 + oran) + adresUcreti;
       document.getElementById('sonuc').textContent = `₺${toplam.toFixed(2)}`;
     }
-  </script>
 
+    // Dışarı tıklayınca logout kutusu kapansın
+    document.addEventListener('click', function(event) {
+      const logoutBox = document.getElementById('logoutBox');
+      const userName = document.getElementById('userName');
+      if (!logoutBox.contains(event.target) && event.target !== userName) {
+        logoutBox.style.display = 'none';
+      }
+    });
+
+    // Otomatik giriş simülasyonu (test için, kaldırabilirsin)
+    // localStorage.setItem("kullaniciAdSoyad", "Emrah Yılmaz");
+  </script>
 </body>
 </html>
