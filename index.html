@@ -82,6 +82,52 @@
       font-weight: 500;
     }
 
+    .hero {
+      text-align: center;
+      padding: 40px 20px;
+      background-image: url('https://globelink-unimar.com/wp-content/uploads/2022/05/gemi-tasimaciligi-neden-tercih-edilmelidir.jpg');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 18px;
+    }
+
+    .platform-logos {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+      flex-wrap: wrap;
+    }
+
+    .platform-logos img {
+      height: 40px;
+    }
+
+    .faq {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .faq h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .faq p {
+      margin-bottom: 15px;
+    }
+
     @media (max-width: 600px) {
       .nav-buttons {
         flex-direction: column;
@@ -109,8 +155,26 @@
     </div>
   </header>
 
+  <section class="hero">
+    <h1>Türkiye'den Kıbrıs'a Teslimat</h1>
+    <p>Hızlı ve Güvenilir Kargo Hizmeti</p>
+  </section>
+
+  <section class="platform-logos">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/Trendyol_logo_2020.svg" alt="Trendyol">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Hepsiburada_logo.svg" alt="Hepsiburada">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/N11_logo.svg" alt="n11">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Amazon_logo.svg" alt="Amazon">
+  </section>
+
+  <section class="faq">
+    <h2>Sıkça Sorulan Sorular</h2>
+    <p><strong>Ürünüm ne zaman gelir?</strong><br> Siparişiniz Türkiye'den bize ulaştıktan sonra genellikle 2-4 gün içinde size teslim edilir.</p>
+    <p><strong>Kargo ücreti ne kadar?</strong><br> Ürünün kategorisi ve teslimat tipine göre hesaplama aracını kullanarak görebilirsiniz.</p>
+    <p><strong>Hangi sitelerden alışveriş yapabilirim?</strong><br> Trendyol, Hepsiburada, N11, Amazon ve diğer Türkiye merkezli tüm e-ticaret siteleri desteklenmektedir.</p>
+  </section>
+
   <script>
-    // Örnek kullanıcı oturum kontrolü (gerçek sistemde localStorage veya sessionStorage ile yapılabilir)
     const kullaniciGirisYapti = true; // bu değeri dinamik yapabilirsin
 
     if (kullaniciGirisYapti) {
