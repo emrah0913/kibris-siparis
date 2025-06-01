@@ -140,6 +140,7 @@
       margin-top: 5px;
       margin-bottom: 15px;
     }
+    #adresSelect { display: none; }
   </style>
 </head>
 <body>
@@ -195,23 +196,30 @@
 
         <label>Kategori:</label>
         <select id="kategori">
-          <option value="mobilya">Mobilya +%50</option>
-          <option value="elektronik">Elektronik +%70</option>
-          <option value="giyim">Giyim +%40</option>
-          <option value="kozmetik">Kozmetik +%65</option>
+          <option value="mobilya">Mobilya</option>
+          <option value="elektronik">Elektronik</option>
+          <option value="giyim">Giyim</option>
+          <option value="kozmetik">Kozmetik</option>
         </select>
 
         <label>Teslimat Tipi:</label>
-        <select id="teslimat">
+        <select id="teslimat" onchange="toggleAdres()">
           <option value="depo">Depodan Teslim</option>
-          <option value="lefkoşa">Lefkoşa</option>
-          <option value="girne">Girne</option>
-          <option value="magusa">Mağusa</option>
-          <option value="guzelyurt">Güzelyurt</option>
-          <option value="lefke">Lefke</option>
-          <option value="iskele">İskele</option>
-          <option value="karpaz">Karpaz</option>
+          <option value="eve">Eve Teslim</option>
         </select>
+
+        <div id="adresSelect">
+          <label>Adres Seçimi:</label>
+          <select id="adres">
+            <option value="lefkoşa">Lefkoşa</option>
+            <option value="girne">Girne</option>
+            <option value="magusa">Mağusa</option>
+            <option value="guzelyurt">Güzelyurt</option>
+            <option value="lefke">Lefke</option>
+            <option value="iskele">İskele</option>
+            <option value="karpaz">Karpaz</option>
+          </select>
+        </div>
 
         <p><strong>Toplam Ücret: <span id="sonuc">₺0.00</span></strong></p>
 
@@ -237,14 +245,27 @@
       window.location.href = 'index.html';
     }
 
+    function toggleAdres() {
+      const teslimat = document.getElementById('teslimat').value;
+      const adresSelect = document.getElementById('adresSelect');
+      if (teslimat === 'eve') {
+        adresSelect.style.display = 'block';
+      } else {
+        adresSelect.style.display = 'none';
+      }
+      hesapla();
+    }
+
     document.getElementById('fiyat').addEventListener('input', hesapla);
     document.getElementById('kategori').addEventListener('change', hesapla);
     document.getElementById('teslimat').addEventListener('change', hesapla);
+    document.getElementById('adres').addEventListener('change', hesapla);
 
     function hesapla() {
       const fiyat = parseFloat(document.getElementById('fiyat').value) || 0;
       const kategori = document.getElementById('kategori').value;
       const teslimat = document.getElementById('teslimat').value;
+      const adres = document.getElementById('adres')?.value;
 
       let oran = 0;
       if (kategori === 'mobilya') oran = 0.50;
@@ -253,13 +274,15 @@
       else if (kategori === 'kozmetik') oran = 0.65;
 
       let adresUcreti = 0;
-      if (teslimat === 'lefkoşa') adresUcreti = 200;
-      else if (teslimat === 'girne') adresUcreti = 350;
-      else if (teslimat === 'magusa') adresUcreti = 500;
-      else if (teslimat === 'guzelyurt') adresUcreti = 400;
-      else if (teslimat === 'lefke') adresUcreti = 500;
-      else if (teslimat === 'iskele') adresUcreti = 550;
-      else if (teslimat === 'karpaz') adresUcreti = 650;
+      if (teslimat === 'eve') {
+        if (adres === 'lefkoşa') adresUcreti = 200;
+        else if (adres === 'girne') adresUcreti = 350;
+        else if (adres === 'magusa') adresUcreti = 500;
+        else if (adres === 'guzelyurt') adresUcreti = 400;
+        else if (adres === 'lefke') adresUcreti = 500;
+        else if (adres === 'iskele') adresUcreti = 550;
+        else if (adres === 'karpaz') adresUcreti = 650;
+      }
 
       const hizmetBedeli = fiyat * (1 + oran);
       const toplam = hizmetBedeli + adresUcreti;
