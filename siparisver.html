@@ -13,12 +13,10 @@
       background-color: #f4f6f9;
       padding: 20px;
     }
-
     header {
       text-align: center;
       padding: 20px;
     }
-
     .logo {
       font-family: 'Caveat', cursive;
       font-size: 36px;
@@ -26,7 +24,6 @@
       transform: rotate(-3deg);
       margin-bottom: 10px;
     }
-
     .ana-sayfa-btn {
       text-decoration: none;
       background-color: #2d4fd3;
@@ -35,7 +32,6 @@
       border-radius: 6px;
       font-weight: 600;
     }
-
     .form-container {
       max-width: 600px;
       background: #fff;
@@ -44,19 +40,16 @@
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
-
     h2 {
       text-align: center;
       margin-bottom: 20px;
       color: #2d4fd3;
     }
-
     label {
       font-weight: 600;
       display: block;
       margin-top: 15px;
     }
-
     input, select, textarea {
       width: 100%;
       padding: 10px;
@@ -64,11 +57,9 @@
       border: 1px solid #ccc;
       border-radius: 6px;
     }
-
     #adresSecimi, #acikAdresKutu {
       display: none;
     }
-
     button {
       width: 100%;
       margin-top: 25px;
@@ -80,14 +71,12 @@
       border-radius: 6px;
       cursor: pointer;
     }
-
     button:hover {
       background-color: #1c3bb3;
     }
   </style>
 </head>
 <body>
-
   <header>
     <div class="logo">Kıbrıs Online</div>
     <a href="index.html" class="ana-sayfa-btn">Ana Sayfa</a>
@@ -145,62 +134,7 @@
     <button onclick="onaylaSiparis()">Onayla ve Sipariş Ver</button>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_BUCKET",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    async function onaylaSiparis() {
-      const urunLink = document.getElementById('urunLink').value.trim();
-      const fiyat = parseFloat(document.getElementById('fiyat').value);
-      const kategori = document.getElementById('kategori').value;
-      const teslimat = document.getElementById('teslimat').value;
-      const siparisKodu = document.getElementById('siparisKodu').value.trim();
-      const adres = document.getElementById('adres')?.value || '';
-      const acikAdres = document.getElementById('acikAdres')?.value.trim() || '';
-
-      if (!urunLink || isNaN(fiyat) || !kategori || !teslimat || !siparisKodu) {
-        alert("Lütfen tüm alanları eksiksiz doldurun.");
-        return;
-      }
-
-      if (teslimat === "eve" && (!adres || !acikAdres)) {
-        alert("Eve teslim seçildiğinde bölge ve açık adres zorunludur.");
-        return;
-      }
-
-      const siparis = {
-        urunLink,
-        fiyat,
-        kategori,
-        teslimat,
-        siparisKodu,
-        adres,
-        acikAdres,
-        toplam: document.getElementById('sonuc').textContent,
-        tarih: new Date().toISOString()
-      };
-
-      try {
-        await addDoc(collection(db, "siparisler"), siparis);
-        alert("Sipariş başarıyla kaydedildi!");
-        window.location.href = "siparislerim.html";
-      } catch (e) {
-        alert("Hata oluştu: " + e.message);
-      }
-    }
-
+  <script>
     function teslimatDegisti() {
       const teslimat = document.getElementById("teslimat").value;
       const adresSecimi = document.getElementById("adresSecimi");
@@ -213,7 +147,6 @@
         adresSecimi.style.display = "none";
         acikAdresKutu.style.display = "none";
       }
-
       hesapla();
     }
 
@@ -250,6 +183,5 @@
       document.getElementById('sonuc').textContent = `₺${toplam.toFixed(2)}`;
     }
   </script>
-
 </body>
 </html>
