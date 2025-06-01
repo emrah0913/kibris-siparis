@@ -1,203 +1,132 @@
 <!DOCTYPE html>
-
-</body>
-</html>
-
 <html lang="tr">
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
-</head>
-
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kıbrıs Online</title>
-  <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #111827; line-height: 1.6; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+    }
+
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      background-color: #fff;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      background: white;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
-    .logo { font-size: 1.5rem; font-weight: 700; color: #3b82f6; }
-    nav a {
-      margin: 0 10px;
-      color: #1f2937;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.95rem;
-    }
-    .hero {
-      position: relative;
-      width: 100%;
-      height: 500px;
-      background-image: url('https://globelink-unimar.com/wp-content/uploads/2022/05/gemi-tasimaciligi-neden-tercih-edilmelidir.jpg');
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+
+    .logo {
+      font-family: 'Caveat', cursive;
+      font-size: 32px;
+      color: #2c3e50;
+      transform: rotate(-3deg);
       text-align: center;
+      margin-bottom: 10px;
     }
-    .hero-text {
-      background: rgba(0,0,0,0.4);
-      padding: 20px 40px;
-      border-radius: 12px;
-    }
-    .hero h1 {
-      color: white;
-      font-size: 2.8rem;
-      font-weight: 700;
-      text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
-    }
-    .hero p {
-      color: white;
-      font-size: 1.2rem;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
-    }
-    section {
-      max-width: 1200px;
-      margin: auto;
-      padding: 40px 20px;
-    }
-    .card-group {
+
+    .nav-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
       justify-content: center;
-      margin-bottom: 40px;
-    }
-    .card {
-      background: white;
-      padding: 20px;
-      flex: 1 1 250px;
-      border-radius: 16px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      text-align: center;
-    }
-    .card h3 {
-      font-size: 1.1rem;
-      margin-bottom: 8px;
-    }
-    .form-box {
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.06);
-    }
-    .form-box label {
-      display: block;
-      margin-top: 15px;
-      font-weight: 600;
-    }
-    .form-box input, .form-box select {
-      width: 100%;
+      gap: 10px;
       padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
     }
-    .form-box button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      background-color: #3b82f6;
-      color: white;
-      font-size: 1rem;
+
+    .nav-buttons a {
+      text-decoration: none;
+      color: #2d4fd3;
       font-weight: 600;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    footer {
-      background: #f9fafb;
+      border: 1px solid #2d4fd3;
+      padding: 10px 16px;
+      border-radius: 6px;
+      background: #fff;
+      min-width: 120px;
       text-align: center;
-      padding: 40px 20px;
-      font-size: 0.9rem;
-      color: #6b7280;
+    }
+
+    .nav-buttons a:hover {
+      background-color: #2d4fd3;
+      color: #fff;
+    }
+
+    .user-box {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+
+    .user-name {
+      cursor: pointer;
+      font-weight: 600;
+      color: #2d4fd3;
+    }
+
+    .logout-box {
+      display: none;
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 6px;
+      top: 35px;
+      right: 0;
+    }
+
+    .logout-box a {
+      text-decoration: none;
+      color: red;
+      font-weight: 500;
+    }
+
+    @media (max-width: 600px) {
+      .nav-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <html lang="tr">
-<head>
-  <meta charset="UTF-8">
-  <title>Kıbrıs Online El Yazısı</title>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
-  <style>
-    .yamuk-kibris {
-      font-family: 'Caveat', cursive;
-      font-size: 48px;
-      transform: rotate(-5deg); /* hafif yamuklaştırır */
-      display: inline-block;
-      color: #2c3e50;
+  <header>
+    <div class="logo">Kıbrıs Online</div>
+    <div class="user-box" id="userBox" style="display: none;">
+      <div class="user-name" onclick="toggleLogout()">Ad Soyad</div>
+      <div class="logout-box" id="logoutBox">
+        <a href="#" onclick="logout()">Çıkış Yap</a>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <a href="index.html">Ana Sayfa</a>
+      <a href="siparislerim.html">Siparişlerim</a>
+      <a href="takip.html">Kargo Takip</a>
+      <a href="kayit.html">Kayıt</a>
+      <a href="giris.html">Giriş</a>
+    </div>
+  </header>
+
+  <script>
+    // Örnek kullanıcı oturum kontrolü (gerçek sistemde localStorage veya sessionStorage ile yapılabilir)
+    const kullaniciGirisYapti = true; // bu değeri dinamik yapabilirsin
+
+    if (kullaniciGirisYapti) {
+      document.getElementById('userBox').style.display = 'block';
     }
-  </style>
-</head>
-<body>
 
-  <h1><span class="yamuk-kibris">Kıbrıs Online</span> </h1>
+    function toggleLogout() {
+      const box = document.getElementById('logoutBox');
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
 
-</body>
-</html>
-  <nav>
-    <a href="#">Ana Sayfa</a>
-    <a href="#">Siparişlerim</a>
-    <a href="#">Takip</a>
-    <a href="#">Giriş Yap</a>
-  </nav>
-</header>
-
-<section class="hero">
-  <div class="hero-text">
-    <h1>Türkiye'den Kıbrıs'a Teslimat</h1>
-    <p>Hızlı ve Güvenilir Kargo Hizmeti</p>
-  </div>
-</section>
-
-<section>
-  <div class="card-group">
-    <div class="card">
-      <h3>Türkiye'den Alışveriş Yapın</h3>
-      <p>Türkiye'deki online mağazalardan alışveriş yapın, kargo adresimizi kullanın.</p>
-    </div>
-    <div class="card">
-      <h3>Biz Kargoyu Alalım</h3>
-      <p>Depomuzda teslim alınan paketleriniz Kıbrıs’a hazırlanır.</p>
-    </div>
-    <div class="card">
-      <h3>Kapınıza Teslim</h3>
-      <p>Paketlerinizi güvenle ve hızlıca adresinize ulaştıralım.</p>
-    </div>
-  </div>
-
-  <div class="form-box">
-    <h2>Sipariş Hesaplama</h2>
-    <label>Sipariş URL</label>
-    <input type="url" placeholder="https://">
-    <label>Ürün Fiyatı (TL)</label>
-    <input type="number" placeholder="0.00">
-    <label>Kategori</label>
-    <select><option>Seçiniz</option></select>
-    <label>Teslimat Tipi</label>
-    <select><option>Seçiniz</option></select>
-    <label>Toplam Tutar</label>
-    <p><strong>0.00 TL</strong></p>
-    <button>Sipariş Ver</button>
-  </div>
-</section>
-
-<footer>
-  <strong>Kıbrıs Online</strong><br>
-  Türkiye'den Kıbrıs'a güvenilir teslimat<br><br>
-  © 2025 Türkiye-Kıbrıs Kargo Hizmeti. Tüm hakları saklıdır.
-</footer>
+    function logout() {
+      alert('Çıkış yapıldı.');
+      window.location.href = 'index.html';
+    }
+  </script>
 
 </body>
 </html>
