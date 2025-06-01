@@ -2,148 +2,98 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Giriş Yap - Kıbrıs Online</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background-color: #f4f6f9;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      position: relative;
-      background: white;
-      padding: 15px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    .logo {
-      font-family: 'Caveat', cursive;
-      font-size: 32px;
-      color: #2c3e50;
-      transform: rotate(-3deg);
-    }
-
-    .anasayfa-btn {
-      position: relative;
-      top: 10px;
-      right: 10px;
-      font-size: 12px;
-      font-weight: 600;
-      border: 2px solid #2d4fd3;
-      background: white;
-      color: #2d4fd3;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .form-wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: calc(100vh - 80px);
+      height: 100vh;
     }
-
-    .form-container {
+    .login-box {
       background: white;
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       width: 100%;
       max-width: 400px;
     }
-
     h2 {
-      text-align: center;
       margin-bottom: 20px;
+      text-align: center;
       color: #2d4fd3;
     }
-
     input {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       margin-bottom: 15px;
       border: 1px solid #ccc;
       border-radius: 6px;
     }
-
     button {
       width: 100%;
+      padding: 12px;
       background-color: #2d4fd3;
       color: white;
-      padding: 12px;
-      font-weight: 600;
       border: none;
+      font-size: 16px;
       border-radius: 6px;
       cursor: pointer;
     }
-
     button:hover {
-      background-color: #1c37a3;
-    }
-
-    .signup-link {
-      margin-top: 15px;
-      text-align: center;
-    }
-
-    .signup-link a {
-      color: #2d4fd3;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .signup-link a:hover {
-      text-decoration: underline;
+      background-color: #1c3bb3;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">Kıbrıs Online</div>
-  <button class="anasayfa-btn" onclick="window.location.href='index.html'">Ana Sayfa</button>
-</header>
-
-<div class="form-wrapper">
-  <div class="form-container">
+  <div class="login-box">
     <h2>Giriş Yap</h2>
-    <form id="girisForm">
-      <input type="email" id="email" placeholder="E-posta" required>
-      <input type="password" id="sifre" placeholder="Şifre" required>
-      <button type="submit">Giriş Yap</button>
-    </form>
-    <div class="signup-link">
-      Henüz üye değil misiniz? <a href="kayit.html">Kayıt Ol</a>
-    </div>
+    <input type="email" id="email" placeholder="E-posta" required>
+    <input type="password" id="password" placeholder="Şifre" required>
+    <button onclick="girisYap()">Giriş Yap</button>
   </div>
-</div>
 
-<script>
-  document.getElementById("girisForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    const girilenEmail = document.getElementById("email").value;
-    const girilenSifre = document.getElementById("sifre").value;
+    const firebaseConfig = {
+      apiKey: "AIzaSyBw9GP1srYUgPf9sqlpLu_ZnqM8w0Iau4Y",
+      authDomain: "kibrisonline-b5cf3.firebaseapp.com",
+      projectId: "kibrisonline-b5cf3",
+      storageBucket: "kibrisonline-b5cf3.firebasestorage.app",
+      messagingSenderId: "673734723670",
+      appId: "1:673734723670:web:55c7a34e22b1ad26e453f7",
+      measurementId: "G-D5P5SGGPB8"
+    };
 
-    const kayitliKullanici = JSON.parse(localStorage.getItem("kullanici"));
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-    if (kayitliKullanici && 
-        kayitliKullanici.email === girilenEmail && 
-        kayitliKullanici.sifre === girilenSifre) {
-      alert("Giriş başarılı! Ana sayfaya yönlendiriliyorsunuz...");
-      window.location.href = "index.html";
-    } else {
-      alert("E-posta veya şifre hatalı. Lütfen tekrar deneyin.");
+    async function girisYap() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!email || !password) {
+        alert("Lütfen e-posta ve şifre girin.");
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        const redirectPage = localStorage.getItem("redirectAfterLogin") || "index.html";
+        localStorage.removeItem("redirectAfterLogin");
+        window.location.href = redirectPage;
+      } catch (error) {
+        alert("Giriş başarısız: " + error.message);
+      }
     }
-  });
-</script>
+  </script>
 
 </body>
 </html>
