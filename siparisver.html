@@ -1,40 +1,92 @@
-<!-- siparisver.html -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sipariş Ver - Kıbrıs Online</title>
+  <meta charset="UTF-8">
+  <title>Sipariş Ver</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background-color: #f4f6f9; padding: 20px; }
-    header { text-align: center; padding: 20px; }
-    .logo { font-family: 'Caveat', cursive; font-size: 36px; color: #2c3e50; transform: rotate(-3deg); margin-bottom: 10px; }
-    .ana-sayfa-btn { text-decoration: none; background-color: #2d4fd3; color: white; padding: 10px 20px; border-radius: 6px; font-weight: 600; }
-    .form-container { max-width: 600px; background: #fff; margin: 40px auto; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
-    h2 { text-align: center; margin-bottom: 20px; color: #2d4fd3; }
-    label { font-weight: 600; display: block; margin-top: 15px; }
-    input, select, textarea { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 6px; }
-    #adresSecimi, #acikAdresKutu { display: none; }
-    button { width: 100%; margin-top: 25px; padding: 12px; background-color: #2d4fd3; color: white; border: none; font-size: 16px; border-radius: 6px; cursor: pointer; }
-    button:hover { background-color: #1c3bb3; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    nav {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #2d4fd3;
+      font-weight: 600;
+    }
+
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #2d4fd3;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #adresSecim { display: none; }
+    #acikAdres { display: none; }
   </style>
 </head>
 <body>
+
   <header>
     <div class="logo">Kıbrıs Online</div>
-    <a href="index.html" class="ana-sayfa-btn">Ana Sayfa</a>
+    <nav>
+      <a href="index.html">Ana Sayfa</a>
+      <a href="siparislerim.html">Siparişlerim</a>
+    </nav>
   </header>
-  <div class="form-container">
-    <h2>Sipariş Ver</h2>
+
+  <form id="siparisForm">
     <label>Ürün Linki:</label>
-    <input type="url" id="urunLink" required placeholder="https://...">
-    <label>Sipariş Kodu (örn. TY12345):</label>
-    <input type="text" id="siparisKodu" required placeholder="Trendyol sipariş kodunuz">
-    <label>Türkiye Fiyatı (₺):</label>
+    <input type="url" id="urunLink" required>
+
+    <label>Sipariş Kodu (Trendyol Sipariş No):</label>
+    <input type="text" id="siparisKodu" required>
+
+    <label>Türkiye Fiyatı:</label>
     <input type="number" id="fiyat" required>
+
     <label>Kategori:</label>
     <select id="kategori" required>
       <option value="">Seçiniz</option>
@@ -43,14 +95,16 @@
       <option value="giyim">Giyim</option>
       <option value="kozmetik">Kozmetik</option>
     </select>
+
     <label>Teslimat Tipi:</label>
-    <select id="teslimat" onchange="teslimatDegisti()" required>
+    <select id="teslimat" onchange="toggleAdres()" required>
       <option value="">Seçiniz</option>
       <option value="depo">Depodan Teslim</option>
       <option value="eve">Eve Teslim</option>
     </select>
-    <div id="adresSecimi">
-      <label>Bölge Seçimi:</label>
+
+    <div id="adresSecim">
+      <label>Şehir Seçimi:</label>
       <select id="adres">
         <option value="">Seçiniz</option>
         <option value="lefkoşa">Lefkoşa</option>
@@ -61,97 +115,89 @@
         <option value="iskele">İskele</option>
         <option value="karpaz">Karpaz</option>
       </select>
+
+      <label>Açık Adres:</label>
+      <textarea id="acikAdres" placeholder="Mahalle, Cadde, No, Apartman..." required></textarea>
     </div>
-    <div id="acikAdresKutu">
-      <label>Teslimat Açık Adresi:</label>
-      <textarea id="acikAdres" rows="3" placeholder="Mahalle, cadde, bina no, daire..."></textarea>
-    </div>
-    <p><strong>Toplam Ücret: <span id="sonuc">₺0.00</span></strong></p>
-    <button onclick="onaylaSiparis()">Onayla ve Sipariş Ver</button>
-  </div>
-  <script>
-    function teslimatDegisti() {
-      const teslimat = document.getElementById("teslimat").value;
-      const adresSecimi = document.getElementById("adresSecimi");
-      const acikAdresKutu = document.getElementById("acikAdresKutu");
-      if (teslimat === "eve") {
-        adresSecimi.style.display = "block";
-        acikAdresKutu.style.display = "block";
+
+    <button type="submit">Onayla ve Gönder</button>
+  </form>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBw9GP1srYUgPf9sqlpLu_ZnqM8w0Iau4Y",
+      authDomain: "kibrisonline-b5cf3.firebaseapp.com",
+      projectId: "kibrisonline-b5cf3",
+      storageBucket: "kibrisonline-b5cf3.appspot.com",
+      messagingSenderId: "673734723670",
+      appId: "1:673734723670:web:55c7a34e22b1ad26e453f7",
+      measurementId: "G-D5P5SGGPB8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentUser = null;
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        currentUser = user;
       } else {
-        adresSecimi.style.display = "none";
-        acikAdresKutu.style.display = "none";
+        alert("Lütfen giriş yapın.");
+        window.location.href = "giris.html";
       }
-      hesapla();
-    }
+    });
 
-    function hesapla() {
-      const fiyat = parseFloat(document.getElementById('fiyat').value) || 0;
+    document.getElementById('siparisForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const urunLink = document.getElementById('urunLink').value;
+      const siparisKodu = document.getElementById('siparisKodu').value;
+      const fiyat = document.getElementById('fiyat').value;
       const kategori = document.getElementById('kategori').value;
       const teslimat = document.getElementById('teslimat').value;
-      const adres = document.getElementById('adres')?.value;
+      const adres = document.getElementById('adres')?.value || "";
+      const acikAdres = document.getElementById('acikAdres')?.value || "";
 
-      let oran = 0;
-      if (kategori === 'mobilya' || kategori === 'elektronik') oran = 0.70;
-      else if (kategori === 'giyim') oran = 0.40;
-      else if (kategori === 'kozmetik') oran = 0.65;
-
-      let adresUcreti = 0;
-      if (teslimat === 'eve') {
-        if (adres === 'lefkoşa') adresUcreti = 200;
-        else if (adres === 'girne') adresUcreti = 350;
-        else if (adres === 'magusa') adresUcreti = 500;
-        else if (adres === 'guzelyurt') adresUcreti = 400;
-        else if (adres === 'lefke') adresUcreti = 500;
-        else if (adres === 'iskele') adresUcreti = 550;
-        else if (adres === 'karpaz') adresUcreti = 650;
+      try {
+        await addDoc(collection(db, "siparisler"), {
+          userId: currentUser.uid,
+          urunLink,
+          siparisKodu,
+          fiyat,
+          kategori,
+          teslimat,
+          adres,
+          acikAdres,
+          createdAt: serverTimestamp()
+        });
+        alert("Sipariş başarıyla gönderildi!");
+        window.location.href = "siparislerim.html";
+      } catch (err) {
+        console.error("Sipariş kaydı başarısız:", err);
+        alert("Hata oluştu.");
       }
+    });
 
-      const hizmetBedeli = fiyat * (1 + oran);
-      const toplam = hizmetBedeli + adresUcreti;
-
-      document.getElementById('sonuc').textContent = `₺${toplam.toFixed(2)}`;
-    }
-
-    document.getElementById('fiyat').addEventListener('input', hesapla);
-    document.getElementById('kategori').addEventListener('change', hesapla);
-    document.getElementById('teslimat').addEventListener('change', hesapla);
-    document.getElementById('adres').addEventListener('change', hesapla);
-
-    function onaylaSiparis() {
-      const urunLink = document.getElementById('urunLink').value.trim();
-      const fiyat = parseFloat(document.getElementById('fiyat').value);
-      const kategori = document.getElementById('kategori').value;
-      const teslimat = document.getElementById('teslimat').value;
-      const siparisKodu = document.getElementById('siparisKodu').value.trim();
-      const adres = document.getElementById('adres')?.value || '';
-      const acikAdres = document.getElementById('acikAdres')?.value.trim() || '';
-      const toplam = document.getElementById('sonuc').textContent;
-      const kullanici = localStorage.getItem("aktifKullanici") || "misafir";
-
-      if (!urunLink || isNaN(fiyat) || !kategori || !teslimat || !siparisKodu || (teslimat === "eve" && (!adres || !acikAdres))) {
-        alert("Lütfen tüm alanları eksiksiz doldurun.");
-        return;
+    function toggleAdres() {
+      const secim = document.getElementById("teslimat").value;
+      const adresSecim = document.getElementById("adresSecim");
+      const acikAdres = document.getElementById("acikAdres");
+      if (secim === "eve") {
+        adresSecim.style.display = "block";
+        acikAdres.style.display = "block";
+      } else {
+        adresSecim.style.display = "none";
+        acikAdres.style.display = "none";
       }
-
-      const siparis = {
-        urunLink,
-        fiyat,
-        kategori,
-        teslimat,
-        siparisKodu,
-        adres,
-        acikAdres,
-        toplam,
-        tarih: new Date().toISOString(),
-        kullanici
-      };
-
-      let tumSiparisler = JSON.parse(localStorage.getItem("tumSiparisler") || "[]");
-      tumSiparisler.push(siparis);
-      localStorage.setItem("tumSiparisler", JSON.stringify(tumSiparisler));
-      alert("Sipariş başarıyla kaydedildi!");
-      window.location.href = "siparislerim.html";
     }
   </script>
+
 </body>
 </html>
