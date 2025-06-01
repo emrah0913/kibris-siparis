@@ -1,33 +1,71 @@
-<!-- Güncellenmiş Google ile Giris kısmıyla tam index.html dosyası -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kıbrıs Online</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <title>Kıbrıs Online - Google ile Giriş</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* stil kodları buraya gelecek (senin son tasarımındaki stil kodları zaten uygun, tekrar yazmaya gerek yok) */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      background: #fff;
+      width: 100%;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #2d4fd3;
+    }
+    .menu {
+      display: flex;
+      gap: 12px;
+    }
+    .menu button {
+      padding: 8px 16px;
+      background: #2d4fd3;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .menu button:hover {
+      background: #1d378d;
+    }
+    main {
+      padding: 40px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo-title">Kıbrıs Online</div>
-    <div class="menu" id="menuBar"></div>
+    <div class="logo">Kıbrıs Online</div>
+    <div class="menu" id="menuBar">
+      <!-- Giriş butonu burada belirecek -->
+    </div>
   </header>
-
   <main>
-    <!-- Hero alanı, hesaplama formu, adres kutusu gibi içeriklerin tamamı zaten senin mevcut index.html dosyana eklendi -->
+    <h1>Türkiye'den Kıbrıs'a Teslimat</h1>
+    <p>Google ile giriş yaparak siparişlerinizi kolayca yönetin.</p>
   </main>
-
-  <footer>
-    © 2025 Kıbrıs Online – Tüm hakları saklıdır.
-  </footer>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBw9GP1srYUgPf9sqlpLu_ZnqM8w0Iau4Y",
@@ -41,62 +79,33 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app);
 
-    function renderMenu(user) {
-      const menuBar = document.getElementById("menuBar");
+    const menuBar = document.getElementById("menuBar");
+
+    onAuthStateChanged(auth, (user) => {
       menuBar.innerHTML = "";
-
       if (user) {
         const name = user.displayName || "Kullanıcı";
         menuBar.innerHTML = `
-          <span class="welcome-text">Hoş geldiniz, ${name}</span>
-          <a class="menu-btn" href="hesaplama.html">Hesaplama Aracı</a>
-          <button class="menu-btn" id="logoutBtn">Çıkış Yap</button>
+          <span>Hoşgeldin, ${name}</span>
+          <button id="logoutBtn">Çıkış</button>
         `;
-
         document.getElementById("logoutBtn").onclick = async () => {
           await signOut(auth);
-          localStorage.removeItem("userName");
-          location.reload();
         };
       } else {
         menuBar.innerHTML = `
-          <button class="google-btn" id="googleSignInBtn">Google ile Giriş Yap</button>
-          <a class="menu-btn" href="hesaplama.html">Hesaplama Aracı</a>
+          <button id="loginBtn">Google ile Giriş Yap</button>
         `;
-
-        document.getElementById("googleSignInBtn").onclick = async () => {
+        document.getElementById("loginBtn").onclick = async () => {
+          const provider = new GoogleAuthProvider();
           try {
-            const provider = new GoogleAuthProvider();
-            const result = await signInWithPopup(auth, provider);
-            const user = result.user;
-            if (user) {
-              localStorage.setItem("userName", user.displayName || "");
-              const userRef = doc(db, "users", user.uid);
-              const userSnap = await getDoc(userRef);
-              if (!userSnap.exists()) {
-                await setDoc(userRef, {
-                  adSoyad: user.displayName || "",
-                  email: user.email || "",
-                  kayitTarihi: new Date().toISOString()
-                });
-              }
-              location.reload();
-            }
-          } catch (e) {
-            if (e.code === "auth/unauthorized-domain") {
-              alert("Google ile giriş yapabilmek için Firebase Console'da alan adınızı yetkili domain olarak eklemelisiniz.");
-            } else {
-              alert("Giriş başarısız: " + e.message);
-            }
+            await signInWithPopup(auth, provider);
+          } catch (error) {
+            alert("Giriş işlemi başarısız.");
           }
         };
       }
-    }
-
-    onAuthStateChanged(auth, (user) => {
-      renderMenu(user);
     });
   </script>
 </body>
