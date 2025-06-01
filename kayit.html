@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kayıt Ol</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kayıt Ol - Kıbrıs Online</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
   <style>
@@ -15,27 +15,26 @@
     }
     header {
       position: relative;
-      padding: 10px 20px;
       background: white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       text-align: center;
     }
     .logo {
       font-family: 'Caveat', cursive;
-      font-size: 28px;
+      font-size: 32px;
       color: #2c3e50;
       transform: rotate(-3deg);
-      display: inline-block;
     }
     .anasayfa-btn {
       position: absolute;
-      right: 20px;
       top: 15px;
-      background-color: #fff;
-      color: #2d4fd3;
-      font-weight: 600;
+      right: 20px;
       font-size: 12px;
+      font-weight: 600;
       border: 2px solid #2d4fd3;
+      background: white;
+      color: #2d4fd3;
       padding: 6px 12px;
       border-radius: 6px;
       cursor: pointer;
@@ -83,6 +82,18 @@
     button:hover {
       background-color: #1c37a3;
     }
+    .login-link {
+      margin-top: 15px;
+      text-align: center;
+    }
+    .login-link a {
+      color: #2d4fd3;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .login-link a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -102,6 +113,9 @@
         <input type="password" id="sifre" placeholder="Şifre" required>
         <button type="submit">Kayıt Ol</button>
       </form>
+      <div class="login-link">
+        Zaten üye misiniz? <a href="giris.html">Giriş Yap</a>
+      </div>
     </div>
   </div>
 
@@ -126,5 +140,6 @@
       window.location.href = "giris.html";
     });
   </script>
+
 </body>
 </html>
