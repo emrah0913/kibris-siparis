@@ -100,12 +100,12 @@
     © 2025 Kıbrıs Online – Tüm hakları saklıdır.
   </footer>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script>
-    // Firebase config
+  <!-- Firebase SDK + Giriş -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
     const firebaseConfig = {
       apiKey: "AIzaSyBw9GP1srYUgPf9sqlpLu_ZnqM8w0Iau4Y",
       authDomain: "kibrisonline-b5cf3.firebaseapp.com",
@@ -115,11 +115,14 @@
       appId: "1:673734723670:web:55c7a34e22b1ad26e453f7",
       measurementId: "G-D5P5SGGPB8"
     };
-    firebase.initializeApp(firebaseConfig);
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
     async function girisYap() {
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
 
       if (!email || !password) {
         alert("Lütfen tüm alanları doldurun.");
@@ -127,15 +130,15 @@
       }
 
       try {
-        // Firebase Auth ile giriş
-        const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
-        const user = userCredential.user;
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const uid = userCredential.user.uid;
+        const docRef = doc(db, "users", uid);
+        const docSnap = await getDoc(docRef);
 
-        // Firestore'dan adSoyad bilgisini çek
-        const userDoc = await firebase.firestore().collection("users").doc(user.uid).get();
-        if (userDoc.exists) {
-          const adSoyad = userDoc.data().adSoyad || "";
+        if (docSnap.exists()) {
+          const adSoyad = docSnap.data().adSoyad || "Kullanıcı";
           localStorage.setItem("userName", adSoyad);
+          console.log("Giriş başarılı, yönlendiriliyor...");
           window.location.href = "index.html";
         } else {
           alert("Kullanıcı bilgisi bulunamadı.");
@@ -145,14 +148,9 @@
       }
     }
 
+    // Butona tıklanınca çalıştır
     document.getElementById("girisBtn").addEventListener("click", girisYap);
-
-    // Enter ile gönderim desteği
-    document.addEventListener("keydown", function(e) {
-      if (e.key === "Enter" && (document.activeElement.id === "email" || document.activeElement.id === "password")) {
-        girisYap();
-      }
-    });
   </script>
+
 </body>
 </html>
