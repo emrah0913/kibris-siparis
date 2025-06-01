@@ -13,7 +13,6 @@
       margin: 0;
       padding: 0;
     }
-
     header {
       position: relative;
       background: white;
@@ -21,34 +20,11 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       text-align: center;
     }
-
     .logo {
       font-family: 'Caveat', cursive;
       font-size: 32px;
       color: #2c3e50;
       transform: rotate(-3deg);
-    }
-
-    .anasayfa-btn {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 600;
-      border: 1px solid #2d4fd3;
-      background-color: white;
-      color: #2d4fd3;
-      padding: 4px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background-color 0.2s, color 0.2s;
-    }
-
-    .anasayfa-btn:hover {
-      background-color: #2d4fd3;
-      color: white;
     }
 
     .form-wrapper {
@@ -57,7 +33,6 @@
       align-items: center;
       height: calc(100vh - 80px);
     }
-
     .form-container {
       background: #fff;
       padding: 30px;
@@ -66,13 +41,11 @@
       width: 100%;
       max-width: 400px;
     }
-
     h2 {
       text-align: center;
       margin-bottom: 20px;
       color: #2d4fd3;
     }
-
     input {
       width: 100%;
       padding: 12px;
@@ -80,7 +53,6 @@
       border: 1px solid #ccc;
       border-radius: 6px;
     }
-
     button {
       width: 100%;
       background-color: #2d4fd3;
@@ -91,33 +63,29 @@
       border-radius: 6px;
       cursor: pointer;
     }
-
     button:hover {
       background-color: #1c37a3;
     }
-
     .login-link {
       margin-top: 15px;
       text-align: center;
     }
-
     .login-link a {
       color: #2d4fd3;
       text-decoration: none;
       font-weight: 500;
     }
-
     .login-link a:hover {
       text-decoration: underline;
     }
   </style>
 </head>
 <body>
+<header style="position: relative;">
+  <div class="logo">Kıbrıs Online</div>
+  <button class="anasayfa-btn" onclick="window.location.href='index.html'">Ana Sayfa</button>
+</header>
 
-  <header>
-    <div class="logo">Kıbrıs Online</div>
-    <button class="anasayfa-btn" onclick="window.location.href='index.html'">Ana Sayfa</button>
-  </header>
 
   <div class="form-wrapper">
     <div class="form-container">
