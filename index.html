@@ -2,87 +2,46 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Kıbrıs Online</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; background-color: #f4f6f9; }
-
-    header {
-      background: white;
-      padding: 15px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      position: relative;
-      text-align: center;
-    }
-
-    .logo {
-      font-family: 'Caveat', cursive;
-      font-size: 32px;
-      color: #2c3e50;
-      transform: rotate(-3deg);
-      margin-bottom: 10px;
-    }
-
-    .nav-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      padding: 10px;
-      margin-top: 10px;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-    }
-
+    header { background: white; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; position: relative; }
+    .logo { font-family: 'Caveat', cursive; font-size: 32px; color: #2c3e50; transform: rotate(-3deg); margin-bottom: 10px; }
+    .nav-buttons { display: flex; justify-content: center; gap: 10px; padding: 10px; flex-wrap: wrap; }
     .nav-buttons a {
-      text-decoration: none;
-      color: #2d4fd3;
-      font-weight: 600;
-      border: 2px solid #2d4fd3;
-      padding: 10px 16px;
-      border-radius: 6px;
-      background: #fff;
-      min-width: 120px;
-      text-align: center;
-      white-space: nowrap;
-      flex-shrink: 0;
+      text-decoration: none; color: #2d4fd3; font-weight: 600;
+      border: 2px solid #2d4fd3; padding: 10px 16px; border-radius: 6px;
+      background: #fff; min-width: 120px; text-align: center;
     }
-
-    .nav-buttons a:hover {
-      background-color: #2d4fd3;
-      color: #fff;
+    .nav-buttons a:hover { background-color: #2d4fd3; color: #fff; }
+    .user-box { position: absolute; top: 15px; right: 15px; }
+    .user-name { cursor: pointer; font-weight: 600; color: #2d4fd3; }
+    .logout-box { display: none; position: absolute; background: white; border: 1px solid #ccc;
+      padding: 10px; border-radius: 6px; top: 35px; right: 0;
     }
-
-    .user-box {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      display: none;
+    .logout-box a { text-decoration: none; color: red; font-weight: 500; }
+    .hero {
+      text-align: center; padding: 40px 20px;
+      background-image: url('https://globelink-unimar.com/wp-content/uploads/2022/05/gemi-tasimaciligi-neden-tercih-edilmelidir.jpg');
+      background-size: cover; background-position: center;
+      color: white; text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
     }
-
-    .user-name {
-      cursor: pointer;
-      font-weight: 600;
-      color: #2d4fd3;
+    .platform-logos { display: flex; justify-content: center; gap: 20px; padding: 20px; flex-wrap: wrap; }
+    .platform-logos img { height: 40px; }
+    .faq {
+      max-width: 800px; margin: 40px auto; padding: 20px; background: #fff;
+      border-radius: 8px; border: 2px solid #2d4fd3;
     }
-
-    .logout-box {
-      display: none;
-      position: absolute;
-      background: white;
-      border: 1px solid #ccc;
-      padding: 10px;
-      border-radius: 6px;
-      top: 35px;
-      right: 0;
-    }
-
-    .logout-box a {
-      text-decoration: none;
-      color: red;
-      font-weight: 500;
+    .faq h2 { text-align: center; margin-bottom: 20px; }
+    input, select { width: 100%; padding: 8px; margin: 10px 0; }
+    #adresSelect { display: none; }
+    button {
+      background-color: #2d4fd3; color: white; border: none; padding: 10px 20px;
+      font-weight: 600; border-radius: 6px; cursor: pointer;
     }
   </style>
 </head>
@@ -91,53 +50,135 @@
   <header>
     <div class="logo">Kıbrıs Online</div>
     <div class="user-box" id="userBox">
-      <div class="user-name" onclick="toggleLogout()">
-        <span id="userDisplayName">Kullanıcı</span>
-      </div>
-      <div class="logout-box" id="logoutBox">
-        <a href="#" onclick="logout()">Çıkış Yap</a>
-      </div>
+      <span id="userName" class="user-name" onclick="toggleLogout()">Giriş Yap</span>
+      <div class="logout-box" id="logoutBox"><a href="#" onclick="logout()">Çıkış Yap</a></div>
+    </div>
+    <div class="nav-buttons">
+      <a href="#" onclick="kontrolEt('siparislerim.html')">Siparişlerim</a>
+      <a href="#" onclick="kontrolEt('takip.html')">Kargo Takip</a>
+      <a href="kayit.html">Kayıt Ol</a>
+      <a href="giris.html">Giriş</a>
     </div>
   </header>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  <section class="hero">
+    <h1>Türkiye'den Kıbrıs'a Teslimat</h1>
+    <p>Hızlı ve Güvenilir Kargo Hizmeti</p>
+  </section>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBw9GP1srYUgPf9sqlpLu_ZnqM8w0Iau4Y",
-      authDomain: "kibrisonline-b5cf3.firebaseapp.com",
-      projectId: "kibrisonline-b5cf3",
-      storageBucket: "kibrisonline-b5cf3.appspot.com",
-      messagingSenderId: "673734723670",
-      appId: "1:673734723670:web:55c7a34e22b1ad26e453f7",
-      measurementId: "G-D5P5SGGPB8"
-    };
+  <section class="faq">
+    <h2>Hesaplama Modülü</h2>
+    <form onsubmit="return false;">
+      <label>Ürün Linki:</label>
+      <input type="url" id="urunLink" placeholder="https://...">
+      <label>Türkiye Fiyatı (₺):</label>
+      <input type="number" id="fiyat">
+      <label>Kategori:</label>
+      <select id="kategori">
+        <option value="">Seçiniz</option>
+        <option value="mobilya">Mobilya</option>
+        <option value="elektronik">Elektronik</option>
+        <option value="giyim">Giyim</option>
+        <option value="kozmetik">Kozmetik</option>
+      </select>
+      <label>Teslimat Tipi:</label>
+      <select id="teslimat" onchange="toggleAdres()">
+        <option value="">Seçiniz</option>
+        <option value="depo">Depodan Teslim</option>
+        <option value="eve">Eve Teslim</option>
+      </select>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
+      <div id="adresSelect">
+        <label>Adres Seçimi:</label>
+        <select id="adres">
+          <option value="">Seçiniz</option>
+          <option value="lefkoşa">Lefkoşa</option>
+          <option value="girne">Girne</option>
+          <option value="magusa">Mağusa</option>
+          <option value="guzelyurt">Güzelyurt</option>
+          <option value="lefke">Lefke</option>
+          <option value="iskele">İskele</option>
+          <option value="karpaz">Karpaz</option>
+        </select>
+      </div>
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        document.getElementById("userBox").style.display = "block";
-        document.getElementById("userDisplayName").textContent = user.displayName || user.email;
-      } else {
-        document.getElementById("userBox").style.display = "none";
-      }
-    });
+      <p><strong>Toplam Ücret: <span id="sonuc">₺0.00</span></strong></p>
+      <button onclick="siparisVer()">Sipariş Ver</button>
+    </form>
+  </section>
 
-    window.toggleLogout = function () {
-      const box = document.getElementById("logoutBox");
+  <script>
+    function toggleLogout() {
+      const box = document.getElementById('logoutBox');
       box.style.display = box.style.display === 'block' ? 'none' : 'block';
-    };
+    }
 
-    window.logout = function () {
-      signOut(auth).then(() => {
-        alert("Çıkış yapıldı.");
-        window.location.reload();
-      });
-    };
+    function logout() {
+      localStorage.removeItem("user");
+      alert("Çıkış yapıldı.");
+      location.reload();
+    }
+
+    const kullanici = JSON.parse(localStorage.getItem("user"));
+    if (kullanici) {
+      document.getElementById("userName").textContent = kullanici.adSoyad || "Kullanıcı";
+      document.getElementById("logoutBox").style.display = "none";
+    }
+
+    function kontrolEt(target) {
+      if (!kullanici) {
+        alert("Lütfen giriş yapın.");
+        window.location.href = "giris.html";
+      } else {
+        window.location.href = target;
+      }
+    }
+
+    function siparisVer() {
+      if (!kullanici) {
+        alert("Sipariş vermek için giriş yapmalısınız.");
+        window.location.href = "giris.html";
+      } else {
+        window.location.href = "siparisver.html";
+      }
+    }
+
+    function toggleAdres() {
+      const teslimat = document.getElementById('teslimat').value;
+      document.getElementById('adresSelect').style.display = teslimat === 'eve' ? 'block' : 'none';
+      hesapla();
+    }
+
+    document.getElementById('fiyat').addEventListener('input', hesapla);
+    document.getElementById('kategori').addEventListener('change', hesapla);
+    document.getElementById('teslimat').addEventListener('change', hesapla);
+    document.getElementById('adres').addEventListener('change', hesapla);
+
+    function hesapla() {
+      const fiyat = parseFloat(document.getElementById('fiyat').value) || 0;
+      const kategori = document.getElementById('kategori').value;
+      const teslimat = document.getElementById('teslimat').value;
+      const adres = document.getElementById('adres')?.value;
+      let oran = 0;
+      if (kategori === 'mobilya' || kategori === 'elektronik') oran = 0.70;
+      else if (kategori === 'giyim') oran = 0.40;
+      else if (kategori === 'kozmetik') oran = 0.65;
+
+      let adresUcreti = 0;
+      if (teslimat === 'eve') {
+        if (adres === 'lefkoşa') adresUcreti = 200;
+        else if (adres === 'girne') adresUcreti = 350;
+        else if (adres === 'magusa') adresUcreti = 500;
+        else if (adres === 'guzelyurt') adresUcreti = 400;
+        else if (adres === 'lefke') adresUcreti = 500;
+        else if (adres === 'iskele') adresUcreti = 550;
+        else if (adres === 'karpaz') adresUcreti = 650;
+      }
+
+      const hizmetBedeli = fiyat * (1 + oran);
+      const toplam = hizmetBedeli + adresUcreti;
+      document.getElementById('sonuc').textContent = `₺${toplam.toFixed(2)}`;
+    }
   </script>
-
 </body>
 </html>
