@@ -3,18 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Giriş Yap</title>
+  <title>Giriş Yap - Kıbrıs Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #f4f6f9;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .center-box {
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      min-height: 60vh;
+    }
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: #fff;
+      color: #222;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(60,72,90,0.07);
+      font-size: 1.17rem;
+      font-weight: 600;
+      padding: 18px 32px;
+      cursor: pointer;
+      transition: background 0.18s;
+      margin-top: 16px;
+      margin-bottom: 8px;
+      min-width: 260px;
+    }
+    .google-btn:hover {
+      background: #f1f1f1;
+    }
+    .google-icon {
+      width: 28px;
+      height: 28px;
+      display: inline-block;
+    }
+    .footer {
+      text-align: center;
+      color: #555;
+      font-size: 1.04rem;
+      margin-top: auto;
+      padding: 16px 0 10px 0;
+      background: #f4f6f9;
+      border-top: 1px solid #e4e7ee;
+      letter-spacing: .1px;
+    }
+    @media (max-width: 500px) {
+      .center-box {
+        min-height: 50vh;
+      }
+      .google-btn {
+        font-size: 1rem;
+        padding: 15px 10vw;
+        min-width: 0;
+        width: 90vw;
+      }
+      .footer {
+        font-size: .98rem;
+        padding: 11px 0 7px 0;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h2>Giriş Yap</h2>
-  <input type="email" id="email" placeholder="E-posta" required />
-  <input type="password" id="password" placeholder="Şifre" required />
-  <button id="girisBtn">Giriş Yap</button>
-
+  <div class="center-box">
+    <button class="google-btn" id="googleSignInBtn" type="button">
+      <img class="google-icon" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+      Google ile Giriş Yap
+    </button>
+  </div>
+  <div class="footer">
+    © 2025 Kıbrıs Online – Tüm hakları saklıdır.
+  </div>
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBw9GP1srYUgPf9sqlpLu_ZnqM8w0Iau4Y",
@@ -30,36 +106,35 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    async function girisYap() {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-
-      if (!email || !password) {
-        alert("Lütfen tüm alanları doldurun.");
-        return;
-      }
-
+    document.getElementById('googleSignInBtn').addEventListener('click', async () => {
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const uid = userCredential.user.uid;
-        const docRef = doc(db, "users", uid);
-        const docSnap = await getDoc(docRef);
+        const provider = new GoogleAuthProvider();
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        if (user) {
+          const displayName = user.displayName || "";
+          const email = user.email || "";
+          const uid = user.uid;
+          const userRef = doc(db, "users", uid);
+          const userSnap = await getDoc(userRef);
 
-        if (docSnap.exists()) {
-          const adSoyad = docSnap.data().adSoyad || "Kullanıcı";
-          localStorage.setItem("userName", adSoyad);
-          alert("Giriş başarılı. Yönlendiriliyor...");
+          if (!userSnap.exists()) {
+            await setDoc(userRef, {
+              adSoyad: displayName,
+              email: email,
+              kayitTarihi: new Date().toISOString()
+            });
+          }
+
+          localStorage.setItem("userName", displayName);
           window.location.href = "index.html";
         } else {
-          alert("Kullanıcı bilgisi bulunamadı.");
+          alert("Giriş başarısız");
         }
-      } catch (error) {
-        alert("Giriş başarısız: " + error.message);
+      } catch (e) {
+        alert("Giriş başarısız");
       }
-    }
-
-    // 🔑 Doğru şekilde buton bağlantısı
-    document.getElementById("girisBtn").addEventListener("click", girisYap);
+    });
   </script>
 </body>
 </html>
