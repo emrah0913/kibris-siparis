@@ -1,40 +1,93 @@
-<!-- ✅ HESAPLAMA MODÜLÜ (çerçeveli ve butonlu) -->
-<section class="faq">
-  <h2>Hesaplama Modülü</h2>
-  <div style="border: 2px solid #2d4fd3; padding: 20px; border-radius: 8px; background-color: #fff;">
-    <form id="hesapForm">
-      <label>Ürün Linki:</label>
-      <input type="url" id="urunLink" placeholder="https://..." required>
+<!-- (önceki kodlar olduğu gibi korunmuştur) -->
 
-      <label>Türkiye Fiyatı (₺):</label>
-      <input type="number" id="fiyat" required>
+  <section class="faq">
+    <h2>Sıkça Sorulan Sorular</h2>
+    <p><strong>Ürünüm ne zaman gelir?</strong><br> Siparişiniz Türkiye'den bize ulaştıktan sonra genellikle 2-4 gün içinde size teslim edilir.</p>
+    <p><strong>Kargo ücreti ne kadar?</strong><br> Ürünün kategorisi ve teslimat tipine göre hesaplama aracını kullanarak görebilirsiniz.</p>
+    <p><strong>Hangi sitelerden alışveriş yapabilirim?</strong><br> Trendyol, Hepsiburada, N11, Amazon ve diğer Türkiye merkezli tüm e-ticaret siteleri desteklenmektedir.</p>
+  </section>
 
-      <label>Kategori:</label>
-      <select id="kategori">
-        <option value="mobilya">Mobilya</option>
-        <option value="elektronik">Elektronik</option>
-        <option value="giyim">Giyim</option>
-        <option value="kozmetik">Kozmetik</option>
-      </select>
+  <!-- ✅ HESAPLAMA MODÜLÜ (çerçeveli ve butonlu) -->
+  <section class="faq">
+    <h2>Hesaplama Modülü</h2>
+    <div style="border: 2px solid #2d4fd3; padding: 20px; border-radius: 8px; background-color: #fff;">
+      <form id="hesapForm">
+        <label>Ürün Linki:</label>
+        <input type="url" id="urunLink" placeholder="https://..." required>
 
-      <label>Teslimat Tipi:</label>
-      <select id="teslimat">
-        <option value="depo">Depodan Teslim</option>
-        <option value="eve">Eve Teslim</option>
-      </select>
+        <label>Türkiye Fiyatı (₺):</label>
+        <input type="number" id="fiyat" required>
 
-      <p><strong>Toplam Ücret: <span id="sonuc">₺0.00</span></strong></p>
+        <label>Kategori:</label>
+        <select id="kategori">
+          <option value="mobilya">Mobilya</option>
+          <option value="elektronik">Elektronik</option>
+          <option value="giyim">Giyim</option>
+          <option value="kozmetik">Kozmetik</option>
+        </select>
 
-      <!-- 🔵 Sipariş Ver butonu -->
-      <button type="button" style="
-        background-color: white;
-        color: #2d4fd3;
-        border: 2px solid #2d4fd3;
-        padding: 10px 20px;
-        font-weight: 600;
-        border-radius: 6px;
-        cursor: pointer;
-      ">Sipariş Ver</button>
-    </form>
-  </div>
-</section>
+        <label>Teslimat Tipi:</label>
+        <select id="teslimat">
+          <option value="depo">Depodan Teslim</option>
+          <option value="eve">Eve Teslim</option>
+        </select>
+
+        <p><strong>Toplam Ücret: <span id="sonuc">₺0.00</span></strong></p>
+
+        <!-- 🔵 Sipariş Ver butonu -->
+        <button type="button" style="
+          background-color: white;
+          color: #2d4fd3;
+          border: 2px solid #2d4fd3;
+          padding: 10px 20px;
+          font-weight: 600;
+          border-radius: 6px;
+          cursor: pointer;
+        ">Sipariş Ver</button>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    const kullaniciGirisYapti = true; // bu değeri dinamik yapabilirsin
+
+    if (kullaniciGirisYapti) {
+      document.getElementById('userBox').style.display = 'block';
+    }
+
+    function toggleLogout() {
+      const box = document.getElementById('logoutBox');
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function logout() {
+      alert('Çıkış yapıldı.');
+      window.location.href = 'index.html';
+    }
+
+    // ✅ HESAPLAMA MODÜLÜ FONKSİYONU
+    document.getElementById('fiyat').addEventListener('input', hesapla);
+    document.getElementById('kategori').addEventListener('change', hesapla);
+    document.getElementById('teslimat').addEventListener('change', hesapla);
+
+    function hesapla() {
+      const fiyat = parseFloat(document.getElementById('fiyat').value) || 0;
+      const kategori = document.getElementById('kategori').value;
+      const teslimat = document.getElementById('teslimat').value;
+
+      let hizmetBedeli = 0;
+
+      if (kategori === 'mobilya') hizmetBedeli = 200;
+      else if (kategori === 'elektronik') hizmetBedeli = 100;
+      else if (kategori === 'giyim') hizmetBedeli = 50;
+      else if (kategori === 'kozmetik') hizmetBedeli = 30;
+
+      if (teslimat === 'eve') hizmetBedeli += 100;
+
+      const toplam = fiyat + hizmetBedeli;
+      document.getElementById('sonuc').textContent = `₺${toplam.toFixed(2)}`;
+    }
+  </script>
+
+</body>
+</html>
